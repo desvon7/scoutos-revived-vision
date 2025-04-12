@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import OnboardingFlow from '@/components/onboarding/OnboardingFlow';
-import Asterisk from '@/components/shared/Asterisk';
-import { Button } from '@/components/ui/button';
+import DashboardOnboarding from '@/components/dashboard/DashboardOnboarding';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardTabs from '@/components/dashboard/DashboardTabs';
 import WorkflowsTab from '@/components/dashboard/WorkflowsTab';
@@ -32,20 +30,7 @@ const Dashboard = () => {
   };
   
   if (showOnboarding) {
-    return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <div className="flex h-16 items-center border-b px-6 justify-between">
-          <div className="flex items-center space-x-2">
-            <Asterisk className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">Scout</span>
-          </div>
-          <Button variant="ghost" onClick={() => setShowOnboarding(false)}>
-            Skip tutorial
-          </Button>
-        </div>
-        <OnboardingFlow />
-      </div>
-    );
+    return <DashboardOnboarding onSkip={() => setShowOnboarding(false)} />;
   }
   
   return (
