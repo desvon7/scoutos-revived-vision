@@ -1,147 +1,16 @@
 
 import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Plus, ZoomIn, ZoomOut, X } from 'lucide-react';
+import { Plus, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm';
-
-interface NodeProps {
-  title: string;
-  type: NodeType;
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-  selected?: boolean;
-  onClick?: () => void;
-}
-
-const Node: React.FC<NodeProps> = ({ 
-  title, 
-  type, 
-  x, 
-  y, 
-  width = 120, 
-  height = 40,
-  selected = false,
-  onClick
-}) => {
-  const getNodeColor = () => {
-    switch (type) {
-      case 'input':
-        return 'border-blue-500';
-      case 'process':
-        return 'border-green-500';
-      case 'output':
-        return 'border-purple-500';
-      case 'memory':
-        return 'border-amber-500';
-      case 'llm':
-        return 'border-pink-500';
-      default:
-        return 'border-gray-500';
-    }
-  };
-
-  return (
-    <g 
-      transform={`translate(${x}, ${y})`}
-      onClick={onClick}
-      className="cursor-pointer"
-    >
-      <rect 
-        width={width} 
-        height={height} 
-        rx="4" 
-        className={cn(
-          "fill-neutral-800 stroke-2", 
-          getNodeColor(),
-          selected && "stroke-white"
-        )}
-        strokeWidth={selected ? "2.5" : "1.5"}
-      />
-      <text 
-        x={width / 2} 
-        y={height / 2} 
-        textAnchor="middle" 
-        dominantBaseline="middle"
-        className="fill-white text-xs font-medium"
-      >
-        {title}
-      </text>
-    </g>
-  );
-};
-
-interface ConnectionProps {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  animated?: boolean;
-}
-
-const Connection: React.FC<ConnectionProps> = ({ 
-  x1, 
-  y1, 
-  x2, 
-  y2,
-  animated = false
-}) => {
-  // Calculate control points for curved path
-  const midX = (x1 + x2) / 2;
-  
-  return (
-    <path 
-      d={`M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`} 
-      className={cn(
-        "stroke-neutral-500 fill-none", 
-        animated && "stroke-dash-array-3-3 animate-dash"
-      )}
-      strokeWidth="1.5"
-      markerEnd="url(#arrowhead)"
-    />
-  );
-};
-
-// Types for node templates in the side panel
-interface NodeTemplate {
-  type: NodeType;
-  title: string;
-  description: string;
-}
-
-const nodeTemplates: NodeTemplate[] = [
-  { type: 'input', title: 'User Input', description: 'Start with user message' },
-  { type: 'memory', title: 'Memory', description: 'Access stored information' },
-  { type: 'process', title: 'Process', description: 'Transform data' },
-  { type: 'llm', title: 'LLM', description: 'Generate AI responses' },
-  { type: 'output', title: 'Output', description: 'Return final response' }
-];
-
-// Define a Node object interface with all the required properties
-interface NodeObject {
-  id: string;
-  title: string;
-  type: NodeType;
-  x: number;
-  y: number;
-}
-
-// Define a Connection object interface
-interface ConnectionObject {
-  id: string;
-  from: string;
-  to: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
+import { Node, NodeType } from './workflow/Node';
+import { Connection } from './workflow/Connection';
+import { nodeTemplates } from './workflow/nodeTemplates';
+import { NodePanel } from './workflow/NodePanel';
+import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
+import { NodeObject, ConnectionObject } from './workflow/types';
 
 const WorkflowBuilder: React.FC = () => {
-  // State for the workflow nodes and connections using the defined interfaces
+  // State for the workflow nodes and connections
   const [nodes, setNodes] = useState<NodeObject[]>([
     { id: '1', title: 'Slack', type: 'input', x: 100, y: 80 },
     { id: '2', title: 'Memory', type: 'memory', x: 260, y: 80 },
@@ -186,6 +55,24 @@ const WorkflowBuilder: React.FC = () => {
     setSelectedNodeId(newId);
     setShowNodePanel(false);
   };
+
+  // Handle title change for a node
+  const handleTitleChange = (id: string, newTitle: string) => {
+    setNodes(nodes.map(node => 
+      node.id === id 
+        ? { ...node, title: newTitle } 
+        : node
+    ));
+  };
+
+  // Delete a node and its connections
+  const handleDeleteNode = (id: string) => {
+    setNodes(nodes.filter(node => node.id !== id));
+    setConnections(connections.filter(
+      conn => conn.from !== id && conn.to !== id
+    ));
+    setSelectedNodeId(null);
+  };
   
   // Handle zoom in
   const zoomIn = () => {
@@ -196,6 +83,11 @@ const WorkflowBuilder: React.FC = () => {
   const zoomOut = () => {
     setZoom(Math.max(zoom - 0.1, 0.5));
   };
+
+  // Get the selected node object
+  const selectedNode = selectedNodeId 
+    ? nodes.find(node => node.id === selectedNodeId) 
+    : null;
   
   return (
     <div className="rounded-xl bg-neutral-900 p-4 border border-neutral-700 shadow-xl overflow-hidden">
@@ -282,81 +174,21 @@ const WorkflowBuilder: React.FC = () => {
       
       {/* Node selection panel (appears when plus button is clicked) */}
       {showNodePanel && (
-        <div className="absolute left-4 top-4 bg-neutral-800 p-4 rounded-md shadow-lg w-60 z-10">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-white text-sm font-medium">Add Node</h3>
-            <button 
-              className="text-neutral-400 hover:text-white"
-              onClick={() => setShowNodePanel(false)}
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="space-y-2">
-            {nodeTemplates.map((template, index) => (
-              <div 
-                key={index}
-                className="p-2 bg-neutral-700 rounded-md hover:bg-neutral-600 cursor-pointer"
-                onClick={() => addNode(template.type, template.title)}
-              >
-                <div className="text-white text-sm font-medium">{template.title}</div>
-                <div className="text-neutral-400 text-xs">{template.description}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <NodePanel 
+          templates={nodeTemplates}
+          onClose={() => setShowNodePanel(false)}
+          onSelectNode={addNode}
+        />
       )}
       
       {/* Node properties panel (appears when a node is selected) */}
-      {selectedNodeId && (
-        <div className="absolute right-4 top-4 bg-neutral-800 p-4 rounded-md shadow-lg w-60">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-white text-sm font-medium">Node Properties</h3>
-            <button 
-              className="text-neutral-400 hover:text-white"
-              onClick={() => setSelectedNodeId(null)}
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-neutral-400 text-xs mb-1">Title</label>
-              <input 
-                type="text" 
-                className="w-full bg-neutral-700 border border-neutral-600 rounded-md p-1.5 text-white text-sm"
-                value={nodes.find(n => n.id === selectedNodeId)?.title || ''}
-                onChange={(e) => {
-                  setNodes(nodes.map(node => 
-                    node.id === selectedNodeId 
-                      ? { ...node, title: e.target.value } 
-                      : node
-                  ));
-                }}
-              />
-            </div>
-            <div>
-              <label className="block text-neutral-400 text-xs mb-1">Type</label>
-              <div className="text-white text-sm">
-                {nodes.find(n => n.id === selectedNodeId)?.type}
-              </div>
-            </div>
-            <Button 
-              variant="destructive" 
-              size="sm" 
-              className="w-full mt-2"
-              onClick={() => {
-                setNodes(nodes.filter(node => node.id !== selectedNodeId));
-                setConnections(connections.filter(
-                  conn => conn.from !== selectedNodeId && conn.to !== selectedNodeId
-                ));
-                setSelectedNodeId(null);
-              }}
-            >
-              Delete Node
-            </Button>
-          </div>
-        </div>
+      {selectedNode && (
+        <NodePropertiesPanel 
+          node={selectedNode}
+          onClose={() => setSelectedNodeId(null)}
+          onTitleChange={handleTitleChange}
+          onDeleteNode={handleDeleteNode}
+        />
       )}
     </div>
   );
