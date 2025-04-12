@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from "react"
 import ReactFlow, {
   Background,
@@ -52,7 +53,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
       event.preventDefault()
 
       const type = event.dataTransfer.getData("application/reactflow")
-      const template = nodeTemplates.find((t) => t.type === type)
+      const template = nodeTemplates.find((t: NodeTemplate) => t.type === type)
       if (!template) return
 
       const position = {

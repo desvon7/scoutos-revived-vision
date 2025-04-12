@@ -1,7 +1,17 @@
 
-export type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm' | 'collection';
+import { ReactNode } from 'react';
+
+export type NodeType = 'input' | 'collection' | 'llm' | 'output' | 'analysis' | 'code' | 'knowledge' | 'email' | 'web' | 'search';
 
 export interface NodeData {
+  title?: string;
+  model?: string;
+  temperature?: number;
+  memoryType?: string;
+  processType?: string;
+  inputName?: string;
+  outputName?: string;
+  collectionId?: string;
   [key: string]: any;
 }
 
@@ -14,21 +24,12 @@ export interface NodeObject {
   data?: NodeData;
 }
 
-export interface Connection {
-  id: string;
-  from: string;
-  to: string;
-}
-
-// Adding the missing types that are causing errors
 export interface ConnectionObject {
   id: string;
   from: string;
   to: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
+  fromHandle?: string;
+  toHandle?: string;
 }
 
 export interface WorkflowData {
@@ -36,4 +37,13 @@ export interface WorkflowData {
   nodes: NodeObject[];
   connections: ConnectionObject[];
   timestamp: string;
+  [key: string]: any;
+}
+
+export interface WorkflowEdge {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle?: string;
+  targetHandle?: string;
 }

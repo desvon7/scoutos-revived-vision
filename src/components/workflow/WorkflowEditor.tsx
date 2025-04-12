@@ -14,11 +14,12 @@ import ReactFlow, {
   useReactFlow,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { nodeTemplates } from './NodeTemplates';
+import { NodeTemplate, nodeTemplates } from './NodeTemplates';
 import InputNode from './nodes/InputNode';
 import CollectionNode from './nodes/CollectionNode';
 import LLMNode from './nodes/LLMNode';
 import OutputNode from './nodes/OutputNode';
+import { NodeType } from './types';
 
 const nodeTypes = {
   input: InputNode,
@@ -50,7 +51,7 @@ function WorkflowEditorContent({ workflowId }: WorkflowEditorProps) {
     event.preventDefault();
 
     const type = event.dataTransfer.getData('application/reactflow');
-    const template = nodeTemplates.find((t: any) => t.type === type);
+    const template = nodeTemplates.find((t: NodeTemplate) => t.type === type);
 
     if (typeof type === 'undefined' || !template) {
       return;
@@ -77,7 +78,7 @@ function WorkflowEditorContent({ workflowId }: WorkflowEditorProps) {
         <div className="w-64 border-r p-4">
           <h3 className="mb-4 text-lg font-semibold">Node Types</h3>
           <div className="space-y-2">
-            {nodeTemplates.map((template) => (
+            {nodeTemplates.map((template: NodeTemplate) => (
               <div
                 key={template.type}
                 className="flex cursor-move items-center rounded-lg border p-2 hover:bg-gray-50"
