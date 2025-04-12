@@ -1,10 +1,20 @@
-import { NextAuthOptions } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import GithubProvider from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
-import CredentialsProvider from "next-auth/providers/credentials"
+import { NextAuthOptions } from "next-auth"
 import { prisma } from "./prisma"
 import bcrypt from "bcrypt"
+import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string
+      name?: string | null
+      email?: string | null
+      image?: string | null
+    }
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -15,10 +25,6 @@ export const authOptions: NextAuthOptions = {
     signIn: "/sign-in",
   },
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -65,7 +71,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        session.user.id = token.id
+        session.user.id = token.id as string
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture

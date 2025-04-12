@@ -1,18 +1,20 @@
 import { Node, Edge } from "reactflow"
 
+export interface WorkflowNodeData {
+  label: string
+  [key: string]: any
+}
+
 export interface WorkflowNode extends Node {
-  data: {
-    label: string
-    [key: string]: any
-  }
+  data: WorkflowNodeData
+}
+
+export interface WorkflowEdgeData {
+  [key: string]: any
 }
 
 export interface WorkflowEdge extends Edge {
-  source: string
-  target: string
-  data?: {
-    [key: string]: any
-  }
+  data?: WorkflowEdgeData
 }
 
 export interface Workflow {

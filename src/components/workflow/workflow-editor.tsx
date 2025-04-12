@@ -1,4 +1,3 @@
-
 import { useCallback, useState } from "react"
 import ReactFlow, {
   Background,
@@ -10,9 +9,10 @@ import ReactFlow, {
   addEdge,
   useNodesState,
   useEdgesState,
+  useReactFlow,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { nodeTemplates } from "./nodeTemplates"
+import { nodeTemplates } from "./NodeTemplates"
 import InputNode from "./nodes/InputNode"
 import CollectionNode from "./nodes/CollectionNode"
 import LLMNode from "./nodes/LLMNode"
@@ -25,6 +25,12 @@ const nodeTypes = {
   output: OutputNode,
 }
 
+interface NodeTemplate {
+  type: string
+  label: string
+  icon: React.ReactNode
+}
+
 interface WorkflowEditorProps {
   workflowId: string
 }
@@ -32,6 +38,7 @@ interface WorkflowEditorProps {
 export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const { project } = useReactFlow()
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -53,7 +60,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
       return
     }
 
-    const position = reactFlowInstance.project({
+    const position = project({
       x: event.clientX,
       y: event.clientY,
     })
@@ -71,13 +78,13 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
   return (
     <div className="h-[calc(100vh-4rem)]">
       <div className="flex h-full">
-        <div className="w-64 border-r p-4">
+        <div className="w-64 border-r bg-gray-50 p-4">
           <h3 className="mb-4 text-lg font-semibold">Node Types</h3>
           <div className="space-y-2">
             {nodeTemplates.map((template) => (
               <div
                 key={template.type}
-                className="flex cursor-move items-center rounded-lg border p-2 hover:bg-gray-50"
+                className="flex cursor-move items-center rounded-lg border bg-white p-2 shadow-sm"
                 draggable
                 onDragStart={(event) => {
                   event.dataTransfer.setData(
@@ -86,7 +93,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
                   )
                 }}
               >
-                <template.icon className="mr-2 h-5 w-5" />
+                <span className="mr-2">{template.icon}</span>
                 <span>{template.label}</span>
               </div>
             ))}
@@ -104,9 +111,9 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
             nodeTypes={nodeTypes}
             fitView
           >
+            <Background />
             <Controls />
             <MiniMap />
-            <Background color="#aaa" gap={16} size={1} />
           </ReactFlow>
         </div>
       </div>
