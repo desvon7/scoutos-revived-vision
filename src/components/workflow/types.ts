@@ -18,3 +18,10 @@ export interface ConnectionObject {
   x2: number;
   y2: number;
 }
+
+export interface WorkflowData {
+  name: string;
+  nodes: NodeObject[];
+  connections: ConnectionObject[];
+  timestamp: string;
+}

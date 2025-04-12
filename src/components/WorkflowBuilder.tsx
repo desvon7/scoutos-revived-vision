@@ -1,14 +1,15 @@
 
-import React, { useState } from 'react';
-import { Plus, ZoomIn, ZoomOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Save, ZoomIn, ZoomOut, Plus, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Node, NodeType } from './workflow/Node';
 import { Connection } from './workflow/Connection';
 import { nodeTemplates } from './workflow/nodeTemplates';
 import { NodePanel } from './workflow/NodePanel';
 import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
-import { NodeObject, ConnectionObject } from './workflow/types';
+import { NodeObject, ConnectionObject, WorkflowData } from './workflow/types';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { toast } from "sonner";
 
 const WorkflowBuilder: React.FC = () => {
   // State for the workflow nodes and connections
@@ -26,6 +27,9 @@ const WorkflowBuilder: React.FC = () => {
     { id: 'e3', from: '3', to: '4', x1: 440, y1: 120, x2: 320, y2: 170 },
     { id: 'e4', from: '4', to: '5', x1: 305, y1: 150, x2: 420, y2: 220 },
   ]);
+
+  // localStorage for saved workflows
+  const [savedWorkflows, setSavedWorkflows] = useLocalStorage<Record<string, WorkflowData>>('savedWorkflows', {});
   
   // State for the selected node
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -35,6 +39,12 @@ const WorkflowBuilder: React.FC = () => {
   
   // State for showing node panel
   const [showNodePanel, setShowNodePanel] = useState(false);
+
+  // State for showing saved workflows panel
+  const [showSavedPanel, setShowSavedPanel] = useState(false);
+
+  // State for current workflow name
+  const [currentWorkflowName, setCurrentWorkflowName] = useState<string>('');
 
   // State for dragging
   const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
@@ -157,6 +167,45 @@ const WorkflowBuilder: React.FC = () => {
     setZoom(Math.max(zoom - 0.1, 0.5));
   };
 
+  // Save the current workflow
+  const saveWorkflow = () => {
+    // Create a prompt to name the workflow
+    const name = prompt("Enter a name for this workflow:", currentWorkflowName || "My Workflow");
+    
+    if (!name) return; // User cancelled
+    
+    const workflowData: WorkflowData = {
+      name,
+      nodes,
+      connections,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    setSavedWorkflows({
+      ...savedWorkflows,
+      [name]: workflowData
+    });
+    
+    setCurrentWorkflowName(name);
+    toast.success(`Workflow "${name}" saved successfully`);
+  };
+
+  // Load a workflow
+  const loadWorkflow = (name: string) => {
+    const workflow = savedWorkflows[name];
+    if (!workflow) {
+      toast.error("Workflow not found");
+      return;
+    }
+    
+    setNodes(workflow.nodes);
+    setConnections(workflow.connections);
+    setCurrentWorkflowName(name);
+    setShowSavedPanel(false);
+    toast.success(`Workflow "${name}" loaded successfully`);
+  };
+
   // Get the selected node object
   const selectedNode = selectedNodeId 
     ? nodes.find(node => node.id === selectedNodeId) 
@@ -228,23 +277,43 @@ const WorkflowBuilder: React.FC = () => {
           <button 
             className="p-1.5 bg-neutral-700 rounded-md hover:bg-neutral-600"
             onClick={() => setShowNodePanel(true)}
+            title="Add node"
           >
             <Plus className="text-white h-4 w-4" />
           </button>
           <button 
             className="p-1.5 bg-neutral-700 rounded-md hover:bg-neutral-600"
             onClick={zoomIn}
+            title="Zoom in"
           >
             <ZoomIn className="text-white h-4 w-4" />
           </button>
           <button 
             className="p-1.5 bg-neutral-700 rounded-md hover:bg-neutral-600"
             onClick={zoomOut}
+            title="Zoom out"
           >
             <ZoomOut className="text-white h-4 w-4" />
           </button>
+          <button 
+            className="p-1.5 bg-neutral-700 rounded-md hover:bg-neutral-600"
+            onClick={saveWorkflow}
+            title="Save workflow"
+          >
+            <Save className="text-white h-4 w-4" />
+          </button>
+          <button 
+            className="p-1.5 bg-neutral-700 rounded-md hover:bg-neutral-600"
+            onClick={() => setShowSavedPanel(true)}
+            title="Load workflow"
+          >
+            <Upload className="text-white h-4 w-4" />
+          </button>
         </div>
         <div>
+          {currentWorkflowName && (
+            <span className="text-neutral-400 text-xs mr-2">{currentWorkflowName}</span>
+          )}
           <button className="px-3 py-1 bg-primary rounded-md text-white text-xs">Run</button>
         </div>
       </div>
@@ -266,6 +335,39 @@ const WorkflowBuilder: React.FC = () => {
           onTitleChange={handleTitleChange}
           onDeleteNode={handleDeleteNode}
         />
+      )}
+
+      {/* Saved Workflows Panel */}
+      {showSavedPanel && (
+        <div className="absolute left-4 top-4 bg-neutral-800 p-4 rounded-md shadow-lg w-60 z-10">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-white text-sm font-medium">Load Workflow</h3>
+            <button 
+              className="text-neutral-400 hover:text-white"
+              onClick={() => setShowSavedPanel(false)}
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="space-y-2 max-h-60 overflow-y-auto">
+            {Object.entries(savedWorkflows).length === 0 ? (
+              <div className="text-neutral-400 text-xs">No saved workflows</div>
+            ) : (
+              Object.entries(savedWorkflows).map(([name, workflow]) => (
+                <div 
+                  key={name}
+                  className="p-2 bg-neutral-700 rounded-md hover:bg-neutral-600 cursor-pointer"
+                  onClick={() => loadWorkflow(name)}
+                >
+                  <div className="text-white text-sm font-medium">{name}</div>
+                  <div className="text-neutral-400 text-xs">
+                    {new Date(workflow.timestamp).toLocaleString()}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
