@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import EmptyCollectionCard from './EmptyCollectionCard';
 import CollectionCard from './CollectionCard';
 
@@ -8,10 +9,16 @@ interface CollectionsTabProps {
 }
 
 const CollectionsTab = ({ onCreateCollection }: CollectionsTabProps) => {
+  const navigate = useNavigate();
+  
+  const handleCreateCollection = () => {
+    navigate('/dashboard/collections');
+  };
+  
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <EmptyCollectionCard onClick={onCreateCollection} />
+        <EmptyCollectionCard onClick={handleCreateCollection} />
         
         <CollectionCard 
           title="Product Documentation"

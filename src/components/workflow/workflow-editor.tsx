@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from "react"
 import ReactFlow, {
   Background,
@@ -11,7 +12,7 @@ import ReactFlow, {
   useEdgesState,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { nodeTemplates } from "./NodeTemplates"
+import { nodeTemplates } from "./nodeTemplates"
 import InputNode from "./nodes/InputNode"
 import CollectionNode from "./nodes/CollectionNode"
 import LLMNode from "./nodes/LLMNode"
@@ -103,9 +104,9 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
             nodeTypes={nodeTypes}
             fitView
           >
-            <Background />
             <Controls />
             <MiniMap />
+            <Background color="#aaa" gap={16} size={1} />
           </ReactFlow>
         </div>
       </div>
