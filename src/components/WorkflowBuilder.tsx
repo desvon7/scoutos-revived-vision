@@ -124,8 +124,8 @@ const WorkflowBuilder: React.FC = () => {
           {/* Connections */}
           <Connection x1={160} y1={100} x2={260} y2={100} />
           <Connection x1={320} y1={100} x2={420} y2={100} />
-          <Connection x1={440} y1={120} x2={440} y2={170} x2={320} y2={170} />
-          <Connection x1={305} y1={150} x2={305} y2={220} x2={420} y2={220} />
+          <Connection x1={440} y1={120} x2={320} y2={170} />
+          <Connection x1={305} y1={150} x2={420} y2={220} />
         </svg>
       </div>
       
