@@ -67,7 +67,7 @@ export class WorkflowEngine {
       id: conn.id,
       source: conn.from,
       target: conn.to,
-      // Use empty string as default if the properties don't exist
+      // Use empty string as default since the properties might not exist
       sourceHandle: "",
       targetHandle: ""
     }));

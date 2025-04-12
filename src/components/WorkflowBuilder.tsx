@@ -1,18 +1,10 @@
 
-import React, { useState } from 'react';
-import { toast } from "sonner";
-import { NodeTemplate } from './workflow/NodeTemplates';
-import { NodeType, NodeData, NodeObject } from './workflow/types';
-import { nodeTemplates } from './workflow/NodeTemplates';
-import { NodePanel } from './workflow/NodePanel';
-import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
-import { WorkflowHeader } from './workflow/WorkflowHeader';
-import { WorkflowToolbar } from './workflow/WorkflowToolbar';
-import { WorkflowCanvas } from './workflow/WorkflowCanvas';
-import { SavedWorkflowsPanel } from './workflow/SavedWorkflowsPanel';
+import React from 'react';
 import { useWorkflow } from '@/hooks/useWorkflow';
 import { useDragNode } from '@/hooks/useDragNode';
 import { useZoom } from '@/hooks/useZoom';
+import { useWorkflowActions } from '@/hooks/useWorkflowActions';
+import { WorkflowContent } from './workflow/WorkflowContent';
 
 const WorkflowBuilder: React.FC = () => {
   // Get workflow state from custom hooks
@@ -39,195 +31,66 @@ const WorkflowBuilder: React.FC = () => {
     handleDragEnd 
   } = useDragNode(nodes, setNodes, connections, setConnections);
   
-  // State for showing panels
-  const [showNodePanel, setShowNodePanel] = useState(false);
-  const [showSavedPanel, setShowSavedPanel] = useState(false);
-  
-  // Handle node selection
-  const handleNodeClick = (id: string) => {
-    setSelectedNodeId(id === selectedNodeId ? null : id);
-  };
-  
-  // Add a new node from a template
-  const addNode = (template: NodeTemplate) => {
-    const nodeType = template.type as NodeType;
-    const newId = `${Date.now()}`;
-    
-    // Initialize with default data based on node type
-    let nodeData: NodeData = {};
-    
-    if (nodeType === 'llm') {
-      nodeData = { model: 'gpt-4o', temperature: 0.7 };
-    } else if (nodeType === 'memory') {
-      nodeData = { memoryType: 'conversation' };
-    } else if (nodeType === 'process') {
-      nodeData = { processType: 'transform' };
-    } else if (nodeType === 'input') {
-      nodeData = { inputName: 'user_input' };
-    } else if (nodeType === 'output') {
-      nodeData = { outputName: 'result' };
-    } else if (nodeType === 'collection') {
-      nodeData = { collectionId: '' };
-    }
-    
-    const newNode: NodeObject = {
-      id: newId,
-      title: template.name,
-      type: nodeType,
-      x: 300,
-      y: 300,
-      data: nodeData
-    };
-    
-    setNodes([...nodes, newNode]);
-    setSelectedNodeId(newId);
-    setShowNodePanel(false);
-  };
-
-  // Handle property change for a node
-  const handlePropertyChange = (id: string, data: Partial<NodeData>) => {
-    setNodes(nodes.map(node => {
-      if (node.id === id) {
-        return { 
-          ...node, 
-          title: data.title || node.title,  // Update title if it's in the data
-          data: { 
-            ...(node.data || {}),  // Keep existing data
-            ...data  // Add new data
-          } 
-        };
-      }
-      return node;
-    }));
-  };
-
-  // Delete a node and its connections
-  const handleDeleteNode = (id: string) => {
-    setNodes(nodes.filter(node => node.id !== id));
-    setConnections(connections.filter(
-      conn => conn.from !== id && conn.to !== id
-    ));
-    setSelectedNodeId(null);
-  };
+  const {
+    showNodePanel,
+    setShowNodePanel,
+    showSavedPanel,
+    setShowSavedPanel,
+    handleNodeClick,
+    addNode,
+    handlePropertyChange,
+    handleDeleteNode,
+    saveWorkflow,
+    loadWorkflow,
+    runWorkflow
+  } = useWorkflowActions(
+    nodes,
+    setNodes,
+    connections,
+    setConnections,
+    selectedNodeId,
+    setSelectedNodeId,
+    savedWorkflows,
+    setSavedWorkflows,
+    workflowName,
+    setWorkflowName,
+    currentWorkflowName,
+    setCurrentWorkflowName
+  );
   
   // Handle drag move with current zoom level
   const handleNodeDragMove = (event: React.MouseEvent) => {
     handleDragMove(event, zoom);
   };
   
-  // Save the current workflow
-  const saveWorkflow = () => {
-    const name = prompt("Enter a name for this workflow:", currentWorkflowName || workflowName);
-    
-    if (!name) return; // User cancelled
-    
-    const workflowData = {
-      name,
-      nodes,
-      connections,
-      timestamp: new Date().toISOString()
-    };
-    
-    // Save to localStorage
-    setSavedWorkflows({
-      ...savedWorkflows,
-      [name]: workflowData
-    });
-    
-    setCurrentWorkflowName(name);
-    setWorkflowName(name);
-    toast.success(`Workflow "${name}" saved successfully`);
-  };
-
-  // Load a workflow
-  const loadWorkflow = (name: string) => {
-    const workflow = savedWorkflows[name];
-    if (!workflow) {
-      toast.error("Workflow not found");
-      return;
-    }
-    
-    setNodes(workflow.nodes);
-    setConnections(workflow.connections);
-    setCurrentWorkflowName(name);
-    setWorkflowName(name);
-    setShowSavedPanel(false);
-    toast.success(`Workflow "${name}" loaded successfully`);
-  };
-
-  // Run the workflow (simulation)
-  const runWorkflow = () => {
-    toast.success("Workflow execution started");
-    
-    // For demo purposes, show a toast after a short delay
-    setTimeout(() => {
-      toast.success("Workflow execution completed successfully");
-    }, 2000);
-  };
-
-  // Get the selected node object
-  const selectedNode = selectedNodeId 
-    ? nodes.find(node => node.id === selectedNodeId) 
-    : null;
-  
   return (
-    <div className="rounded-xl bg-neutral-900 p-4 border border-neutral-700 shadow-xl overflow-hidden">
-      <WorkflowHeader 
-        workflowName={workflowName}
-        onWorkflowNameChange={setWorkflowName}
-        onSave={saveWorkflow}
-        onRun={runWorkflow}
-      />
-      
-      <WorkflowCanvas 
-        nodes={nodes}
-        connections={connections}
-        zoom={zoom}
-        selectedNodeId={selectedNodeId}
-        onNodeClick={handleNodeClick}
-        onDragStart={(e: React.MouseEvent, id: string) => handleDragStart(id, e)}
-        onDragMove={handleNodeDragMove}
-        onDragEnd={handleDragEnd}
-      />
-      
-      <WorkflowToolbar 
-        currentWorkflowName={currentWorkflowName}
-        onAddNode={() => setShowNodePanel(true)}
-        onZoomIn={zoomIn}
-        onZoomOut={zoomOut}
-        onSave={saveWorkflow}
-        onLoadWorkflow={() => setShowSavedPanel(true)}
-        onRun={runWorkflow}
-      />
-      
-      {/* Node selection panel (appears when plus button is clicked) */}
-      {showNodePanel && (
-        <NodePanel 
-          templates={nodeTemplates}
-          onClose={() => setShowNodePanel(false)}
-          onSelectNode={addNode}
-        />
-      )}
-      
-      {/* Node properties panel (appears when a node is selected) */}
-      {selectedNode && (
-        <NodePropertiesPanel 
-          node={selectedNode}
-          onClose={() => setSelectedNodeId(null)}
-          onPropertyChange={handlePropertyChange}
-          onDeleteNode={handleDeleteNode}
-        />
-      )}
-
-      {/* Saved Workflows Panel */}
-      {showSavedPanel && (
-        <SavedWorkflowsPanel 
-          savedWorkflows={savedWorkflows}
-          onClose={() => setShowSavedPanel(false)}
-          onLoadWorkflow={loadWorkflow}
-        />
-      )}
-    </div>
+    <WorkflowContent
+      workflowName={workflowName}
+      setWorkflowName={setWorkflowName}
+      nodes={nodes}
+      connections={connections}
+      zoom={zoom}
+      selectedNodeId={selectedNodeId}
+      currentWorkflowName={currentWorkflowName}
+      showNodePanel={showNodePanel}
+      showSavedPanel={showSavedPanel}
+      savedWorkflows={savedWorkflows}
+      onNodeClick={handleNodeClick}
+      onDragStart={(e: React.MouseEvent, id: string) => handleDragStart(id, e)}
+      onDragMove={handleNodeDragMove}
+      onDragEnd={handleDragEnd}
+      onAddNode={() => setShowNodePanel(true)}
+      onCloseNodePanel={() => setShowNodePanel(false)}
+      onSelectNode={addNode}
+      onCloseSavedPanel={() => setShowSavedPanel(true)}
+      onPropertyChange={handlePropertyChange}
+      onDeleteNode={handleDeleteNode}
+      onLoadWorkflow={loadWorkflow}
+      onSave={saveWorkflow}
+      onRun={runWorkflow}
+      onZoomIn={zoomIn}
+      onZoomOut={zoomOut}
+    />
   );
 };
 
