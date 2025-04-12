@@ -1,4 +1,3 @@
-
 import { Node, Edge } from "reactflow"
 
 export interface WorkflowNodeData {
@@ -6,13 +5,7 @@ export interface WorkflowNodeData {
   [key: string]: any
 }
 
-export interface WorkflowNode {
-  id: string
-  type: string
-  position: {
-    x: number
-    y: number
-  }
+export interface WorkflowNode extends Node {
   data: WorkflowNodeData
 }
 
@@ -20,10 +13,7 @@ export interface WorkflowEdgeData {
   [key: string]: any
 }
 
-export interface WorkflowEdge {
-  id: string
-  source: string
-  target: string
+export interface WorkflowEdge extends Edge {
   data?: WorkflowEdgeData
 }
 

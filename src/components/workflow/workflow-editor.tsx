@@ -1,4 +1,3 @@
-
 import { useCallback, useState } from "react"
 import ReactFlow, {
   Background,
@@ -26,14 +25,16 @@ const nodeTypes = {
   output: OutputNode,
 }
 
-interface WorkflowEditorProps {
-  workflowId: string
+interface NodeTemplate {
+  type: string
+  label: string
+  icon: React.ReactNode
 }
 
-export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
+export function WorkflowEditor({ workflowId }: { workflowId: string }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const reactFlow = useReactFlow()
+  const { project } = useReactFlow()
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -49,13 +50,13 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
     event.preventDefault()
 
     const type = event.dataTransfer.getData("application/reactflow")
-    const nodeTemplate = nodeTemplates.find((t: any) => t.type === type)
+    const template = nodeTemplates.find((t) => t.type === type)
 
-    if (typeof type === "undefined" || !nodeTemplate) {
+    if (typeof type === "undefined" || !template) {
       return
     }
 
-    const position = reactFlow.project({
+    const position = project({
       x: event.clientX,
       y: event.clientY,
     })
@@ -64,7 +65,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
       id: `${type}-${nodes.length + 1}`,
       type,
       position,
-      data: { label: nodeTemplate.name },
+      data: { label: template.label },
     }
 
     setNodes((nds) => nds.concat(newNode))
@@ -89,7 +90,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
                 }}
               >
                 <span className="mr-2">{template.icon}</span>
-                <span>{template.name}</span>
+                <span>{template.label}</span>
               </div>
             ))}
           </div>
