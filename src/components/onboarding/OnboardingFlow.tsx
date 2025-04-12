@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, CircleEllipsis, CircleDot, GanttChart, Database, Bookmark, Activity } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { WorkflowBuilder } from '@/components/WorkflowBuilder';
+import WorkflowBuilder from '@/components/WorkflowBuilder';
 
 const OnboardingFlow = () => {
   const [activeStep, setActiveStep] = React.useState(1);
