@@ -2,8 +2,11 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const GettingStartedGuide = () => {
+  const navigate = useNavigate();
+  
   const steps = [
     { 
       id: 1, 
@@ -27,6 +30,10 @@ const GettingStartedGuide = () => {
       current: false
     }
   ];
+  
+  const handleCreateCollection = () => {
+    navigate('/dashboard/collections');
+  };
   
   return (
     <div className="space-y-10">
@@ -60,7 +67,7 @@ const GettingStartedGuide = () => {
           enhance its responses with precise, context-rich insights. We manage all the embedding, hosting and other nuts
           and bolts, which allows you to quickly and easily setup semantic search in your agent or workflow.
         </p>
-        <Button className="mb-8">Create collection</Button>
+        <Button className="mb-8" onClick={handleCreateCollection}>Create collection</Button>
         
         <div className="relative pb-56.25 h-0 overflow-hidden rounded-lg">
           <iframe 

@@ -16,6 +16,7 @@ import Privacy from "./pages/Privacy";
 import Dashboard from "./pages/Dashboard";
 import WorkflowBuilderPage from "./pages/WorkflowBuilderPage";
 import TemplateBuilderPage from "./pages/TemplateBuilderPage";
+import CollectionsPage from "./pages/CollectionsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/signup" element={<SignUp />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/collections" element={<CollectionsPage />} />
           <Route path="/workflow-builder" element={<WorkflowBuilderPage />} />
           <Route path="/template-builder" element={<TemplateBuilderPage />} />
           <Route path="/terms" element={<Terms />} />
