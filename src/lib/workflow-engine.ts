@@ -1,113 +1,117 @@
-import { Node, Edge } from "reactflow"
 
-export interface WorkflowNodeData {
-  label: string
-  [key: string]: any
+import { 
+  NodeObject, 
+  WorkflowData,
+  WorkflowEdge
+} from "@/components/workflow/types";
+
+interface NodeExecution {
+  execute: (input: any) => Promise<any>;
 }
 
-export interface WorkflowNode extends Node {
-  data: WorkflowNodeData
-}
-
-export interface WorkflowEdgeData {
-  [key: string]: any
-}
-
-export interface WorkflowEdge extends Edge {
-  data?: WorkflowEdgeData
-}
-
-export interface Workflow {
-  id: string
-  name: string
-  description?: string
-  nodes: WorkflowNode[]
-  edges: WorkflowEdge[]
-  createdAt: Date
-  updatedAt: Date
-}
-
-export class WorkflowEngine {
-  private workflow: Workflow
-
-  constructor(workflow: Workflow) {
-    this.workflow = workflow
+class InputNode implements NodeExecution {
+  constructor(private node: NodeObject) {}
+  
+  async execute(input: any) {
+    return input;
   }
+}
 
-  private getNodeById(id: string): WorkflowNode | undefined {
-    return this.workflow.nodes.find((node) => node.id === id)
+class LLMNode implements NodeExecution {
+  constructor(private node: NodeObject) {}
+  
+  async execute(input: any) {
+    const model = this.node.data?.model || 'gpt-4';
+    const temp = this.node.data?.temperature || 0.7;
+    
+    console.log(`Running LLM with model ${model} at temp ${temp}`);
+    
+    // Simulate a delay for processing
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return `Processed by ${model}: ${input}`;
   }
+}
 
-  private getNodeConnections(nodeId: string): {
-    inputs: WorkflowEdge[]
-    outputs: WorkflowEdge[]
-  } {
-    return {
-      inputs: this.workflow.edges.filter((edge) => edge.target === nodeId),
-      outputs: this.workflow.edges.filter((edge) => edge.source === nodeId),
-    }
-  }
-
-  private async executeNode(node: WorkflowNode): Promise<any> {
-    const { inputs } = this.getNodeConnections(node.id)
-
-    // Get input values from connected nodes
-    const inputValues = await Promise.all(
-      inputs.map(async (edge) => {
-        const sourceNode = this.getNodeById(edge.source)
-        if (!sourceNode) {
-          throw new Error(`Source node ${edge.source} not found`)
+// Factory to create node executors
+const createNodeExecutor = (node: NodeObject): NodeExecution => {
+  switch (node.type) {
+    case 'input':
+      return new InputNode(node);
+    case 'llm':
+      return new LLMNode(node);
+    default:
+      return {
+        execute: async (input: any) => {
+          console.log(`Default execution for node type: ${node.type}`);
+          return input;
         }
-        return this.executeNode(sourceNode)
-      })
-    )
+      };
+  }
+};
 
-    // Execute node based on type
-    switch (node.type) {
-      case "input":
-        return node.data.value
-      case "collection":
-        return this.executeCollectionNode(node, inputValues)
-      case "llm":
-        return this.executeLLMNode(node, inputValues)
-      case "output":
-        return inputValues[0]
-      default:
-        throw new Error(`Unknown node type: ${node.type}`)
+// Main workflow engine
+export class WorkflowEngine {
+  private nodes: Map<string, NodeObject>;
+  private edges: WorkflowEdge[];
+  
+  constructor(workflow: WorkflowData) {
+    this.nodes = new Map();
+    workflow.nodes.forEach(node => {
+      this.nodes.set(node.id, node);
+    });
+    
+    // Convert connections to edges
+    this.edges = workflow.connections.map(conn => ({
+      id: conn.id,
+      source: conn.from,
+      target: conn.to,
+      sourceHandle: conn.fromHandle,
+      targetHandle: conn.toHandle
+    }));
+  }
+  
+  async execute(input: any) {
+    // Find all input nodes (nodes with no incoming edges)
+    const inputNodes = Array.from(this.nodes.values()).filter(node => {
+      return !this.edges.some(edge => edge.target === node.id);
+    });
+    
+    if (inputNodes.length === 0) {
+      throw new Error("No input nodes found in workflow");
     }
-  }
-
-  private async executeCollectionNode(
-    node: WorkflowNode,
-    inputs: any[]
-  ): Promise<any> {
-    // Implementation for collection node
-    return inputs
-  }
-
-  private async executeLLMNode(
-    node: WorkflowNode,
-    inputs: any[]
-  ): Promise<any> {
-    // Implementation for LLM node
-    return inputs[0]
-  }
-
-  public async execute(): Promise<any> {
-    // Find output nodes
-    const outputNodes = this.workflow.nodes.filter(
-      (node) => node.type === "output"
-    )
-
-    if (outputNodes.length === 0) {
-      throw new Error("No output nodes found in workflow")
-    }
-
-    // Execute each output node
+    
+    // Execute the workflow starting from each input node
     const results = await Promise.all(
-      outputNodes.map((node) => this.executeNode(node))
-    )
-
-    return results
+      inputNodes.map(inputNode => this.executeNode(inputNode.id, input))
+    );
+    
+    return results;
+  }
+  
+  private async executeNode(nodeId: string, input: any): Promise<any> {
+    const node = this.nodes.get(nodeId);
+    if (!node) {
+      throw new Error(`Node not found: ${nodeId}`);
+    }
+    
+    // Execute this node
+    const executor = createNodeExecutor(node);
+    const result = await executor.execute(input);
+    
+    // Find all outgoing edges
+    const outgoingEdges = this.edges.filter(edge => edge.source === nodeId);
+    
+    if (outgoingEdges.length === 0) {
+      // This is an output node
+      return result;
+    }
+    
+    // Execute all child nodes and return their results
+    const childResults = await Promise.all(
+      outgoingEdges.map(edge => this.executeNode(edge.target, result))
+    );
+    
+    return childResults;
   }
 }

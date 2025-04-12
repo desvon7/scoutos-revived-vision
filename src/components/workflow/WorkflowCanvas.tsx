@@ -1,14 +1,15 @@
 
 import React from 'react';
+import { NodeObject } from './types';
+import { ConnectionObject } from './types';
 import { Node } from './Node';
 import { Connection } from './Connection';
-import { NodeObject, ConnectionObject } from './types';
 
 interface WorkflowCanvasProps {
   nodes: NodeObject[];
   connections: ConnectionObject[];
-  zoom: number;
   selectedNodeId: string | null;
+  zoom: number;
   onNodeClick: (id: string) => void;
   onDragStart: (id: string, event: React.MouseEvent) => void;
   onDragMove: (event: React.MouseEvent) => void;
@@ -18,70 +19,68 @@ interface WorkflowCanvasProps {
 export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
   nodes,
   connections,
-  zoom,
   selectedNodeId,
+  zoom,
   onNodeClick,
   onDragStart,
   onDragMove,
   onDragEnd
 }) => {
   return (
-    <div className="relative">
-      <svg 
-        width="100%" 
-        height="300" 
-        viewBox="0 0 600 280" 
-        className="mx-auto"
-        style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
+    <div 
+      className="bg-neutral-800 rounded-md overflow-hidden relative"
+      style={{ height: '500px' }}
+    >
+      <div 
+        className="absolute inset-0 transition-transform"
+        style={{ transform: `scale(${zoom})` }}
       >
-        {/* Background grid */}
-        <defs>
-          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#333" strokeWidth="0.5" />
-          </pattern>
+        {/* Render connections */}
+        {connections.map(connection => {
+          // Find source and target nodes
+          const sourceNode = nodes.find(node => node.id === connection.from);
+          const targetNode = nodes.find(node => node.id === connection.to);
           
-          {/* Arrow marker */}
-          <marker
-            id="arrowhead"
-            markerWidth="4"
-            markerHeight="4"
-            refX="2"
-            refY="2"
-            orient="auto"
-          >
-            <path d="M0,0 L4,2 L0,4 z" className="fill-neutral-500" />
-          </marker>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+          if (!sourceNode || !targetNode) {
+            return null;
+          }
+          
+          // Calculate the coordinates for the connection
+          const fromX = sourceNode.x + 100; // Assuming node width of 200
+          const fromY = sourceNode.y + 50;  // Assuming node height of 100
+          const toX = targetNode.x;
+          const toY = targetNode.y + 50;
+          
+          return (
+            <Connection
+              key={connection.id}
+              id={connection.id}
+              x1={connection.x1 || fromX}
+              y1={connection.y1 || fromY}
+              x2={connection.x2 || toX}
+              y2={connection.y2 || toY}
+            />
+          );
+        })}
         
-        {/* Connections */}
-        {connections.map((connection) => (
-          <Connection 
-            key={connection.id}
-            x1={connection.x1}
-            y1={connection.y1}
-            x2={connection.x2}
-            y2={connection.y2}
-          />
-        ))}
-
-        {/* Nodes */}
-        {nodes.map((node) => (
-          <Node 
+        {/* Render nodes */}
+        {nodes.map(node => (
+          <Node
             key={node.id}
-            title={node.title}
+            id={node.id}
             type={node.type}
+            title={node.title}
             x={node.x}
             y={node.y}
-            selected={node.id === selectedNodeId}
+            data={node.data}
+            isSelected={node.id === selectedNodeId}
             onClick={() => onNodeClick(node.id)}
-            onMouseDown={(e) => onDragStart(node.id, e)}
+            onDragStart={(e) => onDragStart(node.id, e)}
+            onDragMove={onDragMove}
+            onDragEnd={onDragEnd}
           />
         ))}
-      </svg>
+      </div>
     </div>
   );
 };

@@ -16,10 +16,10 @@ import ReactFlow, {
 import "reactflow/dist/style.css"
 import { NodeTemplate, nodeTemplates } from "./NodeTemplates"
 import { NodePanel } from "./NodePanel"
-import { InputNode } from "./nodes/InputNode"
-import { CollectionNode } from "./nodes/CollectionNode"
-import { LLMNode } from "./nodes/LLMNode"
-import { OutputNode } from "./nodes/OutputNode"
+import InputNode from "./nodes/InputNode"
+import CollectionNode from "./nodes/CollectionNode"
+import LLMNode from "./nodes/LLMNode"
+import OutputNode from "./nodes/OutputNode"
 
 const nodeTypes: NodeTypes = {
   input: InputNode,

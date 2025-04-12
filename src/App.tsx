@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/index";
+import Index from "./pages/Index";
 import Features from "./pages/Features";
 import Solutions from "./pages/Solutions";
 import Pricing from "./pages/Pricing";
@@ -38,6 +38,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/collections" element={<CollectionsPage />} />
           <Route path="/workflow-builder" element={<WorkflowBuilderPage />} />
+          <Route path="/workflow-builder/:id" element={<WorkflowBuilderPage />} />
           <Route path="/template-builder" element={<TemplateBuilderPage />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />

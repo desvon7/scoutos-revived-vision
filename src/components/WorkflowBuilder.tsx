@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { toast } from "sonner";
-import { NodeType } from './workflow/types';
-import { NodeData, NodeObject } from './workflow/types';
+import { NodeTemplate } from './workflow/NodeTemplates';
+import { NodeType, NodeData, NodeObject } from './workflow/types';
 import { nodeTemplates } from './workflow/NodeTemplates';
 import { NodePanel } from './workflow/NodePanel';
 import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
@@ -48,9 +48,9 @@ const WorkflowBuilder: React.FC = () => {
     setSelectedNodeId(id === selectedNodeId ? null : id);
   };
   
-  // Add a new node with the correct type
-  const addNode = (type: string, name: string) => {
-    const nodeType = type as NodeType;
+  // Add a new node from a template
+  const addNode = (template: NodeTemplate) => {
+    const nodeType = template.type as NodeType;
     const newId = `${Date.now()}`;
     
     // Initialize with default data based on node type
@@ -72,7 +72,7 @@ const WorkflowBuilder: React.FC = () => {
     
     const newNode: NodeObject = {
       id: newId,
-      title: name,
+      title: template.name,
       type: nodeType,
       x: 300,
       y: 300,
