@@ -1,76 +1,65 @@
-
 import React from 'react';
+import { NodeProps } from './types';
 import { cn } from '@/lib/utils';
 
-export type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm' | 'collection';
-
-export interface NodeProps {
-  title: string;
-  type: NodeType;
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-  selected?: boolean;
-  onClick?: () => void;
-  onMouseDown?: (event: React.MouseEvent) => void;
-}
-
-export const Node: React.FC<NodeProps> = ({ 
-  title, 
-  type, 
-  x, 
-  y, 
-  width = 120, 
-  height = 40,
-  selected = false,
+export const Node: React.FC<NodeProps> = ({
+  id,
+  type,
+  title,
+  x,
+  y,
+  data,
+  isSelected,
   onClick,
-  onMouseDown
+  onDragStart,
+  onDragMove,
+  onDragEnd
 }) => {
-  const getNodeColor = () => {
-    switch (type) {
-      case 'input':
-        return 'border-blue-500';
-      case 'process':
-        return 'border-green-500';
-      case 'output':
-        return 'border-purple-500';
-      case 'memory':
-        return 'border-amber-500';
-      case 'llm':
-        return 'border-pink-500';
-      default:
-        return 'border-gray-500';
-    }
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDragStart(e);
   };
 
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      onDragMove(e as unknown as React.MouseEvent);
+    };
+
+    const handleMouseUp = () => {
+      onDragEnd();
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [onDragMove, onDragEnd]);
+
   return (
-    <g 
-      transform={`translate(${x}, ${y})`}
+    <div
+      className={cn(
+        'absolute rounded-lg border p-4 shadow-lg transition-all',
+        isSelected ? 'border-blue-500 ring-2 ring-blue-500' : 'border-neutral-700',
+        'bg-neutral-900 hover:border-blue-400'
+      )}
+      style={{
+        left: x,
+        top: y,
+        width: '200px',
+        cursor: 'move'
+      }}
       onClick={onClick}
-      onMouseDown={onMouseDown}
-      className="cursor-pointer"
+      onMouseDown={handleMouseDown}
     >
-      <rect 
-        width={width} 
-        height={height} 
-        rx="4" 
-        className={cn(
-          "fill-neutral-800 stroke-2", 
-          getNodeColor(),
-          selected && "stroke-white"
-        )}
-        strokeWidth={selected ? "2.5" : "1.5"}
-      />
-      <text 
-        x={width / 2} 
-        y={height / 2} 
-        textAnchor="middle" 
-        dominantBaseline="middle"
-        className="fill-white text-xs font-medium"
-      >
-        {title}
-      </text>
-    </g>
+      <div className="flex items-center gap-2">
+        <div className="text-sm font-medium text-neutral-200">{title}</div>
+      </div>
+      <div className="mt-2 text-xs text-neutral-400">
+        {data.label}
+      </div>
+    </div>
   );
 };

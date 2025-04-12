@@ -1,34 +1,35 @@
-
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { ConnectionProps } from './types';
 
-export interface ConnectionProps {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  animated?: boolean;
-}
-
-export const Connection: React.FC<ConnectionProps> = ({ 
-  x1, 
-  y1, 
-  x2, 
-  y2,
-  animated = false
-}) => {
-  // Calculate control points for curved path
-  const midX = (x1 + x2) / 2;
+export const Connection: React.FC<ConnectionProps> = ({ x1, y1, x2, y2 }) => {
+  // Calculate the path for the connection
+  const path = `M ${x1} ${y1} C ${x1 + 100} ${y1}, ${x2 - 100} ${y2}, ${x2} ${y2}`;
   
   return (
-    <path 
-      d={`M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`} 
-      className={cn(
-        "stroke-neutral-500 fill-none", 
-        animated && "stroke-dash-array-3-3 animate-dash"
-      )}
-      strokeWidth="1.5"
-      markerEnd="url(#arrowhead)"
-    />
+    <svg
+      className="absolute top-0 left-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 0 }}
+    >
+      <path
+        d={path}
+        className="stroke-blue-500 stroke-2 fill-none"
+        markerEnd="url(#arrowhead)"
+      />
+      <defs>
+        <marker
+          id="arrowhead"
+          markerWidth="10"
+          markerHeight="7"
+          refX="9"
+          refY="3.5"
+          orient="auto"
+        >
+          <polygon
+            points="0 0, 10 3.5, 0 7"
+            fill="#3b82f6"
+          />
+        </marker>
+      </defs>
+    </svg>
   );
 };

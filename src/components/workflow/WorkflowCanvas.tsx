@@ -1,7 +1,5 @@
-
 import React from 'react';
-import { NodeObject } from './types';
-import { ConnectionObject } from './types';
+import { NodeObject, ConnectionObject, ConnectionProps } from './types';
 import { Node } from './Node';
 import { Connection } from './Connection';
 
@@ -51,14 +49,17 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
           const toX = targetNode.x;
           const toY = targetNode.y + 50;
           
+          const connectionProps: ConnectionProps = {
+            x1: connection.x1 || fromX,
+            y1: connection.y1 || fromY,
+            x2: connection.x2 || toX,
+            y2: connection.y2 || toY
+          };
+          
           return (
             <Connection
               key={connection.id}
-              id={connection.id}
-              x1={connection.x1 || fromX}
-              y1={connection.y1 || fromY}
-              x2={connection.x2 || toX}
-              y2={connection.y2 || toY}
+              {...connectionProps}
             />
           );
         })}
