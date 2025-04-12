@@ -9,7 +9,8 @@ const HeroSection = () => {
           Simple, transparent pricing
         </h1>
         <p className="text-lg md:text-xl mb-10 text-muted-foreground max-w-2xl mx-auto">
-          Choose the plan that's right for your business, from startups to enterprise organizations.
+          Choose the plan that's right for your business, from startups to enterprise organizations. 
+          All plans include core features and access to our powerful AI platform.
         </p>
       </div>
     </section>

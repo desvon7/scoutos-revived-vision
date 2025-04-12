@@ -13,7 +13,7 @@ const SignIn = () => {
       <div className="w-full max-w-md bg-background rounded-lg shadow-sm border border-border">
         <div className="p-8">
           <div className="flex flex-col items-center mb-6">
-            <Asterisk className="h-6 w-6 mb-3" />
+            <Asterisk className="h-10 w-10 mb-3" />
             <h1 className="text-2xl font-medium">Sign in to Scout</h1>
             <p className="text-muted-foreground text-sm">Welcome back! Please sign in to continue</p>
           </div>
