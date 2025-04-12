@@ -1,9 +1,18 @@
+
 import { ReactNode } from 'react';
 
-export type NodeType = 'input' | 'collection' | 'llm' | 'output';
+export type NodeType = 'input' | 'collection' | 'llm' | 'output' | 'analysis' | 'code' | 'knowledge' | 'email' | 'web' | 'search' | 'memory' | 'process';
 
 export interface NodeData {
-  label: string;
+  label?: string;
+  inputName?: string;
+  collectionId?: string;
+  model?: string;
+  temperature?: number;
+  memoryType?: string;
+  processType?: string;
+  outputName?: string;
+  title?: string;
   [key: string]: any;
 }
 
@@ -20,10 +29,6 @@ export interface ConnectionObject {
   id: string;
   from: string;
   to: string;
-  x1?: number;
-  y1?: number;
-  x2?: number;
-  y2?: number;
 }
 
 export interface ConnectionProps {

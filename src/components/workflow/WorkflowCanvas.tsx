@@ -1,87 +1,89 @@
+
 import React from 'react';
-import { NodeObject, ConnectionObject, ConnectionProps } from './types';
-import { Node } from './Node';
+import { Node as NodeComponent } from './Node';
 import { Connection } from './Connection';
+import { NodeObject, ConnectionObject, NodeType } from './types';
+import { cn } from '@/lib/utils';
 
 interface WorkflowCanvasProps {
   nodes: NodeObject[];
   connections: ConnectionObject[];
-  selectedNodeId: string | null;
   zoom: number;
+  selectedNodeId: string | null;
   onNodeClick: (id: string) => void;
-  onDragStart: (id: string, event: React.MouseEvent) => void;
-  onDragMove: (event: React.MouseEvent) => void;
+  onDragStart: (e: React.MouseEvent, id: string) => void;
+  onDragMove: (e: React.MouseEvent) => void;
   onDragEnd: () => void;
 }
 
 export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
   nodes,
   connections,
-  selectedNodeId,
   zoom,
+  selectedNodeId,
   onNodeClick,
   onDragStart,
   onDragMove,
   onDragEnd
 }) => {
+  // Find the x, y coordinates for each connection
+  const getConnectionCoordinates = (fromId: string, toId: string) => {
+    const fromNode = nodes.find(node => node.id === fromId);
+    const toNode = nodes.find(node => node.id === toId);
+    
+    if (!fromNode || !toNode) {
+      return null;
+    }
+    
+    // Calculate center points of each node
+    const fromX = fromNode.x + 100; // Assuming node width is 200px
+    const fromY = fromNode.y + 25;  // Assuming node height is ~50px
+    const toX = toNode.x;
+    const toY = toNode.y + 25;     // Connect to the left side of the target
+    
+    return { x1: fromX, y1: fromY, x2: toX, y2: toY };
+  };
+  
   return (
     <div 
-      className="bg-neutral-800 rounded-md overflow-hidden relative"
-      style={{ height: '500px' }}
+      className={cn(
+        "relative w-full overflow-hidden border border-neutral-800 rounded-lg",
+        "bg-neutral-950 text-neutral-200 h-[60vh]"
+      )}
     >
-      <div 
-        className="absolute inset-0 transition-transform"
-        style={{ transform: `scale(${zoom})` }}
-      >
-        {/* Render connections */}
-        {connections.map(connection => {
-          // Find source and target nodes
-          const sourceNode = nodes.find(node => node.id === connection.from);
-          const targetNode = nodes.find(node => node.id === connection.to);
-          
-          if (!sourceNode || !targetNode) {
-            return null;
-          }
-          
-          // Calculate the coordinates for the connection
-          const fromX = sourceNode.x + 100; // Assuming node width of 200
-          const fromY = sourceNode.y + 50;  // Assuming node height of 100
-          const toX = targetNode.x;
-          const toY = targetNode.y + 50;
-          
-          const connectionProps: ConnectionProps = {
-            x1: connection.x1 || fromX,
-            y1: connection.y1 || fromY,
-            x2: connection.x2 || toX,
-            y2: connection.y2 || toY
-          };
-          
-          return (
-            <Connection
-              key={connection.id}
-              {...connectionProps}
-            />
-          );
-        })}
+      {/* Connections */}
+      {connections.map(connection => {
+        const coords = getConnectionCoordinates(connection.from, connection.to);
+        if (!coords) return null;
         
-        {/* Render nodes */}
-        {nodes.map(node => (
-          <Node
-            key={node.id}
-            id={node.id}
-            type={node.type}
-            title={node.title}
-            x={node.x}
-            y={node.y}
-            data={node.data}
-            isSelected={node.id === selectedNodeId}
-            onClick={() => onNodeClick(node.id)}
-            onDragStart={(e) => onDragStart(node.id, e)}
-            onDragMove={onDragMove}
-            onDragEnd={onDragEnd}
+        return (
+          <Connection
+            key={connection.id}
+            x1={coords.x1}
+            y1={coords.y1}
+            x2={coords.x2}
+            y2={coords.y2}
           />
-        ))}
-      </div>
+        );
+      })}
+      
+      {/* Nodes */}
+      {nodes.map(node => (
+        <NodeComponent
+          key={node.id}
+          id={node.id}
+          type={node.type as NodeType}
+          title={node.title}
+          x={node.x}
+          y={node.y}
+          data={node.data}
+          isSelected={selectedNodeId === node.id}
+          onClick={() => onNodeClick(node.id)}
+          onDragStart={(e: React.MouseEvent) => onDragStart(e, node.id)}
+          onDragMove={onDragMove}
+          onDragEnd={onDragEnd}
+        />
+      ))}
     </div>
   );
 };

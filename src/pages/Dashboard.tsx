@@ -20,7 +20,7 @@ const Dashboard = () => {
   };
 
   const handleCreateTemplate = () => {
-    navigate('/template-builder');
+    navigate('/template-gallery');
   };
   
   const handleCreateCollection = () => {
