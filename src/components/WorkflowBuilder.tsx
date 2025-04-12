@@ -1,24 +1,28 @@
 
 import React, { useState, useEffect } from 'react';
-import { Save, ZoomIn, ZoomOut, Plus, Upload, X } from 'lucide-react';
+import { Save, ZoomIn, ZoomOut, Plus, Upload, X, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Node, NodeType } from './workflow/Node';
 import { Connection } from './workflow/Connection';
 import { nodeTemplates } from './workflow/nodeTemplates';
 import { NodePanel } from './workflow/NodePanel';
 import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
-import { NodeObject, ConnectionObject, WorkflowData } from './workflow/types';
+import { NodeObject, ConnectionObject, WorkflowData, NodeData } from './workflow/types';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { toast } from "sonner";
 
 const WorkflowBuilder: React.FC = () => {
+  // State for the workflow name
+  const [workflowName, setWorkflowName] = useState<string>('Untitled Workflow');
+  
   // State for the workflow nodes and connections
   const [nodes, setNodes] = useState<NodeObject[]>([
-    { id: '1', title: 'Slack', type: 'input', x: 100, y: 80 },
-    { id: '2', title: 'Memory', type: 'memory', x: 260, y: 80 },
-    { id: '3', title: 'Check', type: 'process', x: 420, y: 80 },
-    { id: '4', title: 'Collection', type: 'process', x: 260, y: 150 },
-    { id: '5', title: 'LLM', type: 'llm', x: 420, y: 220 },
+    { id: '1', title: 'Slack', type: 'input', x: 100, y: 80, data: { inputName: 'slack_message' } },
+    { id: '2', title: 'Memory', type: 'memory', x: 260, y: 80, data: { memoryType: 'conversation' } },
+    { id: '3', title: 'Check', type: 'process', x: 420, y: 80, data: { processType: 'extract' } },
+    { id: '4', title: 'Collection', type: 'process', x: 260, y: 150, data: { collection: 'documentation' } },
+    { id: '5', title: 'LLM', type: 'llm', x: 420, y: 220, data: { model: 'gpt-4o', temperature: 0.7 } },
   ]);
   
   const [connections, setConnections] = useState<ConnectionObject[]>([
@@ -44,7 +48,7 @@ const WorkflowBuilder: React.FC = () => {
   const [showSavedPanel, setShowSavedPanel] = useState(false);
 
   // State for current workflow name
-  const [currentWorkflowName, setCurrentWorkflowName] = useState<string>('');
+  const [currentWorkflowName, setCurrentWorkflowName] = useState<string>('Untitled Workflow');
 
   // State for dragging
   const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
@@ -57,13 +61,30 @@ const WorkflowBuilder: React.FC = () => {
   
   // Add a new node with the correct type
   const addNode = (type: NodeType, title: string) => {
-    const newId = `${nodes.length + 1}`;
+    const newId = `${Date.now()}`;
+    
+    // Initialize with default data based on node type
+    let nodeData: NodeData = {};
+    
+    if (type === 'llm') {
+      nodeData = { model: 'gpt-4o', temperature: 0.7 };
+    } else if (type === 'memory') {
+      nodeData = { memoryType: 'conversation' };
+    } else if (type === 'process') {
+      nodeData = { processType: 'transform' };
+    } else if (type === 'input') {
+      nodeData = { inputName: 'user_input' };
+    } else if (type === 'output') {
+      nodeData = { outputName: 'result' };
+    }
+    
     const newNode: NodeObject = {
       id: newId,
       title,
       type,
       x: 300,
       y: 300,
+      data: nodeData
     };
     
     setNodes([...nodes, newNode]);
@@ -71,13 +92,21 @@ const WorkflowBuilder: React.FC = () => {
     setShowNodePanel(false);
   };
 
-  // Handle title change for a node
-  const handleTitleChange = (id: string, newTitle: string) => {
-    setNodes(nodes.map(node => 
-      node.id === id 
-        ? { ...node, title: newTitle } 
-        : node
-    ));
+  // Handle property change for a node
+  const handlePropertyChange = (id: string, data: Partial<NodeData>) => {
+    setNodes(nodes.map(node => {
+      if (node.id === id) {
+        return { 
+          ...node, 
+          title: data.title || node.title,  // Update title if it's in the data
+          data: { 
+            ...(node.data || {}),  // Keep existing data
+            ...data  // Add new data
+          } 
+        };
+      }
+      return node;
+    }));
   };
 
   // Delete a node and its connections
@@ -169,8 +198,7 @@ const WorkflowBuilder: React.FC = () => {
 
   // Save the current workflow
   const saveWorkflow = () => {
-    // Create a prompt to name the workflow
-    const name = prompt("Enter a name for this workflow:", currentWorkflowName || "My Workflow");
+    const name = prompt("Enter a name for this workflow:", currentWorkflowName || workflowName);
     
     if (!name) return; // User cancelled
     
@@ -188,6 +216,7 @@ const WorkflowBuilder: React.FC = () => {
     });
     
     setCurrentWorkflowName(name);
+    setWorkflowName(name);
     toast.success(`Workflow "${name}" saved successfully`);
   };
 
@@ -202,8 +231,19 @@ const WorkflowBuilder: React.FC = () => {
     setNodes(workflow.nodes);
     setConnections(workflow.connections);
     setCurrentWorkflowName(name);
+    setWorkflowName(name);
     setShowSavedPanel(false);
     toast.success(`Workflow "${name}" loaded successfully`);
+  };
+
+  // Run the workflow (simulation)
+  const runWorkflow = () => {
+    toast.success("Workflow execution started");
+    
+    // For demo purposes, show a toast after a short delay
+    setTimeout(() => {
+      toast.success("Workflow execution completed successfully");
+    }, 2000);
   };
 
   // Get the selected node object
@@ -213,6 +253,37 @@ const WorkflowBuilder: React.FC = () => {
   
   return (
     <div className="rounded-xl bg-neutral-900 p-4 border border-neutral-700 shadow-xl overflow-hidden">
+      <div className="flex justify-between items-center mb-4 p-2 bg-neutral-800 rounded-md">
+        <div className="flex items-center">
+          <Input
+            className="w-64 bg-neutral-700 border border-neutral-600 text-white"
+            placeholder="Untitled Workflow"
+            value={workflowName}
+            onChange={(e) => setWorkflowName(e.target.value)}
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            className="flex items-center"
+            onClick={saveWorkflow}
+          >
+            <Save className="text-white h-4 w-4 mr-1" />
+            Save
+          </Button>
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="flex items-center"
+            onClick={runWorkflow}
+          >
+            <Play className="text-white h-4 w-4 mr-1" />
+            Run
+          </Button>
+        </div>
+      </div>
+      
       <div className="relative">
         <svg 
           width="100%" 
@@ -314,7 +385,12 @@ const WorkflowBuilder: React.FC = () => {
           {currentWorkflowName && (
             <span className="text-neutral-400 text-xs mr-2">{currentWorkflowName}</span>
           )}
-          <button className="px-3 py-1 bg-primary rounded-md text-white text-xs">Run</button>
+          <button 
+            className="px-3 py-1 bg-primary rounded-md text-white text-xs"
+            onClick={runWorkflow}
+          >
+            Run
+          </button>
         </div>
       </div>
       
@@ -332,7 +408,7 @@ const WorkflowBuilder: React.FC = () => {
         <NodePropertiesPanel 
           node={selectedNode}
           onClose={() => setSelectedNodeId(null)}
-          onTitleChange={handleTitleChange}
+          onPropertyChange={handlePropertyChange}
           onDeleteNode={handleDeleteNode}
         />
       )}
