@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -239,11 +238,11 @@ const TemplateSelection = ({ navigate }: { navigate: (path: string) => void }) =
   ];
   
   const handleUseTemplate = () => {
-    navigate('/workflow-builder');
+    navigate('/template-builder');
   };
   
   const handleStartFromScratch = () => {
-    navigate('/workflow-builder');
+    navigate('/template-builder');
   };
   
   return (
