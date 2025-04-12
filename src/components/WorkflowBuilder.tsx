@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { toast } from "sonner";
-import { NodeType } from './workflow/Node';
+import { NodeType } from './workflow/types';
 import { NodeData, NodeObject } from './workflow/types';
-import { nodeTemplates } from './workflow/nodeTemplates';
+import { nodeTemplates } from './workflow/NodeTemplates';
 import { NodePanel } from './workflow/NodePanel';
 import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
 import { WorkflowHeader } from './workflow/WorkflowHeader';
@@ -49,28 +49,31 @@ const WorkflowBuilder: React.FC = () => {
   };
   
   // Add a new node with the correct type
-  const addNode = (type: NodeType, title: string) => {
+  const addNode = (type: string, name: string) => {
+    const nodeType = type as NodeType;
     const newId = `${Date.now()}`;
     
     // Initialize with default data based on node type
     let nodeData: NodeData = {};
     
-    if (type === 'llm') {
+    if (nodeType === 'llm') {
       nodeData = { model: 'gpt-4o', temperature: 0.7 };
-    } else if (type === 'memory') {
+    } else if (nodeType === 'memory') {
       nodeData = { memoryType: 'conversation' };
-    } else if (type === 'process') {
+    } else if (nodeType === 'process') {
       nodeData = { processType: 'transform' };
-    } else if (type === 'input') {
+    } else if (nodeType === 'input') {
       nodeData = { inputName: 'user_input' };
-    } else if (type === 'output') {
+    } else if (nodeType === 'output') {
       nodeData = { outputName: 'result' };
+    } else if (nodeType === 'collection') {
+      nodeData = { collectionId: '' };
     }
     
     const newNode: NodeObject = {
       id: newId,
-      title,
-      type,
+      title: name,
+      type: nodeType,
       x: 300,
       y: 300,
       data: nodeData

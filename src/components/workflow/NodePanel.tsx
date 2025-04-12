@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { X } from 'lucide-react';
-import { NodeTemplate } from './nodeTemplates';
+import { NodeTemplate } from './NodeTemplates';
 
 interface NodePanelProps {
   templates: NodeTemplate[];
   onClose: () => void;
-  onSelectNode: (type: NodeTemplate['type'], title: NodeTemplate['title']) => void;
+  onSelectNode: (type: string, name: string) => void;
 }
 
 export const NodePanel: React.FC<NodePanelProps> = ({ templates, onClose, onSelectNode }) => {
@@ -26,9 +26,9 @@ export const NodePanel: React.FC<NodePanelProps> = ({ templates, onClose, onSele
           <div 
             key={index}
             className="p-2 bg-neutral-700 rounded-md hover:bg-neutral-600 cursor-pointer"
-            onClick={() => onSelectNode(template.type, template.title)}
+            onClick={() => onSelectNode(template.type, template.name)}
           >
-            <div className="text-white text-sm font-medium">{template.title}</div>
+            <div className="text-white text-sm font-medium">{template.name}</div>
             <div className="text-neutral-400 text-xs">{template.description}</div>
           </div>
         ))}

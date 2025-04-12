@@ -65,7 +65,7 @@ function WorkflowEditorContent({ workflowId }: WorkflowEditorProps) {
       id: `${type}-${nodes.length + 1}`,
       type,
       position,
-      data: { label: template.label },
+      data: { label: template.name },
     };
 
     setNodes((nds) => nds.concat(newNode));
@@ -89,8 +89,8 @@ function WorkflowEditorContent({ workflowId }: WorkflowEditorProps) {
                   );
                 }}
               >
-                <template.icon className="mr-2 h-5 w-5" />
-                <span>{template.label}</span>
+                <div className="mr-2">{template.icon}</div>
+                <span>{template.name}</span>
               </div>
             ))}
           </div>

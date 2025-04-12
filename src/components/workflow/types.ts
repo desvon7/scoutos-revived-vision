@@ -1,28 +1,8 @@
 
-import { NodeType } from './Node';
+export type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm' | 'collection';
 
 export interface NodeData {
-  // Common properties
-  title?: string;
-  
-  // LLM node properties
-  model?: string;
-  systemPrompt?: string;
-  temperature?: number;
-  
-  // Collection node properties
-  collection?: string;
-  maxResults?: number;
-  
-  // Memory node properties
-  memoryType?: string;
-  
-  // Process node properties
-  processType?: string;
-  
-  // Input/Output node properties
-  inputName?: string;
-  outputName?: string;
+  [key: string]: any;
 }
 
 export interface NodeObject {
@@ -34,19 +14,8 @@ export interface NodeObject {
   data?: NodeData;
 }
 
-export interface ConnectionObject {
+export interface Connection {
   id: string;
   from: string;
   to: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
-
-export interface WorkflowData {
-  name: string;
-  nodes: NodeObject[];
-  connections: ConnectionObject[];
-  timestamp: string;
 }
