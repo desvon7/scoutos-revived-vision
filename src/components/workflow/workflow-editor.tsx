@@ -11,11 +11,11 @@ import ReactFlow, {
   useEdgesState,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { NodeTemplates } from "./NodeTemplates"
-import { InputNode } from "./nodes/InputNode"
-import { CollectionNode } from "./nodes/CollectionNode"
-import { LLMNode } from "./nodes/LLMNode"
-import { OutputNode } from "./nodes/OutputNode"
+import { nodeTemplates } from "./NodeTemplates"
+import InputNode from "./nodes/InputNode"
+import CollectionNode from "./nodes/CollectionNode"
+import LLMNode from "./nodes/LLMNode"
+import OutputNode from "./nodes/OutputNode"
 
 const nodeTypes = {
   input: InputNode,
@@ -37,34 +37,35 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
     [setEdges]
   )
 
-  const onDragOver = useCallback((event: React.DragEvent) => {
+  const onDragOver = (event: React.DragEvent) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
-  }, [])
+  }
 
-  const onDrop = useCallback(
-    (event: React.DragEvent) => {
-      event.preventDefault()
+  const onDrop = (event: React.DragEvent) => {
+    event.preventDefault()
 
-      const type = event.dataTransfer.getData("application/reactflow")
-      if (!type) return
+    const type = event.dataTransfer.getData("application/reactflow")
+    const template = nodeTemplates.find((t) => t.type === type)
 
-      const position = {
-        x: event.clientX - event.currentTarget.getBoundingClientRect().left,
-        y: event.clientY - event.currentTarget.getBoundingClientRect().top,
-      }
+    if (typeof type === "undefined" || !template) {
+      return
+    }
 
-      const newNode: Node = {
-        id: `${type}-${nodes.length + 1}`,
-        type,
-        position,
-        data: { label: `${type} node` },
-      }
+    const position = reactFlowInstance.project({
+      x: event.clientX,
+      y: event.clientY,
+    })
 
-      setNodes((nds) => nds.concat(newNode))
-    },
-    [nodes, setNodes]
-  )
+    const newNode = {
+      id: `${type}-${nodes.length + 1}`,
+      type,
+      position,
+      data: { label: template.label },
+    }
+
+    setNodes((nds) => nds.concat(newNode))
+  }
 
   return (
     <div className="h-[calc(100vh-4rem)]">
@@ -72,7 +73,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
         <div className="w-64 border-r p-4">
           <h3 className="mb-4 text-lg font-semibold">Node Types</h3>
           <div className="space-y-2">
-            {NodeTemplates.map((template) => (
+            {nodeTemplates.map((template) => (
               <div
                 key={template.type}
                 className="flex cursor-move items-center rounded-lg border p-2 hover:bg-gray-50"

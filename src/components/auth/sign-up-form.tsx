@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { signIn } from "next-auth/react"
 
 export function SignUpForm() {
   const router = useRouter()
