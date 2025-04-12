@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -122,6 +121,7 @@ const Pricing = () => {
               title="Enterprise"
               description="For organizations requiring advanced features and dedicated support."
               price="Custom"
+              priceDescription="" 
               features={[
                 "Unlimited AI assistants",
                 "Custom message volume",

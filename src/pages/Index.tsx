@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, MessagesSquare, Bot, Workflow, Layers, Zap, Line, BarChart3 } from 'lucide-react';
+import { ArrowRight, MessagesSquare, Bot, Workflow, Layers, Zap, BarChart3 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnnouncementBar from '@/components/AnnouncementBar';
