@@ -33,20 +33,20 @@ export interface Template {
 export interface Category {
   id: string;
   name: string;
-  icon?: React.ReactNode;
+  icon: React.ComponentType<any>;
 }
 
 export const categories: Category[] = [
-  { id: 'all', name: 'All Templates', icon: <Layers size={18} /> },
-  { id: 'ai', name: 'AI & Machine Learning', icon: <Brain size={18} /> },
-  { id: 'customer-support', name: 'Customer Support', icon: <MessageSquare size={18} /> },
-  { id: 'marketing', name: 'Marketing', icon: <Mail size={18} /> },
-  { id: 'sales', name: 'Sales', icon: <DollarSign size={18} /> },
-  { id: 'data', name: 'Data Processing', icon: <Database size={18} /> },
-  { id: 'engineering', name: 'Engineering', icon: <Code size={18} /> },
-  { id: 'popular', name: 'Popular', icon: <Star size={18} /> },
-  { id: 'product', name: 'Product', icon: <Cpu size={18} /> },
-  { id: 'personal', name: 'Personal', icon: <Users size={18} /> },
+  { id: 'all', name: 'All Templates', icon: Layers },
+  { id: 'ai', name: 'AI & Machine Learning', icon: Brain },
+  { id: 'customer-support', name: 'Customer Support', icon: MessageSquare },
+  { id: 'marketing', name: 'Marketing', icon: Mail },
+  { id: 'sales', name: 'Sales', icon: DollarSign },
+  { id: 'data', name: 'Data Processing', icon: Database },
+  { id: 'engineering', name: 'Engineering', icon: Code },
+  { id: 'popular', name: 'Popular', icon: Star },
+  { id: 'product', name: 'Product', icon: Cpu },
+  { id: 'personal', name: 'Personal', icon: Users },
 ];
 
 export const templates: Template[] = [

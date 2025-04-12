@@ -28,7 +28,9 @@ export const CategorySidebar: React.FC<CategorySidebarProps> = ({
             onClick={() => onSelectCategory(category.id)}
           >
             {category.icon && (
-              <span className="mr-2">{category.icon}</span>
+              <span className="mr-2">
+                {React.createElement(category.icon, { size: 18 })}
+              </span>
             )}
             <span>{category.name}</span>
           </button>
