@@ -3,7 +3,15 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { GanttChart, Activity, Database, Bookmark, CircleEllipsis, CircleDot } from 'lucide-react';
 
-const UseCasesSelection = () => {
+interface UseCasesSelectionProps {
+  selectedUseCase: string | null;
+  onSelectUseCase: (id: string) => void;
+}
+
+const UseCasesSelection: React.FC<UseCasesSelectionProps> = ({
+  selectedUseCase,
+  onSelectUseCase
+}) => {
   const useCases = [
     { 
       id: 'slack',
@@ -46,9 +54,15 @@ const UseCasesSelection = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {useCases.map((useCase) => (
-        <Card key={useCase.id} className="border border-border">
+        <Card 
+          key={useCase.id} 
+          className={`border cursor-pointer transition-all ${
+            selectedUseCase === useCase.id ? 'border-primary ring-2 ring-primary/20' : 'border-border hover:border-primary/50'
+          }`}
+          onClick={() => onSelectUseCase(useCase.id)}
+        >
           <CardContent className="p-4 flex items-start space-x-3">
-            <div className="mt-1 text-primary">
+            <div className={`mt-1 ${selectedUseCase === useCase.id ? 'text-primary' : 'text-muted-foreground'}`}>
               {useCase.icon}
             </div>
             <div>
