@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import DashboardOnboarding from '@/components/dashboard/DashboardOnboarding';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardTabs from '@/components/dashboard/DashboardTabs';
@@ -34,10 +33,8 @@ const Dashboard = () => {
   }
   
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
-      
-      <main className="flex-1 container-custom py-8">
+    <DashboardLayout>
+      <div className="container-custom py-8">
         <DashboardHeader 
           title="Dashboard"
           onCreateTemplate={handleCreateTemplate}
@@ -60,10 +57,8 @@ const Dashboard = () => {
         {selectedTab === 'templates' && (
           <TemplatesTab onUseTemplate={handleCreateTemplate} />
         )}
-      </main>
-      
-      <Footer />
-    </div>
+      </div>
+    </DashboardLayout>
   );
 };
 
