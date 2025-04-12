@@ -4,9 +4,11 @@ import { cn } from '@/lib/utils';
 import { Plus, ZoomIn, ZoomOut, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm';
+
 interface NodeProps {
   title: string;
-  type: 'input' | 'process' | 'output' | 'memory' | 'llm';
+  type: NodeType;
   x: number;
   y: number;
   width?: number;
@@ -105,7 +107,7 @@ const Connection: React.FC<ConnectionProps> = ({
 
 // Types for node templates in the side panel
 interface NodeTemplate {
-  type: 'input' | 'process' | 'output' | 'memory' | 'llm';
+  type: NodeType;
   title: string;
   description: string;
 }
@@ -118,17 +120,37 @@ const nodeTemplates: NodeTemplate[] = [
   { type: 'output', title: 'Output', description: 'Return final response' }
 ];
 
+// Define a Node object interface with all the required properties
+interface NodeObject {
+  id: string;
+  title: string;
+  type: NodeType;
+  x: number;
+  y: number;
+}
+
+// Define a Connection object interface
+interface ConnectionObject {
+  id: string;
+  from: string;
+  to: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
 const WorkflowBuilder: React.FC = () => {
-  // State for the workflow nodes and connections
-  const [nodes, setNodes] = useState([
-    { id: '1', title: 'Slack', type: 'input' as const, x: 100, y: 80 },
-    { id: '2', title: 'Memory', type: 'memory' as const, x: 260, y: 80 },
-    { id: '3', title: 'Check', type: 'process' as const, x: 420, y: 80 },
-    { id: '4', title: 'Collection', type: 'process' as const, x: 260, y: 150 },
-    { id: '5', title: 'LLM', type: 'llm' as const, x: 420, y: 220 },
+  // State for the workflow nodes and connections using the defined interfaces
+  const [nodes, setNodes] = useState<NodeObject[]>([
+    { id: '1', title: 'Slack', type: 'input', x: 100, y: 80 },
+    { id: '2', title: 'Memory', type: 'memory', x: 260, y: 80 },
+    { id: '3', title: 'Check', type: 'process', x: 420, y: 80 },
+    { id: '4', title: 'Collection', type: 'process', x: 260, y: 150 },
+    { id: '5', title: 'LLM', type: 'llm', x: 420, y: 220 },
   ]);
   
-  const [connections, setConnections] = useState([
+  const [connections, setConnections] = useState<ConnectionObject[]>([
     { id: 'e1', from: '1', to: '2', x1: 160, y1: 100, x2: 260, y2: 100 },
     { id: 'e2', from: '2', to: '3', x1: 320, y1: 100, x2: 420, y2: 100 },
     { id: 'e3', from: '3', to: '4', x1: 440, y1: 120, x2: 320, y2: 170 },
@@ -149,10 +171,10 @@ const WorkflowBuilder: React.FC = () => {
     setSelectedNodeId(id === selectedNodeId ? null : id);
   };
   
-  // Add a new node
-  const addNode = (type: 'input' | 'process' | 'output' | 'memory' | 'llm', title: string) => {
+  // Add a new node with the correct type
+  const addNode = (type: NodeType, title: string) => {
     const newId = `${nodes.length + 1}`;
-    const newNode = {
+    const newNode: NodeObject = {
       id: newId,
       title,
       type,
