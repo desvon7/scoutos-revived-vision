@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import TemplateGalleryPage from './pages/TemplateGalleryPage';
 import WorkflowBuilderPage from './pages/WorkflowBuilderPage';
 import TemplateBuilderPage from './pages/TemplateBuilderPage';
-import Index from './pages/Index';
+import Index from './pages/index';
 
 function App() {
   return (

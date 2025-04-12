@@ -51,7 +51,8 @@ const WorkflowBuilder: React.FC = () => {
     selectedNodeId,
     setSelectedNodeId,
     savedWorkflows,
-    setSavedWorkflows,
+    // Type is explicitly provided to avoid incompatible function argument error
+    setSavedWorkflows as React.Dispatch<React.SetStateAction<Record<string, any>>>,
     workflowName,
     setWorkflowName,
     currentWorkflowName,
