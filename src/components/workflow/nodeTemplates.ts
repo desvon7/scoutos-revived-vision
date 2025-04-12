@@ -1,16 +1,37 @@
 
-import { NodeType } from './Node';
+import React from "react"
+import { Database, MessageSquare, FileInput, FileOutput } from "lucide-react"
 
 export interface NodeTemplate {
-  type: NodeType;
-  title: string;
-  description: string;
+  type: string
+  name: string
+  icon: React.ReactNode
+  description?: string
 }
 
 export const nodeTemplates: NodeTemplate[] = [
-  { type: 'input', title: 'User Input', description: 'Start with user message' },
-  { type: 'memory', title: 'Memory', description: 'Access stored information' },
-  { type: 'process', title: 'Process', description: 'Transform data' },
-  { type: 'llm', title: 'LLM', description: 'Generate AI responses' },
-  { type: 'output', title: 'Output', description: 'Return final response' }
-];
+  {
+    type: "input",
+    name: "Input",
+    icon: <FileInput className="h-4 w-4" />,
+    description: "Starting point for your workflow"
+  },
+  {
+    type: "collection",
+    name: "Collection",
+    icon: <Database className="h-4 w-4" />,
+    description: "Access data from your collections"
+  },
+  {
+    type: "llm",
+    name: "LLM",
+    icon: <MessageSquare className="h-4 w-4" />,
+    description: "Process with language model"
+  },
+  {
+    type: "output",
+    name: "Output",
+    icon: <FileOutput className="h-4 w-4" />,
+    description: "Final result"
+  }
+]

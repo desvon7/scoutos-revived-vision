@@ -5,7 +5,7 @@ import EmptyCollectionCard from './EmptyCollectionCard';
 import CollectionCard from './CollectionCard';
 
 interface CollectionsTabProps {
-  onCreateCollection: () => void;
+  onCreateCollection?: () => void;
 }
 
 const CollectionsTab = ({ onCreateCollection }: CollectionsTabProps) => {

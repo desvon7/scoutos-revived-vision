@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from "react"
 import ReactFlow, {
   Background,
@@ -12,7 +13,7 @@ import ReactFlow, {
   useReactFlow,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { nodeTemplates } from "./NodeTemplates"
+import { nodeTemplates } from "./nodeTemplates"
 import InputNode from "./nodes/InputNode"
 import CollectionNode from "./nodes/CollectionNode"
 import LLMNode from "./nodes/LLMNode"
@@ -25,12 +26,6 @@ const nodeTypes = {
   output: OutputNode,
 }
 
-interface NodeTemplate {
-  type: string
-  label: string
-  icon: React.ReactNode
-}
-
 interface WorkflowEditorProps {
   workflowId: string
 }
@@ -38,7 +33,7 @@ interface WorkflowEditorProps {
 export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const { project } = useReactFlow()
+  const reactFlow = useReactFlow()
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -54,13 +49,13 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
     event.preventDefault()
 
     const type = event.dataTransfer.getData("application/reactflow")
-    const template = nodeTemplates.find((t) => t.type === type)
+    const nodeTemplate = nodeTemplates.find((t) => t.type === type)
 
-    if (typeof type === "undefined" || !template) {
+    if (typeof type === "undefined" || !nodeTemplate) {
       return
     }
 
-    const position = project({
+    const position = reactFlow.project({
       x: event.clientX,
       y: event.clientY,
     })
@@ -69,7 +64,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
       id: `${type}-${nodes.length + 1}`,
       type,
       position,
-      data: { label: template.label },
+      data: { label: nodeTemplate.name },
     }
 
     setNodes((nds) => nds.concat(newNode))
@@ -94,7 +89,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
                 }}
               >
                 <span className="mr-2">{template.icon}</span>
-                <span>{template.label}</span>
+                <span>{template.name}</span>
               </div>
             ))}
           </div>
@@ -119,4 +114,4 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
       </div>
     </div>
   )
-} 
+}
