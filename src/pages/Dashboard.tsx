@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -20,6 +21,11 @@ const Dashboard = () => {
   // For demo purposes, we'll show the onboarding flow
   const [showOnboarding, setShowOnboarding] = React.useState(true);
   const [selectedTab, setSelectedTab] = React.useState('workflows');
+  const navigate = useNavigate();
+  
+  const handleCreateWorkflow = () => {
+    navigate('/workflow-builder');
+  };
   
   if (showOnboarding) {
     return (
@@ -45,7 +51,10 @@ const Dashboard = () => {
       <main className="flex-1 container-custom py-8">
         <div className="mb-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <Button className="flex items-center">
+          <Button 
+            className="flex items-center"
+            onClick={handleCreateWorkflow}
+          >
             <Plus className="mr-2 h-4 w-4" /> New Workflow
           </Button>
         </div>
@@ -88,7 +97,7 @@ const Dashboard = () => {
         {selectedTab === 'workflows' && (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="border-dashed border-2 hover:border-primary/50 transition-colors">
+              <Card className="border-dashed border-2 hover:border-primary/50 transition-colors cursor-pointer" onClick={handleCreateWorkflow}>
                 <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
                   <Plus className="h-10 w-10 text-muted-foreground mb-4" />
                   <h3 className="text-lg font-medium mb-2">Create a new workflow</h3>
@@ -227,7 +236,7 @@ const Dashboard = () => {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Template cards similar to the ones in OnboardingFlow */}
-              <Card className="border hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border hover:shadow-md transition-shadow cursor-pointer" onClick={handleCreateWorkflow}>
                 <CardContent className="p-4">
                   <div className="text-3xl mb-2">📝</div>
                   <h3 className="font-medium mb-1">AI-Powered SEO Blog Generator</h3>
@@ -236,7 +245,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card className="border hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border hover:shadow-md transition-shadow cursor-pointer" onClick={handleCreateWorkflow}>
                 <CardContent className="p-4">
                   <div className="text-3xl mb-2">🌐</div>
                   <h3 className="font-medium mb-1">Perplexity Clone</h3>
@@ -245,7 +254,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card className="border hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border hover:shadow-md transition-shadow cursor-pointer" onClick={handleCreateWorkflow}>
                 <CardContent className="p-4">
                   <div className="text-3xl mb-2">🚀</div>
                   <h3 className="font-medium mb-1">Basic LLM Workflow</h3>

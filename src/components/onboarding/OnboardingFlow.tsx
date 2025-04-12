@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, CircleEllipsis, CircleDot, GanttChart, Database, Bookmark, Activity } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,6 +8,7 @@ import WorkflowBuilder from '@/components/WorkflowBuilder';
 
 const OnboardingFlow = () => {
   const [activeStep, setActiveStep] = React.useState(1);
+  const navigate = useNavigate();
   
   // Steps data
   const steps = [
@@ -26,7 +28,7 @@ const OnboardingFlow = () => {
       id: 3,
       title: "Build your first workflow",
       subtitle: "Pick from one of our many templates below and start building your first workflow",
-      content: <TemplateSelection />
+      content: <TemplateSelection navigate={navigate} />
     }
   ];
   
@@ -196,7 +198,7 @@ const GettingStartedGuide = () => {
 };
 
 // Step 3: Template Selection
-const TemplateSelection = () => {
+const TemplateSelection = ({ navigate }: { navigate: (path: string) => void }) => {
   const templates = [
     {
       id: 'seo',
@@ -236,11 +238,19 @@ const TemplateSelection = () => {
     }
   ];
   
+  const handleUseTemplate = () => {
+    navigate('/workflow-builder');
+  };
+  
+  const handleStartFromScratch = () => {
+    navigate('/workflow-builder');
+  };
+  
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {templates.map((template) => (
-          <Card key={template.id} className="border border-border hover:shadow-md transition-shadow cursor-pointer">
+          <Card key={template.id} className="border border-border hover:shadow-md transition-shadow cursor-pointer" onClick={handleUseTemplate}>
             <CardContent className="p-4">
               <div className="text-3xl mb-2">{template.icon}</div>
               <h3 className="font-medium mb-1">{template.title}</h3>
@@ -252,7 +262,7 @@ const TemplateSelection = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <Card className="border border-border hover:shadow-md transition-shadow cursor-pointer">
+        <Card className="border border-border hover:shadow-md transition-shadow cursor-pointer" onClick={handleUseTemplate}>
           <CardContent className="p-6 flex flex-col items-center text-center">
             <GanttChart className="h-8 w-8 mb-4" />
             <h3 className="font-medium mb-1">View all templates</h3>
@@ -260,7 +270,7 @@ const TemplateSelection = () => {
           </CardContent>
         </Card>
         
-        <Card className="border border-border hover:shadow-md transition-shadow cursor-pointer">
+        <Card className="border border-border hover:shadow-md transition-shadow cursor-pointer" onClick={handleStartFromScratch}>
           <CardContent className="p-6 flex flex-col items-center text-center">
             <Database className="h-8 w-8 mb-4" />
             <h3 className="font-medium mb-1">Start from scratch</h3>
