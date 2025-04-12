@@ -2,7 +2,8 @@
 import { 
   NodeObject, 
   WorkflowData,
-  WorkflowEdge
+  WorkflowEdge,
+  ConnectionObject
 } from "@/components/workflow/types";
 
 interface NodeExecution {
@@ -66,8 +67,9 @@ export class WorkflowEngine {
       id: conn.id,
       source: conn.from,
       target: conn.to,
-      sourceHandle: conn.fromHandle,
-      targetHandle: conn.toHandle
+      // Use empty string as default if the properties don't exist
+      sourceHandle: "",
+      targetHandle: ""
     }));
   }
   

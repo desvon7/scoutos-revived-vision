@@ -185,7 +185,7 @@ const WorkflowBuilder: React.FC = () => {
         zoom={zoom}
         selectedNodeId={selectedNodeId}
         onNodeClick={handleNodeClick}
-        onDragStart={handleDragStart}
+        onDragStart={(e: React.MouseEvent, id: string) => handleDragStart(id, e)}
         onDragMove={handleNodeDragMove}
         onDragEnd={handleDragEnd}
       />

@@ -18,11 +18,11 @@ export const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    let finalValue = value;
+    let finalValue: string | number = value;
     
     // Convert to number if needed
     if (type === 'number') {
-      finalValue = parseFloat(value);
+      finalValue = value === '' ? '' : parseFloat(value);
     }
     
     onPropertyChange(node.id, { [name]: finalValue });

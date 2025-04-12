@@ -72,7 +72,7 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
         <NodeComponent
           key={node.id}
           id={node.id}
-          type={node.type as NodeType}
+          type={node.type}
           title={node.title}
           x={node.x}
           y={node.y}
