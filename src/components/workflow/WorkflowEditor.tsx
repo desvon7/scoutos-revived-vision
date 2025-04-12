@@ -276,7 +276,12 @@ const WorkflowEditor = ({ workflowId }: WorkflowEditorProps) => {
           >
             <Controls />
             <MiniMap />
-            <Background variant="dots" gap={12} size={1} />
+            <Background 
+              // Changed from variant="dots" to one of the valid values
+              color="#aaa" 
+              gap={12} 
+              size={1} 
+            />
           </ReactFlow>
         </div>
       </div>
