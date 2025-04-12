@@ -1,38 +1,37 @@
-
-import React from 'react';
-import { X } from 'lucide-react';
 import { NodeTemplate } from './NodeTemplates';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 
 interface NodePanelProps {
   templates: NodeTemplate[];
   onClose: () => void;
-  onSelectNode: (type: string, name: string) => void;
+  onSelectNode: (template: NodeTemplate) => void;
 }
 
-export const NodePanel: React.FC<NodePanelProps> = ({ templates, onClose, onSelectNode }) => {
+export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) {
   return (
-    <div className="absolute left-4 top-4 bg-neutral-800 p-4 rounded-md shadow-lg w-60 z-10">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-white text-sm font-medium">Add Node</h3>
-        <button 
-          className="text-neutral-400 hover:text-white"
-          onClick={onClose}
-        >
+    <div className="absolute right-4 top-4 w-64 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold">Add Node</h3>
+        <Button variant="ghost" size="icon" onClick={onClose}>
           <X className="h-4 w-4" />
-        </button>
+        </Button>
       </div>
       <div className="space-y-2">
-        {templates.map((template, index) => (
-          <div 
-            key={index}
-            className="p-2 bg-neutral-700 rounded-md hover:bg-neutral-600 cursor-pointer"
-            onClick={() => onSelectNode(template.type, template.name)}
+        {templates.map((template) => (
+          <button
+            key={template.type}
+            className="w-full p-3 text-left rounded-md hover:bg-gray-100 flex items-center gap-2"
+            onClick={() => onSelectNode(template)}
           >
-            <div className="text-white text-sm font-medium">{template.name}</div>
-            <div className="text-neutral-400 text-xs">{template.description}</div>
-          </div>
+            {template.icon}
+            <div>
+              <div className="font-medium">{template.name}</div>
+              <div className="text-sm text-gray-500">{template.description}</div>
+            </div>
+          </button>
         ))}
       </div>
     </div>
   );
-};
+}

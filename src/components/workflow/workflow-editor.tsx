@@ -10,109 +10,112 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   useReactFlow,
+  NodeTypes,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { nodeTemplates } from "./NodeTemplates"
-import InputNode from "./nodes/InputNode"
-import CollectionNode from "./nodes/CollectionNode"
-import LLMNode from "./nodes/LLMNode"
-import OutputNode from "./nodes/OutputNode"
+import { NodeTemplate, nodeTemplates } from "./NodeTemplates"
+import { NodePanel } from "./NodePanel"
+import { InputNode } from "./nodes/InputNode"
+import { CollectionNode } from "./nodes/CollectionNode"
+import { LLMNode } from "./nodes/LLMNode"
+import { OutputNode } from "./nodes/OutputNode"
 
-const nodeTypes = {
+const nodeTypes: NodeTypes = {
   input: InputNode,
   collection: CollectionNode,
   llm: LLMNode,
   output: OutputNode,
 }
 
-interface NodeTemplate {
-  type: string
-  label: string
-  icon: React.ReactNode
+interface WorkflowEditorProps {
+  workflowId: string
 }
 
-export function WorkflowEditor({ workflowId }: { workflowId: string }) {
+export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { project } = useReactFlow()
+  const [showNodePanel, setShowNodePanel] = useState(false)
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection | Edge) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   )
 
-  const onDragOver = (event: React.DragEvent) => {
+  const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = "move"
-  }
+  }, [])
 
-  const onDrop = (event: React.DragEvent) => {
-    event.preventDefault()
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault()
 
-    const type = event.dataTransfer.getData("application/reactflow")
-    const template = nodeTemplates.find((t) => t.type === type)
+      const type = event.dataTransfer.getData("application/reactflow")
+      const template = nodeTemplates.find((t) => t.type === type)
+      if (!template) return
 
-    if (typeof type === "undefined" || !template) {
-      return
-    }
+      const position = {
+        x: event.clientX - event.currentTarget.getBoundingClientRect().left,
+        y: event.clientY - event.currentTarget.getBoundingClientRect().top,
+      }
 
-    const position = project({
-      x: event.clientX,
-      y: event.clientY,
-    })
+      const newNode: Node = {
+        id: `${type}-${nodes.length + 1}`,
+        type,
+        position,
+        data: { label: template.name },
+      }
 
-    const newNode = {
-      id: `${type}-${nodes.length + 1}`,
-      type,
-      position,
-      data: { label: template.label },
+      setNodes((nds) => nds.concat(newNode))
+    },
+    [nodes, setNodes]
+  )
+
+  const handleSelectNode = (template: NodeTemplate) => {
+    const newNode: Node = {
+      id: `${template.type}-${nodes.length + 1}`,
+      type: template.type,
+      position: { x: 100, y: 100 },
+      data: { label: template.name },
     }
 
     setNodes((nds) => nds.concat(newNode))
+    setShowNodePanel(false)
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)]">
-      <div className="flex h-full">
-        <div className="w-64 border-r bg-gray-50 p-4">
-          <h3 className="mb-4 text-lg font-semibold">Node Types</h3>
-          <div className="space-y-2">
-            {nodeTemplates.map((template) => (
-              <div
-                key={template.type}
-                className="flex cursor-move items-center rounded-lg border bg-white p-2 shadow-sm"
-                draggable
-                onDragStart={(event) => {
-                  event.dataTransfer.setData(
-                    "application/reactflow",
-                    template.type
-                  )
-                }}
-              >
-                <span className="mr-2">{template.icon}</span>
-                <span>{template.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex-1">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-            nodeTypes={nodeTypes}
-            fitView
-          >
-            <Background />
-            <Controls />
-            <MiniMap />
-          </ReactFlow>
-        </div>
+    <div className="h-full w-full">
+      <div className="absolute right-4 top-4">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          onClick={() => setShowNodePanel(true)}
+        >
+          Add Node
+        </button>
       </div>
+      {showNodePanel && (
+        <NodePanel
+          templates={nodeTemplates}
+          onClose={() => setShowNodePanel(false)}
+          onSelectNode={handleSelectNode}
+        />
+      )}
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <Background />
+        <Controls />
+        <MiniMap />
+      </ReactFlow>
     </div>
   )
 }
