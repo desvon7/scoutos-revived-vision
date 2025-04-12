@@ -15,7 +15,6 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/dashboard/*" element={
           <DashboardLayout>
-            {/* Dashboard content will be rendered here */}
             <div>Dashboard Content</div>
           </DashboardLayout>
         } />
