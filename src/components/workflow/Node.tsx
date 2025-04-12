@@ -13,6 +13,7 @@ export interface NodeProps {
   height?: number;
   selected?: boolean;
   onClick?: () => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
 }
 
 export const Node: React.FC<NodeProps> = ({ 
@@ -23,7 +24,8 @@ export const Node: React.FC<NodeProps> = ({
   width = 120, 
   height = 40,
   selected = false,
-  onClick
+  onClick,
+  onMouseDown
 }) => {
   const getNodeColor = () => {
     switch (type) {
@@ -46,6 +48,7 @@ export const Node: React.FC<NodeProps> = ({
     <g 
       transform={`translate(${x}, ${y})`}
       onClick={onClick}
+      onMouseDown={onMouseDown}
       className="cursor-pointer"
     >
       <rect 

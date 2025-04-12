@@ -8,6 +8,7 @@ import { nodeTemplates } from './workflow/nodeTemplates';
 import { NodePanel } from './workflow/NodePanel';
 import { NodePropertiesPanel } from './workflow/NodePropertiesPanel';
 import { NodeObject, ConnectionObject } from './workflow/types';
+import useLocalStorage from '@/hooks/useLocalStorage';
 
 const WorkflowBuilder: React.FC = () => {
   // State for the workflow nodes and connections
@@ -34,6 +35,10 @@ const WorkflowBuilder: React.FC = () => {
   
   // State for showing node panel
   const [showNodePanel, setShowNodePanel] = useState(false);
+
+  // State for dragging
+  const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   
   // Handle node selection
   const handleNodeClick = (id: string) => {
@@ -74,6 +79,74 @@ const WorkflowBuilder: React.FC = () => {
     setSelectedNodeId(null);
   };
   
+  // Handle drag start
+  const handleDragStart = (id: string, event: React.MouseEvent) => {
+    const node = nodes.find(n => n.id === id);
+    if (!node) return;
+    
+    const svgElement = event.currentTarget.closest('svg');
+    if (!svgElement) return;
+    
+    const svgRect = svgElement.getBoundingClientRect();
+    const scale = zoom;
+    
+    // Calculate the offset based on mouse position and node position
+    const offsetX = (event.clientX - svgRect.left) / scale - node.x;
+    const offsetY = (event.clientY - svgRect.top) / scale - node.y;
+    
+    setDraggedNodeId(id);
+    setDragOffset({ x: offsetX, y: offsetY });
+    
+    // Prevent default behavior to allow drag
+    event.preventDefault();
+  };
+  
+  // Handle drag move
+  const handleDragMove = (event: React.MouseEvent) => {
+    if (!draggedNodeId) return;
+    
+    const svgElement = event.currentTarget.closest('svg');
+    if (!svgElement) return;
+    
+    const svgRect = svgElement.getBoundingClientRect();
+    const scale = zoom;
+    
+    // Calculate the new position based on mouse position and offset
+    const newX = (event.clientX - svgRect.left) / scale - dragOffset.x;
+    const newY = (event.clientY - svgRect.top) / scale - dragOffset.y;
+    
+    // Update the node position
+    setNodes(nodes.map(node => 
+      node.id === draggedNodeId 
+        ? { ...node, x: newX, y: newY } 
+        : node
+    ));
+    
+    // Update connections
+    setConnections(connections.map(conn => {
+      if (conn.from === draggedNodeId) {
+        return {
+          ...conn,
+          x1: newX + 120, // Adjusted for node width
+          y1: newY + 20  // Adjusted for node height/2
+        };
+      }
+      if (conn.to === draggedNodeId) {
+        return {
+          ...conn,
+          x2: newX,
+          y2: newY + 20 // Adjusted for node height/2
+        };
+      }
+      return conn;
+    }));
+  };
+  
+  // Handle drag end
+  const handleDragEnd = () => {
+    setDraggedNodeId(null);
+  };
+  
   // Handle zoom in
   const zoomIn = () => {
     setZoom(Math.min(zoom + 0.1, 2));
@@ -98,6 +171,9 @@ const WorkflowBuilder: React.FC = () => {
           viewBox="0 0 600 280" 
           className="mx-auto"
           style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
+          onMouseMove={handleDragMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
         >
           {/* Background grid */}
           <defs>
@@ -119,6 +195,17 @@ const WorkflowBuilder: React.FC = () => {
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
           
+          {/* Connections */}
+          {connections.map((connection) => (
+            <Connection 
+              key={connection.id}
+              x1={connection.x1}
+              y1={connection.y1}
+              x2={connection.x2}
+              y2={connection.y2}
+            />
+          ))}
+
           {/* Nodes */}
           {nodes.map((node) => (
             <Node 
@@ -129,17 +216,7 @@ const WorkflowBuilder: React.FC = () => {
               y={node.y}
               selected={node.id === selectedNodeId}
               onClick={() => handleNodeClick(node.id)}
-            />
-          ))}
-          
-          {/* Connections */}
-          {connections.map((connection) => (
-            <Connection 
-              key={connection.id}
-              x1={connection.x1}
-              y1={connection.y1}
-              x2={connection.x2}
-              y2={connection.y2}
+              onMouseDown={(e) => handleDragStart(node.id, e)}
             />
           ))}
         </svg>
