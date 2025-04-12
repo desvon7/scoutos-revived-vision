@@ -50,7 +50,7 @@ function WorkflowEditorContent({ workflowId }: WorkflowEditorProps) {
     event.preventDefault();
 
     const type = event.dataTransfer.getData('application/reactflow');
-    const template = nodeTemplates.find((t) => t.type === type);
+    const template = nodeTemplates.find((t: any) => t.type === type);
 
     if (typeof type === 'undefined' || !template) {
       return;

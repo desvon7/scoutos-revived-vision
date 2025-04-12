@@ -13,7 +13,7 @@ import ReactFlow, {
   useReactFlow,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import { nodeTemplates } from "./nodeTemplates"
+import { nodeTemplates } from "./NodeTemplates"
 import InputNode from "./nodes/InputNode"
 import CollectionNode from "./nodes/CollectionNode"
 import LLMNode from "./nodes/LLMNode"
@@ -49,7 +49,7 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
     event.preventDefault()
 
     const type = event.dataTransfer.getData("application/reactflow")
-    const nodeTemplate = nodeTemplates.find((t) => t.type === type)
+    const nodeTemplate = nodeTemplates.find((t: any) => t.type === type)
 
     if (typeof type === "undefined" || !nodeTemplate) {
       return

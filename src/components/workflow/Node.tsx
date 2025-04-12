@@ -2,7 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-export type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm';
+export type NodeType = 'input' | 'process' | 'output' | 'memory' | 'llm' | 'collection';
 
 export interface NodeProps {
   title: string;

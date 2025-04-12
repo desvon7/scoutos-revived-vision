@@ -19,3 +19,21 @@ export interface Connection {
   from: string;
   to: string;
 }
+
+// Adding the missing types that are causing errors
+export interface ConnectionObject {
+  id: string;
+  from: string;
+  to: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
+export interface WorkflowData {
+  name: string;
+  nodes: NodeObject[];
+  connections: ConnectionObject[];
+  timestamp: string;
+}
