@@ -3,6 +3,15 @@
 // For now, we'll mock the PrismaClient to avoid build errors
 class PrismaClient {
   constructor(options?: any) {}
+  
+  // Mock the user model
+  user = {
+    findUnique: async () => null,
+    findFirst: async () => null,
+    create: async () => null,
+    update: async () => null,
+    delete: async () => null,
+  }
 }
 
 const globalForPrisma = globalThis as unknown as {

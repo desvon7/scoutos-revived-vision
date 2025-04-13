@@ -8,18 +8,23 @@ interface ProgressIndicatorProps {
 
 const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentStep, totalSteps }) => {
   return (
-    <div className="flex justify-between mb-8">
-      <div className="flex space-x-2">
-        {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
-          <div 
-            key={step} 
-            className={`w-3 h-3 rounded-full ${
-              step < currentStep ? 'bg-primary' : step === currentStep ? 'bg-primary/70' : 'bg-neutral-300'
-            }`} 
-          />
-        ))}
+    <div className="mb-8">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-sm font-medium">
+          Step {currentStep} of {totalSteps}
+        </span>
+        
+        <div className="text-sm text-muted-foreground">
+          {Math.round((currentStep / totalSteps) * 100)}% Complete
+        </div>
       </div>
-      <p className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</p>
+      
+      <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-primary transition-all duration-300 ease-in-out"
+          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+        />
+      </div>
     </div>
   );
 };

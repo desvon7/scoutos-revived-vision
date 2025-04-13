@@ -8,10 +8,11 @@ import DashboardTabs from '@/components/dashboard/DashboardTabs';
 import WorkflowsTab from '@/components/dashboard/WorkflowsTab';
 import CollectionsTab from '@/components/dashboard/CollectionsTab';
 import TemplatesTab from '@/components/dashboard/TemplatesTab';
+import { useNewUserStatus } from '@/hooks/useNewUserStatus';
 
 const Dashboard = () => {
-  // For demo purposes, we'll show the onboarding flow
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const { isNewUser } = useNewUserStatus();
+  const [showOnboarding, setShowOnboarding] = useState(isNewUser);
   const [selectedTab, setSelectedTab] = useState('workflows');
   const navigate = useNavigate();
   
