@@ -1,3 +1,4 @@
+
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import { prisma } from "./prisma"
@@ -16,6 +17,15 @@ declare module "next-auth" {
   }
 }
 
+// Type for user returned from database
+type UserWithPassword = {
+  id: string
+  email: string
+  name: string | null
+  image: string | null
+  password: string | null
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -26,8 +36,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
     CredentialsProvider({
       name: "credentials",
@@ -44,7 +54,7 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
-        })
+        }) as UserWithPassword | null;
 
         if (!user || !user.password) {
           throw new Error("Invalid credentials")
@@ -72,9 +82,9 @@ export const authOptions: NextAuthOptions = {
     async session({ token, session }) {
       if (token) {
         session.user.id = token.id as string
-        session.user.name = token.name
-        session.user.email = token.email
-        session.user.image = token.picture
+        session.user.name = token.name as string | null
+        session.user.email = token.email as string | null
+        session.user.image = token.picture as string | null
       }
 
       return session
@@ -84,7 +94,7 @@ export const authOptions: NextAuthOptions = {
         where: {
           email: token.email,
         },
-      })
+      }) as UserWithPassword | null;
 
       if (!dbUser) {
         if (user) {
@@ -101,4 +111,4 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
-} 
+}
