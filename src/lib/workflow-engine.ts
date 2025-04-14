@@ -2,7 +2,6 @@
 import { 
   NodeObject, 
   WorkflowData,
-  WorkflowEdge,
   ConnectionObject
 } from "@/components/workflow/types";
 
@@ -50,6 +49,15 @@ const createNodeExecutor = (node: NodeObject): NodeExecution => {
       };
   }
 };
+
+// Edge type definition for workflow execution
+interface WorkflowEdge {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle?: string;
+  targetHandle?: string;
+}
 
 // Main workflow engine
 export class WorkflowEngine {
