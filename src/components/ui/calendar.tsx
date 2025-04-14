@@ -55,12 +55,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }: React.ComponentProps<typeof ChevronLeft>) => (
-          <ChevronLeft className="h-4 w-4" {...props} />
-        ),
-        IconRight: ({ ...props }: React.ComponentProps<typeof ChevronRight>) => (
-          <ChevronRight className="h-4 w-4" {...props} />
-        )
+        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+        IconRight: () => <ChevronRight className="h-4 w-4" />
       }}
       {...props}
     />
