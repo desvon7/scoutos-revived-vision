@@ -56,3 +56,12 @@ export interface WorkflowData {
   connections: ConnectionObject[];
   timestamp: string;
 }
+
+// Edge type definition for workflow execution
+export interface WorkflowEdge {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle?: string;
+  targetHandle?: string;
+}
