@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { NodeObject } from './types';
+import { NodeObject, NodeType } from './types';
 import { PanelLayout } from './properties/PanelLayout';
 import { InputNodeProperties } from './properties/InputNodeProperties';
 import { LLMNodeProperties } from './properties/LLMNodeProperties';

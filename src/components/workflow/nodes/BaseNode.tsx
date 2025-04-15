@@ -1,6 +1,6 @@
+
 import React, { useState, useRef } from 'react';
-import { NodeProps, NodeData, Port } from '../types';
-import { motion } from 'framer-motion';
+import { NodeProps, NodeData, Port, NodeCategory } from '../types';
 import { cn } from '@/lib/utils';
 
 export const BaseNode: React.FC<NodeProps> = ({
@@ -44,8 +44,8 @@ export const BaseNode: React.FC<NodeProps> = ({
     onUpdate(updates);
   };
 
-  const renderPorts = (ports: Port[], type: 'input' | 'output') => {
-    return ports.map((port) => (
+  const renderPorts = (ports: Port[] = [], type: 'input' | 'output') => {
+    return ports?.map((port) => (
       <div
         key={port.id}
         className={cn(
@@ -65,7 +65,7 @@ export const BaseNode: React.FC<NodeProps> = ({
   };
 
   const getNodeColor = () => {
-    const colors = {
+    const colors: Record<string, string> = {
       input: 'bg-blue-500',
       llm: 'bg-purple-500',
       collection: 'bg-green-500',
@@ -75,12 +75,14 @@ export const BaseNode: React.FC<NodeProps> = ({
       'data-transformation': 'bg-pink-500',
       code: 'bg-orange-500',
       search: 'bg-teal-500',
+      data: 'bg-gray-500'
     };
+    
     return colors[category] || 'bg-gray-500';
   };
 
   return (
-    <motion.div
+    <div
       ref={nodeRef}
       className={cn(
         'node',
@@ -101,10 +103,6 @@ export const BaseNode: React.FC<NodeProps> = ({
       onMouseMove={handleDragMove}
       onMouseUp={handleDragEnd}
       onMouseLeave={handleDragEnd}
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.8, opacity: 0 }}
-      transition={{ duration: 0.2 }}
     >
       <div className="node-header">
         <div className="node-title">{title}</div>
@@ -113,7 +111,7 @@ export const BaseNode: React.FC<NodeProps> = ({
             className="node-delete"
             onClick={(e) => {
               e.stopPropagation();
-              onDelete();
+              onDelete(id);
             }}
           >
             ×
@@ -122,17 +120,17 @@ export const BaseNode: React.FC<NodeProps> = ({
       </div>
 
       <div className="node-content">
-        <div className="node-inputs">{renderPorts(data.inputs, 'input')}</div>
+        <div className="node-inputs">{renderPorts(data?.inputs || [], 'input')}</div>
         <div className="node-body">
           {/* Node-specific content will be rendered here by child components */}
         </div>
-        <div className="node-outputs">{renderPorts(data.outputs, 'output')}</div>
+        <div className="node-outputs">{renderPorts(data?.outputs || [], 'output')}</div>
       </div>
 
       <div className="node-footer">
-        <div className="node-status">{data.state}</div>
-        {data.error && <div className="node-error">{data.error}</div>}
+        <div className="node-status">{data?.state || 'idle'}</div>
+        {data?.error && <div className="node-error">{data.error}</div>}
       </div>
-    </motion.div>
+    </div>
   );
-}; 
+};

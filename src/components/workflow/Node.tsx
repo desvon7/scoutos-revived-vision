@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NodeProps } from './types';
 import { cn } from '@/lib/utils';
@@ -6,6 +7,7 @@ export const Node: React.FC<NodeProps> = ({
   id,
   type,
   title,
+  category,
   x,
   y,
   data,
@@ -13,7 +15,9 @@ export const Node: React.FC<NodeProps> = ({
   onClick,
   onDragStart,
   onDragMove,
-  onDragEnd
+  onDragEnd,
+  onUpdate,
+  onDelete
 }) => {
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -58,7 +62,19 @@ export const Node: React.FC<NodeProps> = ({
         <div className="text-sm font-medium text-neutral-200">{title}</div>
       </div>
       <div className="mt-2 text-xs text-neutral-400">
-        {data.label}
+        {data.type}
+      </div>
+      
+      <div className="flex justify-end mt-4">
+        <button 
+          className="text-xs text-red-400 hover:text-red-300" 
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(id);
+          }}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

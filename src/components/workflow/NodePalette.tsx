@@ -1,13 +1,14 @@
+
 import React from 'react';
 import { 
   TextIcon,
-  SendIcon,
-  BrainIcon,
-  GitBranchIcon,
-  RepeatIcon,
-  WandIcon,
-  GlobeIcon,
-  DatabaseIcon
+  Send as SendIcon,
+  Brain as BrainIcon,
+  GitBranch as GitBranchIcon,
+  Repeat as RepeatIcon,
+  Wand2 as WandIcon,
+  Globe as GlobeIcon,
+  Database as DatabaseIcon
 } from 'lucide-react';
 import { NodeType } from './types';
 

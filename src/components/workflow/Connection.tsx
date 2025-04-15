@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DataType } from './types';
@@ -46,9 +47,15 @@ interface ConnectionProps {
   selected?: boolean;
   onClick?: () => void;
   onDelete?: () => void;
+  from?: string;
+  to?: string;
+  fromPort?: string;
+  toPort?: string;
+  style?: React.CSSProperties;
 }
 
 export function Connection({
+  id,
   type,
   x1,
   y1,
@@ -57,7 +64,12 @@ export function Connection({
   animated = false,
   selected = false,
   onClick,
-  onDelete
+  onDelete,
+  from,
+  to,
+  fromPort,
+  toPort,
+  style
 }: ConnectionProps) {
   // Calculate control points for the bezier curve
   const dx = Math.abs(x2 - x1);
@@ -70,11 +82,14 @@ export function Connection({
 
   const path = `M ${x1} ${y1} C ${controlPoint1X} ${controlPoint1Y}, ${controlPoint2X} ${controlPoint2Y}, ${x2} ${y2}`;
 
+  const strokeColor = type in dataTypeColors ? dataTypeColors[type] : dataTypeColors.any;
+  const strokeWidth = type in dataTypeThickness ? dataTypeThickness[type] : dataTypeThickness.any;
+
   return (
     <motion.path
       d={path}
-      stroke={dataTypeColors[type]}
-      strokeWidth={dataTypeThickness[type]}
+      stroke={strokeColor}
+      strokeWidth={strokeWidth}
       fill="none"
       initial={{ pathLength: 0 }}
       animate={{ pathLength: 1 }}
@@ -82,6 +97,7 @@ export function Connection({
       className={`connection ${selected ? 'selected' : ''}`}
       onClick={onClick}
       onDoubleClick={onDelete}
+      style={style}
     />
   );
 }

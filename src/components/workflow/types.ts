@@ -1,3 +1,4 @@
+
 import React, { CSSProperties } from 'react';
 
 // Base Types
@@ -120,7 +121,56 @@ export type NodeType =
   | 'collection'
   | 'memory'
   | 'process'
-  | 'gpt-4';
+  | 'gpt-4'
+  | 'text-input'
+  | 'url-input'
+  | 'json-input'
+  | 'file-upload'
+  | 'webhook-trigger'
+  | 'schedule-trigger'
+  | 'api-trigger'
+  | 'gpt-3.5-turbo'
+  | 'claude-3-opus'
+  | 'claude-3-sonnet'
+  | 'claude-3-haiku'
+  | 'anthropic'
+  | 'gemini-pro'
+  | 'gemini-ultra'
+  | 'mistral'
+  | 'llama-2'
+  | 'custom-llm'
+  | 'stream-output'
+  | 'collection-query'
+  | 'collection-save'
+  | 'collection-update'
+  | 'collection-delete'
+  | 'vector-query'
+  | 'vector-save'
+  | 'text-splitter'
+  | 'text-formatter'
+  | 'text-extractor'
+  | 'html-to-text'
+  | 'markdown-to-html'
+  | 'conditional'
+  | 'switch'
+  | 'merge'
+  | 'map'
+  | 'filter'
+  | 'delay'
+  | 'http-request'
+  | 'api-connection'
+  | 'email-sender'
+  | 'slack-integration'
+  | 'discord-integration'
+  | 'json-transform'
+  | 'csv-parser'
+  | 'data-mapping'
+  | 'javascript'
+  | 'python'
+  | 'shell'
+  | 'web-search'
+  | 'web-scraper'
+  | 'serp-results';
 
 // Port Interface
 export interface Port {
@@ -132,19 +182,20 @@ export interface Port {
 
 // Node Data Interface
 export interface NodeData {
-  category: NodeCategory;
+  category?: NodeCategory;
   type: NodeType;
-  label: string;
-  inputs: Port[];
-  outputs: Port[];
-  config: Record<string, any>;
-  state: 'idle' | 'running' | 'completed' | 'error';
+  label?: string;
+  inputs?: Port[];
+  outputs?: Port[];
+  config?: Record<string, any>;
+  state?: 'idle' | 'running' | 'completed' | 'error';
   error?: string;
-  metadata: {
+  metadata?: {
     description?: string;
     icon?: string;
     color?: string;
   };
+  [key: string]: any;
 }
 
 // Node Object Interface
@@ -152,10 +203,19 @@ export interface NodeObject {
   id: string;
   type: NodeType;
   title: string;
-  category: NodeCategory;
+  category?: NodeCategory;
   x: number;
   y: number;
   data: NodeData;
+  width?: number;
+  height?: number;
+  selected?: boolean;
+  dragging?: boolean;
+  zIndex?: number;
+  position?: {
+    x: number;
+    y: number;
+  };
 }
 
 // Connection Object Interface
@@ -178,6 +238,10 @@ export interface ConnectionProps {
   to: string;
   fromPort: string;
   toPort: string;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
   animated?: boolean;
   style?: CSSProperties;
 }
@@ -192,12 +256,14 @@ export interface NodeProps {
   y: number;
   data: NodeData;
   isSelected: boolean;
+  width?: number;
+  height?: number;
   onClick: () => void;
   onDragStart: (e: React.MouseEvent) => void;
   onDragMove: (e: React.MouseEvent) => void;
   onDragEnd: () => void;
   onUpdate: (data: NodeData) => void;
-  onDelete: () => void;
+  onDelete: (id: string) => void;
 }
 
 // Workflow Data Interface
@@ -205,7 +271,7 @@ export interface WorkflowData {
   id: string;
   name: string;
   version: string;
-  timestamp: number;
+  timestamp?: number;
   nodes: NodeObject[];
   connections: ConnectionObject[];
 }
