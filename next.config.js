@@ -19,6 +19,15 @@ const nextConfig = {
       },
     ];
   },
+  // Enable static exports for preview deployments
+  output: 'export',
+  // Configure preview deployments
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX || '',
+  images: {
+    unoptimized: true,
+    domains: ['scoutos-revived-vision.lovable.app'],
+  },
 }
 
 module.exports = nextConfig
