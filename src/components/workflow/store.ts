@@ -1,6 +1,6 @@
-
 import { create } from 'zustand';
-import { NodeObject, ExecutionState, LogEntry } from './types';
+import { NodeObject, LogEntry } from './types';
+import { ExecutionState } from '@/types/nodes';
 
 interface WorkflowState {
   nodes: NodeObject[];

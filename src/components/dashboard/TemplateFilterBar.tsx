@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search, X, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -19,7 +18,7 @@ interface TemplateFilterBarProps {
   categories: CategoryData[];
   selectedCategory: string;
   searchQuery: string;
-  setSelectedCategory: (categoryId: string) => void;
+  setSelectedCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
   handleClearSearch: () => void;
 }
@@ -30,10 +29,10 @@ const TemplateFilterBar = ({
   searchQuery,
   setSelectedCategory,
   setSearchQuery,
-  handleClearSearch
+  handleClearSearch,
 }: TemplateFilterBarProps) => {
   const getCategoryName = () => {
-    const category = categories.find(cat => cat.id === selectedCategory);
+    const category = categories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'All Templates';
   };
 
@@ -42,7 +41,6 @@ const TemplateFilterBar = ({
       <h2 className="text-2xl font-semibold">Templates</h2>
       
       <div className="flex gap-3 flex-col sm:flex-row">
-        {/* Category dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full sm:w-auto justify-between">
@@ -62,25 +60,21 @@ const TemplateFilterBar = ({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Search input */}
-        <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+        <div className="relative w-full sm:w-64">
           <Input
             type="text"
             placeholder="Search templates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 pr-9 w-full sm:w-[200px]"
+            className="pr-8"
           />
           {searchQuery && (
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute right-1 top-1 h-7 w-7 text-gray-400 hover:text-gray-600"
+            <button
               onClick={handleClearSearch}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               <X className="h-4 w-4" />
-            </Button>
+            </button>
           )}
         </div>
       </div>

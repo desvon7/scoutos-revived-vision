@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import WorkflowEditor from '../components/workflow/WorkflowEditor';
-import NodePalette from '../components/workflow/NodePalette';
-import PropertiesPanel from '../components/workflow/PropertiesPanel';
-import WorkflowConsole from '../components/workflow/WorkflowConsole';
-import { useWorkflowStore } from '../components/workflow/store';
+import WorkflowEditor from '@/components/workflow/workflow-editor';
+import NodePalette from '@/components/workflow/NodePalette';
+import PropertiesPanel from '@/components/workflow/PropertiesPanel';
+import WorkflowConsole from '@/components/workflow/WorkflowConsole';
+import { useWorkflowStore } from '@/components/workflow/store';
 
 const WorkflowBuilderPage: React.FC = () => {
   const { workflow, saveWorkflow, exportWorkflow, importWorkflow, undo, redo } = useWorkflowStore();

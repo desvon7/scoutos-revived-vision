@@ -1,3 +1,4 @@
+"use client"
 
 import { useCallback, useState } from "react"
 import ReactFlow, {
@@ -32,7 +33,7 @@ interface WorkflowEditorProps {
   workflowId: string
 }
 
-export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
+const WorkflowEditor: React.FC<WorkflowEditorProps> = ({ workflowId }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { project } = useReactFlow()
@@ -120,3 +121,5 @@ export function WorkflowEditor({ workflowId }: WorkflowEditorProps) {
     </div>
   )
 }
+
+export default WorkflowEditor

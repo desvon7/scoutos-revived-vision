@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { DashboardLayout } from "@/components/layout/dashboard-layout"
-import { WorkflowEditor } from "@/components/workflow/workflow-editor"
+import WorkflowEditor from "@/components/workflow/workflow-editor"
 
 export const metadata: Metadata = {
   title: "Workflow Editor",

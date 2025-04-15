@@ -1,38 +1,38 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import Link from 'next/link';
 
 interface DashboardHeaderProps {
   title: string;
-  onCreateTemplate: () => void;
-  onCreateWorkflow: () => void;
+  description: string;
+  showCreateButton?: boolean;
+  createButtonText?: string;
+  createButtonLink?: string;
 }
 
-const DashboardHeader = ({ 
-  title, 
-  onCreateTemplate, 
-  onCreateWorkflow 
+const DashboardHeader = ({
+  title,
+  description,
+  showCreateButton = true,
+  createButtonText = 'Create Workflow',
+  createButtonLink = '/workflow/new',
 }: DashboardHeaderProps) => {
   return (
-    <div className="mb-8 flex justify-between items-center">
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <div className="flex space-x-2">
-        <Button 
-          className="flex items-center"
-          onClick={onCreateTemplate}
-          variant="secondary"
-        >
-          <Plus className="mr-2 h-4 w-4" /> New Template
-        </Button>
-        <Button 
-          className="flex items-center"
-          onClick={onCreateWorkflow}
-        >
-          <Plus className="mr-2 h-4 w-4" /> New Workflow
-        </Button>
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
+        <p className="text-muted-foreground mt-1">{description}</p>
       </div>
+      
+      {showCreateButton && (
+        <Link href={createButtonLink}>
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            {createButtonText}
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };

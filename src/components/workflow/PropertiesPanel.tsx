@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { PropertiesPanelProps, NodeType } from './types';
 import { useWorkflowStore } from './store';
 import { nodeTypes } from './nodeRegistry';
 
-export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ 
+const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ 
   selectedNodeId, 
   onUpdate, 
   onDelete 
@@ -247,3 +246,5 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     </div>
   );
 };
+
+export default PropertiesPanel;

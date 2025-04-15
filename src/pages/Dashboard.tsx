@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -26,7 +25,7 @@ const Dashboard = () => {
   
   const handleCreateCollection = () => {
     // This would navigate to a collection creation page in a real app
-    console.log("Create collection");
+    console.log('Create collection');
   };
   
   if (showOnboarding) {
@@ -35,7 +34,7 @@ const Dashboard = () => {
   
   return (
     <DashboardLayout>
-      <div className="container-custom py-8">
+      <div className='container-custom py-8'>
         <DashboardHeader 
           title="Dashboard"
           onCreateTemplate={handleCreateTemplate}

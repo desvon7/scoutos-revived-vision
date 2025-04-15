@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   TextIcon,
@@ -54,7 +53,7 @@ const nodeGroups = [
   }
 ];
 
-export const NodePalette: React.FC<NodePaletteProps> = ({ onDragStart }) => {
+const NodePalette: React.FC<NodePaletteProps> = ({ onDragStart }) => {
   return (
     <div className="w-64 border-r border-gray-700 bg-gray-800 overflow-y-auto">
       <div className="p-4">
@@ -82,3 +81,5 @@ export const NodePalette: React.FC<NodePaletteProps> = ({ onDragStart }) => {
     </div>
   );
 };
+
+export default NodePalette;

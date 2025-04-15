@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { NodeObject, NodeType } from '../types';
+import { NodeObject, NodeType, Port } from '@/components/workflow/types';
 import { PanelLayout } from './properties/PanelLayout';
 import { InputNodeProperties } from './properties/InputNodeProperties';
 import { LLMNodeProperties } from './properties/LLMNodeProperties';
@@ -20,7 +19,7 @@ export const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
   onDeleteNode 
 }) => {
   const renderPropertiesComponent = () => {
-    const type = node.type;
+    const type = node.type as NodeType;
     
     if ([NodeType.TEXT_INPUT, NodeType.URL_INPUT, NodeType.JSON_INPUT].includes(type)) {
       return (
@@ -31,7 +30,7 @@ export const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
       );
     }
     
-    if ([NodeType.GPT_4, NodeType.GPT_35_TURBO, NodeType.CLAUDE_3].includes(type)) {
+    if ([NodeType.GPT_4, NodeType.GPT_35_TURBO, NodeType.CLAUDE_3_OPUS, NodeType.CLAUDE_3_SONNET].includes(type)) {
       return (
         <LLMNodeProperties 
           data={node.data} 

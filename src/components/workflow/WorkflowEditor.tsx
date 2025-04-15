@@ -1,7 +1,8 @@
+"use client"
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { WorkflowCanvas } from './WorkflowCanvas';
-import { NodePalette } from './NodePalette';
+import NodePalette from './NodePalette';
 import { NodeType, NodeObject } from './types';
 
 export function WorkflowEditor() {
