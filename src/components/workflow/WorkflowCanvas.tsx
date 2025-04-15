@@ -1,49 +1,64 @@
-
 import React from 'react';
-import { Node as NodeComponent } from './Node';
 import { Connection } from './Connection';
-import { NodeObject, ConnectionObject, NodeType } from './types';
+import { Node } from './Node';
+import { NodeObject, ConnectionObject, NodeData } from './types';
 import { cn } from '@/lib/utils';
 
 interface WorkflowCanvasProps {
   nodes: NodeObject[];
   connections: ConnectionObject[];
-  zoom: number;
-  selectedNodeId: string | null;
-  onNodeClick: (id: string) => void;
-  onDragStart: (e: React.MouseEvent, id: string) => void;
-  onDragMove: (e: React.MouseEvent) => void;
-  onDragEnd: () => void;
+  onNodeSelect: (id: string) => void;
+  onNodeMove: (id: string, x: number, y: number) => void;
+  onNodeUpdate: (id: string, data: NodeData) => void;
+  onNodeDelete: (id: string) => void;
+  onConnectionCreate: (fromId: string, toId: string, fromPort: string, toPort: string) => void;
+  onConnectionDelete: (id: string) => void;
 }
 
-export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
+export function WorkflowCanvas({
   nodes,
   connections,
-  zoom,
-  selectedNodeId,
-  onNodeClick,
-  onDragStart,
-  onDragMove,
-  onDragEnd
-}) => {
-  // Find the x, y coordinates for each connection
-  const getConnectionCoordinates = (fromId: string, toId: string) => {
-    const fromNode = nodes.find(node => node.id === fromId);
-    const toNode = nodes.find(node => node.id === toId);
-    
-    if (!fromNode || !toNode) {
-      return null;
-    }
-    
-    // Calculate center points of each node
-    const fromX = fromNode.x + 100; // Assuming node width is 200px
-    const fromY = fromNode.y + 25;  // Assuming node height is ~50px
-    const toX = toNode.x;
-    const toY = toNode.y + 25;     // Connect to the left side of the target
-    
-    return { x1: fromX, y1: fromY, x2: toX, y2: toY };
+  onNodeSelect,
+  onNodeMove,
+  onNodeUpdate,
+  onNodeDelete,
+  onConnectionCreate,
+  onConnectionDelete
+}: WorkflowCanvasProps) {
+  const [selectedNodeId, setSelectedNodeId] = React.useState<string | null>(null);
+  const [draggingNodeId, setDraggingNodeId] = React.useState<string | null>(null);
+  const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
+
+  const handleNodeClick = (id: string) => {
+    setSelectedNodeId(id);
+    onNodeSelect(id);
   };
-  
+
+  const handleNodeDragStart = (e: React.MouseEvent, id: string) => {
+    const node = nodes.find(n => n.id === id);
+    if (!node) return;
+
+    setDraggingNodeId(id);
+    setDragOffset({
+      x: e.clientX - node.x,
+      y: e.clientY - node.y
+    });
+  };
+
+  const handleNodeDragMove = (e: React.MouseEvent) => {
+    if (!draggingNodeId) return;
+
+    onNodeMove(
+      draggingNodeId,
+      e.clientX - dragOffset.x,
+      e.clientY - dragOffset.y
+    );
+  };
+
+  const handleNodeDragEnd = () => {
+    setDraggingNodeId(null);
+  };
+
   return (
     <div 
       className={cn(
@@ -51,39 +66,42 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
         "bg-neutral-950 text-neutral-200 h-[60vh]"
       )}
     >
-      {/* Connections */}
-      {connections.map(connection => {
-        const coords = getConnectionCoordinates(connection.from, connection.to);
-        if (!coords) return null;
-        
-        return (
+      <svg className="absolute inset-0 w-full h-full">
+        {connections.map((connection) => (
           <Connection
             key={connection.id}
-            x1={coords.x1}
-            y1={coords.y1}
-            x2={coords.x2}
-            y2={coords.y2}
+            id={connection.id}
+            type={connection.type}
+            from={connection.from}
+            to={connection.to}
+            fromPort={connection.fromPort}
+            toPort={connection.toPort}
+            animated={connection.animated}
+            style={connection.style}
+            onDelete={() => onConnectionDelete(connection.id)}
           />
-        );
-      })}
+        ))}
+      </svg>
       
-      {/* Nodes */}
-      {nodes.map(node => (
-        <NodeComponent
+      {nodes.map((node) => (
+        <Node
           key={node.id}
           id={node.id}
           type={node.type}
           title={node.title}
+          category={node.category}
           x={node.x}
           y={node.y}
           data={node.data}
-          isSelected={selectedNodeId === node.id}
-          onClick={() => onNodeClick(node.id)}
-          onDragStart={(e: React.MouseEvent) => onDragStart(e, node.id)}
-          onDragMove={onDragMove}
-          onDragEnd={onDragEnd}
+          isSelected={node.id === selectedNodeId}
+          onClick={() => handleNodeClick(node.id)}
+          onDragStart={(e) => handleNodeDragStart(e, node.id)}
+          onDragMove={handleNodeDragMove}
+          onDragEnd={handleNodeDragEnd}
+          onUpdate={(data) => onNodeUpdate(node.id, data)}
+          onDelete={() => onNodeDelete(node.id)}
         />
       ))}
     </div>
   );
-};
+}

@@ -1,84 +1,88 @@
-
 import React from 'react';
+import { 
+  TextIcon,
+  SendIcon,
+  BrainIcon,
+  GitBranchIcon,
+  RepeatIcon,
+  WandIcon,
+  GlobeIcon,
+  DatabaseIcon
+} from 'lucide-react';
 import { NodeType } from './types';
-import { useWorkflowStore } from './store';
-import { Input, Output, Cpu, GitBranch, Repeat, FileCode, Globe, Database } from 'lucide-react';
 
-const NODE_TYPES: { type: NodeType; label: string; description: string; icon: React.ElementType }[] = [
+const nodeTypes = [
   {
-    type: 'input',
+    type: 'input' as NodeType,
     label: 'Input',
-    description: 'Input data source',
-    icon: Input,
+    description: 'Input node for receiving data',
+    icon: <TextIcon className="w-4 h-4" />
   },
   {
-    type: 'output',
+    type: 'output' as NodeType,
     label: 'Output',
-    description: 'Output destination',
-    icon: Output,
+    description: 'Output node for sending data',
+    icon: <SendIcon className="w-4 h-4" />
   },
   {
-    type: 'llm',
+    type: 'llm' as NodeType,
     label: 'LLM',
-    description: 'Large Language Model',
-    icon: Cpu,
+    description: 'Language model for text generation',
+    icon: <BrainIcon className="w-4 h-4" />
   },
   {
-    type: 'condition',
+    type: 'condition' as NodeType,
     label: 'Condition',
-    description: 'Conditional logic',
-    icon: GitBranch,
+    description: 'Conditional branching node',
+    icon: <GitBranchIcon className="w-4 h-4" />
   },
   {
-    type: 'loop',
+    type: 'loop' as NodeType,
     label: 'Loop',
-    description: 'Loop control',
-    icon: Repeat,
+    description: 'Loop through data',
+    icon: <RepeatIcon className="w-4 h-4" />
   },
   {
-    type: 'transform',
+    type: 'transform' as NodeType,
     label: 'Transform',
-    description: 'Data transformation',
-    icon: FileCode,
+    description: 'Transform data between formats',
+    icon: <WandIcon className="w-4 h-4" />
   },
   {
-    type: 'api',
+    type: 'api' as NodeType,
     label: 'API',
-    description: 'API integration',
-    icon: Globe,
+    description: 'Make API requests',
+    icon: <GlobeIcon className="w-4 h-4" />
   },
   {
-    type: 'data',
+    type: 'data' as NodeType,
     label: 'Data',
-    description: 'Data operation',
-    icon: Database,
-  },
+    description: 'Data storage and retrieval',
+    icon: <DatabaseIcon className="w-4 h-4" />
+  }
 ];
 
-const NodePalette: React.FC = () => {
-  const { addNode } = useWorkflowStore();
+interface NodePaletteProps {
+  onDragStart: (type: NodeType) => void;
+}
 
-  const handleDragStart = (event: React.DragEvent, nodeType: NodeType) => {
-    event.dataTransfer.setData('application/reactflow/type', nodeType);
-    event.dataTransfer.effectAllowed = 'move';
-  };
-
+const NodePalette = ({ onDragStart }: NodePaletteProps) => {
   return (
-    <div className="node-palette w-64 bg-gray-800 border-r border-gray-700 p-4 overflow-y-auto">
-      <h2 className="text-lg font-semibold mb-4 text-white">Nodes</h2>
+    <div className="bg-background p-4 rounded-lg shadow-lg">
+      <h3 className="text-lg font-semibold mb-4">Node Types</h3>
       <div className="space-y-2">
-        {NODE_TYPES.map((node) => (
+        {nodeTypes.map((nodeType) => (
           <div
-            key={node.type}
-            className="node-item bg-gray-700 p-3 rounded cursor-move hover:bg-gray-600 transition-colors"
+            key={nodeType.type}
+            className="flex items-center gap-2 p-2 rounded-md hover:bg-accent cursor-grab"
             draggable
-            onDragStart={(e) => handleDragStart(e, node.type)}
+            onDragStart={() => onDragStart(nodeType.type)}
           >
-            <div className="flex items-center gap-2 mb-1">
-              <node.icon className="h-4 w-4 text-white" />
-              <h3 className="text-white font-medium">{node.label}</h3>
+            {nodeType.icon}
+            <div>
+              <div className="font-medium">{nodeType.label}</div>
+              <div className="text-sm text-muted-foreground">{nodeType.description}</div>
             </div>
-            <p className="text-gray-400 text-sm">{node.description}</p>
           </div>
         ))}
       </div>
@@ -86,4 +90,4 @@ const NodePalette: React.FC = () => {
   );
 };
 
-export default NodePalette;
+export { NodePalette };

@@ -2,12 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ExecutionState, ConsoleMessage } from './types';
 import { useWorkflowStore } from './store';
 
+interface LogEntry {
+  timestamp: number;
+  level: 'info' | 'warning' | 'error';
+  message: string;
+  nodeId?: string;
+}
+
 const WorkflowConsole: React.FC = () => {
   const [messages, setMessages] = useState<ConsoleMessage[]>([]);
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'output' | 'logs' | 'variables'>('output');
   const [filter, setFilter] = useState<string>('');
   const [executionState, setExecutionState] = useState<ExecutionState>(ExecutionState.IDLE);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   
   const { workflow, selectedNode } = useWorkflowStore();
   const consoleEndRef = useRef<HTMLDivElement>(null);
@@ -135,6 +143,29 @@ const WorkflowConsole: React.FC = () => {
     }
     
     return <span>{String(data)}</span>;
+  };
+  
+  // Add a log entry
+  const addLog = (level: LogEntry['level'], message: string, nodeId?: string) => {
+    setLogs((prevLogs) => [
+      ...prevLogs,
+      {
+        timestamp: Date.now(),
+        level,
+        message,
+        nodeId
+      }
+    ]);
+  };
+
+  // Clear all logs
+  const clearLogs = () => {
+    setLogs([]);
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp: number) => {
+    return new Date(timestamp).toLocaleTimeString();
   };
   
   return (
@@ -281,8 +312,32 @@ const WorkflowConsole: React.FC = () => {
             
             {activeTab === 'logs' && (
               <div className="logs-content font-mono text-sm">
-                {/* Logs content would go here */}
-                <div className="text-gray-500 italic">Log messages would appear here.</div>
+                {logs.map((log, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-start gap-2 text-sm font-mono ${
+                      log.level === 'error' ? 'text-red-500' :
+                      log.level === 'warning' ? 'text-yellow-500' :
+                      'text-foreground'
+                    }`}
+                  >
+                    <span className="text-muted-foreground">
+                      {formatTimestamp(log.timestamp)}
+                    </span>
+                    <span className="uppercase text-xs">
+                      {log.level}
+                    </span>
+                    <span>
+                      {log.nodeId && (
+                        <span className="text-muted-foreground">
+                          [{workflow.nodes.find(n => n.id === log.nodeId)?.title || log.nodeId}]
+                        </span>
+                      )}
+                      {' '}
+                      {log.message}
+                    </span>
+                  </div>
+                ))}
               </div>
             )}
             

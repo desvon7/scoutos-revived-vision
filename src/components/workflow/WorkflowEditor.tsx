@@ -1,210 +1,129 @@
-import React, { useState, useCallback, useRef } from 'react';
-import ReactFlow, {
-  ReactFlowProvider,
-  MiniMap,
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Connection,
-  Edge,
-  Node as ReactFlowNode,
-  NodeTypes,
-  EdgeTypes
-} from 'reactflow';
-import 'reactflow/dist/style.css';
-
-import { NodeObject, ConnectionObject, NodeType } from './types';
-import { NodeFactory } from './nodes/factory';
-import { ConnectionValidator } from './validation';
+import React from 'react';
+import { WorkflowCanvas } from './WorkflowCanvas';
+import { NodePalette } from './NodePalette';
+import { PropertiesPanel } from './PropertiesPanel';
+import { WorkflowConsole } from './WorkflowConsole';
 import { useWorkflowStore } from './store';
+import { NodeObject, ConnectionObject, NodeData, NodeType, NodeCategory } from './types';
 
-// Import custom nodes
-import LLMNode from './nodes/LLMNode';
-import TextInputNode from './nodes/TextInputNode';
-import JavaScriptNode from './nodes/JavaScriptNode';
-import CollectionNode from './nodes/CollectionNode';
-import OutputNode from './nodes/OutputNode';
-import ConditionalNode from './nodes/ConditionalNode';
-import HTTPRequestNode from './nodes/HTTPRequestNode';
-import WebScraperNode from './nodes/WebScraperNode';
-
-// Import custom edges
-import ConnectionEdge from './edges/ConnectionEdge';
-
-// Define custom node types
-const nodeTypes: NodeTypes = {
-  'gpt-4': LLMNode,
-  'gpt-3.5-turbo': LLMNode,
-  'claude-3-opus': LLMNode,
-  'text-input': TextInputNode,
-  'javascript': JavaScriptNode,
-  'collection-query': CollectionNode,
-  'collection-save': CollectionNode,
-  'conditional': ConditionalNode,
-  'http-request': HTTPRequestNode,
-  'web-scraper': WebScraperNode,
-  'output': OutputNode,
-};
-
-// Define custom edge types
-const edgeTypes: EdgeTypes = {
-  connectionEdge: ConnectionEdge,
-};
-
-export interface WorkflowEditorProps {
-  readOnly?: boolean;
-}
-
-const WorkflowEditor: React.FC<WorkflowEditorProps> = ({ readOnly = false }) => {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-
-  // Use the workflow store
-  const { 
-    workflow, 
-    updateNodes, 
-    updateEdges, 
+export function WorkflowEditor() {
+  const {
+    nodes,
+    connections,
+    selectedNodeId,
     addNode,
-    setSelectedNode,
-    selectedNode
+    updateNode,
+    deleteNode,
+    addConnection,
+    deleteConnection,
+    setSelectedNode
   } = useWorkflowStore();
 
-  // Convert workflow nodes and edges to ReactFlow format
-  const initialNodes = workflow.nodes.map(node => ({
-    ...node,
-    type: node.type,
-    data: { ...node.data },
-  }));
+  const handleNodeSelect = (id: string) => {
+    setSelectedNode(id);
+  };
 
-  const initialEdges = workflow.connections.map(edge => ({
-    ...edge,
-    type: 'connectionEdge',
-  }));
+  const handleNodeMove = (id: string, x: number, y: number) => {
+    updateNode(id, { x, y });
+  };
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const handleNodeUpdate = (id: string, data: NodeData) => {
+    updateNode(id, { data });
+  };
 
-  // Update the workflow store when nodes or edges change
-  React.useEffect(() => {
-    updateNodes(nodes);
-  }, [nodes, updateNodes]);
+  const handleNodeDelete = (id: string) => {
+    deleteNode(id);
+  };
 
-  React.useEffect(() => {
-    updateEdges(edges);
-  }, [edges, updateEdges]);
+  const handleConnectionCreate = (fromId: string, toId: string, fromPort: string, toPort: string) => {
+    addConnection({
+      id: `${fromId}-${toId}`,
+      type: 'default',
+      from: fromId,
+      to: toId,
+      fromPort,
+      toPort
+    });
+  };
 
-  // Handle connecting nodes
-  const onConnect = useCallback(
-    (connection: Connection) => {
-      // Find the source and target nodes
-      const sourceNode = nodes.find(n => n.id === connection.source);
-      const targetNode = nodes.find(n => n.id === connection.target);
+  const handleConnectionDelete = (id: string) => {
+    deleteConnection(id);
+  };
 
-      if (sourceNode && targetNode) {
-        // Validate the connection
-        const validationResult = ConnectionValidator.validateConnection(
-          sourceNode as unknown as NodeObject, 
-          targetNode as unknown as NodeObject,
-          connection.sourceHandle!,
-          connection.targetHandle!
-        );
+  const getNodeCategory = (type: NodeType): NodeCategory => {
+    switch (type) {
+      case 'input':
+      case 'output':
+        return 'input';
+      case 'llm':
+        return 'llm';
+      case 'condition':
+      case 'loop':
+        return 'logic';
+      case 'transform':
+        return 'data-transformation';
+      case 'api':
+        return 'integration';
+      case 'data':
+        return 'data';
+      default:
+        return 'input';
+    }
+  };
 
-        if (validationResult.isValid) {
-          // Add the edge
-          setEdges((eds) => addEdge(
-            { 
-              ...connection, 
-              type: 'connectionEdge',
-              animated: true,
-              data: {
-                sourceType: sourceNode.type,
-                targetType: targetNode.type
-              }
-            }, 
-            eds
-          ));
-        } else {
-          // Show an error message
-          console.error(`Invalid connection: ${validationResult.error}`);
-        }
+  const handleNodeDrop = (type: NodeType, x: number, y: number) => {
+    const category = getNodeCategory(type);
+    const newNode: NodeObject = {
+      id: `node-${Date.now()}`,
+      type,
+      title: type.charAt(0).toUpperCase() + type.slice(1),
+      category,
+      x,
+      y,
+      data: {
+        category,
+        type,
+        label: type.charAt(0).toUpperCase() + type.slice(1),
+        inputs: [],
+        outputs: [],
+        config: {},
+        state: 'idle',
+        metadata: {}
       }
-    },
-    [nodes, setEdges]
-  );
-
-  // Handle node click
-  const onNodeClick = useCallback((event: React.MouseEvent, node: ReactFlowNode) => {
-    setSelectedNode(node.id);
-  }, [setSelectedNode]);
-
-  // Handle dropping new nodes from the palette
-  const onDrop = useCallback(
-    (event: React.DragEvent) => {
-      event.preventDefault();
-
-      if (reactFlowWrapper.current && reactFlowInstance) {
-        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const nodeType = event.dataTransfer.getData('application/reactflow/type') as NodeType;
-        
-        // Check if the dropped element is valid
-        if (typeof nodeType === 'undefined' || !nodeType) {
-          return;
-        }
-
-        const position = reactFlowInstance.project({
-          x: event.clientX - reactFlowBounds.left,
-          y: event.clientY - reactFlowBounds.top,
-        });
-
-        // Create new node
-        const newNode = NodeFactory.createNode(nodeType, position);
-        
-        // Add node to the workflow
-        addNode(newNode);
-      }
-    },
-    [reactFlowInstance, addNode]
-  );
-
-  const onDragOver = useCallback((event: React.DragEvent) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-  }, []);
+    };
+    addNode(newNode);
+  };
 
   return (
-    <div className="workflow-editor-container h-full" ref={reactFlowWrapper}>
-      <ReactFlowProvider>
-        <ReactFlow
+    <div className="flex h-full">
+      <div className="w-64 bg-background border-r">
+        <NodePalette onDragStart={(type) => handleNodeDrop(type, 100, 100)} />
+      </div>
+      
+      <div className="flex-1 relative">
+        <WorkflowCanvas
           nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onInit={setReactFlowInstance}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          onNodeClick={onNodeClick}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          fitView
-          attributionPosition="bottom-right"
-          nodesConnectable={!readOnly}
-          elementsSelectable={!readOnly}
-          nodesDraggable={!readOnly}
-        >
-          <Controls />
-          <MiniMap 
-            nodeStrokeWidth={3}
-            zoomable
-            pannable
-          />
-          <Background variant="dots" gap={12} size={1} />
-        </ReactFlow>
-      </ReactFlowProvider>
+          connections={connections}
+          onNodeSelect={handleNodeSelect}
+          onNodeMove={handleNodeMove}
+          onNodeUpdate={handleNodeUpdate}
+          onNodeDelete={handleNodeDelete}
+          onConnectionCreate={handleConnectionCreate}
+          onConnectionDelete={handleConnectionDelete}
+        />
+      </div>
+      
+      <div className="w-80 bg-background border-l">
+        <PropertiesPanel
+          selectedNodeId={selectedNodeId}
+          onUpdate={handleNodeUpdate}
+          onDelete={handleNodeDelete}
+        />
+      </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-background border-t">
+        <WorkflowConsole />
+      </div>
     </div>
   );
-};
-
-export default WorkflowEditor;
+}

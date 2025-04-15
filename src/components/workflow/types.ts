@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 // Base Types
 export type DataType = 
@@ -27,11 +27,6 @@ export type NodeCategory =
   | 'data-transformation'
   | 'code'
   | 'search'
-  | 'output'
-  | 'condition'
-  | 'loop'
-  | 'transform'
-  | 'api'
   | 'data';
 
 // Input Node Types
@@ -113,106 +108,95 @@ export type SearchNodeType =
   | 'serp-results';
 
 // Combined Node Type
-export enum NodeType {
-  INPUT = 'input',
-  OUTPUT = 'output',
-  LLM = 'llm',
-  CONDITION = 'condition',
-  LOOP = 'loop',
-  TRANSFORM = 'transform',
-  API = 'api',
-  DATA = 'data'
-}
+export type NodeType = 
+  | 'input'
+  | 'output'
+  | 'llm'
+  | 'condition'
+  | 'loop'
+  | 'transform'
+  | 'api'
+  | 'data'
+  | 'collection'
+  | 'memory'
+  | 'process'
+  | 'gpt-4';
 
 // Port Interface
 export interface Port {
   id: string;
   type: DataType;
   name: string;
-  required: boolean;
   description?: string;
-  label: string;
 }
 
 // Node Data Interface
 export interface NodeData {
   category: NodeCategory;
   type: NodeType;
+  label: string;
   inputs: Port[];
   outputs: Port[];
   config: Record<string, any>;
   state: 'idle' | 'running' | 'completed' | 'error';
   error?: string;
   metadata: {
-    version: string;
-    author?: string;
     description?: string;
-    tags?: string[];
+    icon?: string;
+    color?: string;
   };
 }
 
 // Node Object Interface
 export interface NodeObject {
   id: string;
-  title: string;
   type: NodeType;
+  title: string;
   category: NodeCategory;
   x: number;
   y: number;
   data: NodeData;
-  width?: number;
-  height?: number;
-  selected?: boolean;
-  dragging?: boolean;
-  zIndex?: number;
-  position: {
-    x: number;
-    y: number;
-  };
 }
 
 // Connection Object Interface
 export interface ConnectionObject {
   id: string;
+  type: string;
   from: string;
   to: string;
   fromPort: string;
   toPort: string;
-  type: DataType;
   animated?: boolean;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
 // Connection Props Interface
 export interface ConnectionProps {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  type: DataType;
+  id: string;
+  type: string;
+  from: string;
+  to: string;
+  fromPort: string;
+  toPort: string;
   animated?: boolean;
-  selected?: boolean;
-  onClick?: () => void;
-  onDelete?: () => void;
+  style?: CSSProperties;
 }
 
 // Node Props Interface
 export interface NodeProps {
   id: string;
   type: NodeType;
-  category: NodeCategory;
   title: string;
+  category: NodeCategory;
   x: number;
   y: number;
   data: NodeData;
   isSelected: boolean;
-  width?: number;
-  height?: number;
-  onUpdate: (data: Partial<NodeData>) => void;
   onClick: () => void;
   onDragStart: (e: React.MouseEvent) => void;
   onDragMove: (e: React.MouseEvent) => void;
   onDragEnd: () => void;
+  onUpdate: (data: NodeData) => void;
   onDelete: () => void;
 }
 
@@ -220,17 +204,10 @@ export interface NodeProps {
 export interface WorkflowData {
   id: string;
   name: string;
-  description?: string;
   version: string;
+  timestamp: number;
   nodes: NodeObject[];
   connections: ConnectionObject[];
-  metadata: {
-    author?: string;
-    created: string;
-    modified: string;
-    tags?: string[];
-    category?: string;
-  };
 }
 
 // Workflow Edge Interface
@@ -282,4 +259,11 @@ export interface ConsoleMessage {
   message: string;
   nodeId?: string;
   data?: any;
+}
+
+export type BackgroundVariant = 'dots' | 'lines' | 'cross';
+
+export interface CustomComponents {
+  IconLeft?: React.ComponentType<any>;
+  IconRight?: React.ComponentType<any>;
 }
