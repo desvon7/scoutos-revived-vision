@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,8 +18,8 @@ const FooterLinkGroup = ({ title, links }: FooterLinkGroupProps) => {
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.to}>
-            <Link 
-              to={link.to} 
+            <Link
+              to={link.to}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}

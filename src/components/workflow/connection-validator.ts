@@ -14,7 +14,7 @@ export class ConnectionValidator {
 
     // Check for duplicate connections
     const connectionSet = new Set<string>();
-    this.connections.forEach(conn => {
+    this.connections.forEach((conn) => {
       const key = `${conn.from}-${conn.to}-${conn.fromPort}-${conn.toPort}`;
       if (connectionSet.has(key)) {
         errors.push(`Duplicate connection from ${conn.from} to ${conn.to}`);
@@ -23,9 +23,9 @@ export class ConnectionValidator {
     });
 
     // Check for valid node references
-    this.connections.forEach(conn => {
-      const fromNode = this.nodes.find(n => n.id === conn.from);
-      const toNode = this.nodes.find(n => n.id === conn.to);
+    this.connections.forEach((conn) => {
+      const fromNode = this.nodes.find((n) => n.id === conn.from);
+      const toNode = this.nodes.find((n) => n.id === conn.to);
 
       if (!fromNode) {
         errors.push(`Source node ${conn.from} not found`);
@@ -42,7 +42,7 @@ export class ConnectionValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -65,11 +65,11 @@ export class ConnectionValidator {
   private buildAdjacencyList(): Map<string, string[]> {
     const adjacencyList = new Map<string, string[]>();
 
-    this.nodes.forEach(node => {
+    this.nodes.forEach((node) => {
       adjacencyList.set(node.id, []);
     });
 
-    this.connections.forEach(conn => {
+    this.connections.forEach((conn) => {
       const neighbors = adjacencyList.get(conn.from) || [];
       neighbors.push(conn.to);
       adjacencyList.set(conn.from, neighbors);
@@ -102,7 +102,12 @@ export class ConnectionValidator {
     return false;
   }
 
-  validateConnection(fromNode: NodeObject, toNode: NodeObject, fromPort: Port, toPort: Port): boolean {
+  validateConnection(
+    fromNode: NodeObject,
+    toNode: NodeObject,
+    fromPort: Port,
+    toPort: Port
+  ): boolean {
     // Check if types are compatible
     if (!this.areTypesCompatible(fromPort.type, toPort.type)) {
       return false;
@@ -110,7 +115,7 @@ export class ConnectionValidator {
 
     // Check if nodes are already connected
     const existingConnection = this.connections.find(
-      conn => conn.from === fromNode.id && conn.to === toNode.id
+      (conn) => conn.from === fromNode.id && conn.to === toNode.id
     );
     if (existingConnection) {
       return false;
@@ -145,4 +150,4 @@ export class ConnectionValidator {
 
     return false;
   }
-} 
+}

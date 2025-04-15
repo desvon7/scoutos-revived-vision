@@ -1,4 +1,3 @@
-
 import { categories } from './categories';
 import { aiAssistantsTemplates } from './templates-ai-assistants';
 import { contentTemplates } from './templates-content';
@@ -23,5 +22,5 @@ export const templates = [
   ...seoTemplates,
   ...socialMediaTemplates,
   ...specializedToolsTemplates,
-  ...otherTemplates
+  ...otherTemplates,
 ];

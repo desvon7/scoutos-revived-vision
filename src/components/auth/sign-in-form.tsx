@@ -1,48 +1,48 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/hooks/use-toast"
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 
 export function SignInForm() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setLoading(true)
-    setError("")
+    event.preventDefault();
+    setLoading(true);
+    setError('');
 
-    const formData = new FormData(event.currentTarget)
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
-      const result = await signIn("credentials", {
+      const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
-      })
+      });
 
       if (result?.error) {
-        setError("Invalid email or password")
-        return
+        setError('Invalid email or password');
+        return;
       }
 
-      router.push("/dashboard")
-      router.refresh()
+      router.push('/dashboard');
+      router.refresh();
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong. Please try again."
-      })
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -74,13 +74,9 @@ export function SignInForm() {
               required
             />
           </div>
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
           <Button disabled={loading}>
-            {loading && (
-              <span className="mr-2">Loading...</span>
-            )}
+            {loading && <span className="mr-2">Loading...</span>}
             Sign In
           </Button>
         </div>
@@ -90,27 +86,25 @@ export function SignInForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
+          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Button
           variant="outline"
-          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
           disabled={loading}
         >
           GitHub
         </Button>
         <Button
           variant="outline"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
           disabled={loading}
         >
           Google
         </Button>
       </div>
     </div>
-  )
-} 
+  );
+}

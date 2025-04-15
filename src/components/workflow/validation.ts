@@ -7,8 +7,8 @@ export class ConnectionValidator {
     sourcePort: string,
     targetPort: string
   ): { isValid: boolean; error?: string } {
-    const sourcePortData = source.data.outputs.find(p => p.id === sourcePort);
-    const targetPortData = target.data.inputs.find(p => p.id === targetPort);
+    const sourcePortData = source.data.outputs.find((p) => p.id === sourcePort);
+    const targetPortData = target.data.inputs.find((p) => p.id === targetPort);
 
     if (!sourcePortData) {
       return { isValid: false, error: 'Source port not found' };
@@ -48,7 +48,10 @@ export class ConnectionValidator {
     return compatibilityRules[source]?.includes(target) || false;
   }
 
-  static validateWorkflow(nodes: NodeObject[], connections: ConnectionObject[]): { isValid: boolean; errors: string[] } {
+  static validateWorkflow(
+    nodes: NodeObject[],
+    connections: ConnectionObject[]
+  ): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
     // Check for cycles
@@ -58,33 +61,28 @@ export class ConnectionValidator {
 
     // Check for disconnected nodes
     const connectedNodeIds = new Set<string>();
-    connections.forEach(conn => {
+    connections.forEach((conn) => {
       connectedNodeIds.add(conn.from);
       connectedNodeIds.add(conn.to);
     });
 
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       if (!connectedNodeIds.has(node.id)) {
         errors.push(`Node ${node.title} is disconnected`);
       }
     });
 
     // Validate each connection
-    connections.forEach(conn => {
-      const source = nodes.find(n => n.id === conn.from);
-      const target = nodes.find(n => n.id === conn.to);
+    connections.forEach((conn) => {
+      const source = nodes.find((n) => n.id === conn.from);
+      const target = nodes.find((n) => n.id === conn.to);
 
       if (!source || !target) {
         errors.push(`Connection references non-existent node`);
         return;
       }
 
-      const validation = this.validateConnection(
-        source,
-        target,
-        conn.fromPort,
-        conn.toPort
-      );
+      const validation = this.validateConnection(source, target, conn.fromPort, conn.toPort);
 
       if (!validation.isValid) {
         errors.push(`Invalid connection: ${validation.error}`);
@@ -103,11 +101,11 @@ export class ConnectionValidator {
     const recursionStack = new Set<string>();
 
     // Build adjacency list
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       graph.set(node.id, []);
     });
 
-    connections.forEach(conn => {
+    connections.forEach((conn) => {
       graph.get(conn.from)?.push(conn.to);
     });
 
@@ -143,4 +141,4 @@ export class ConnectionValidator {
 
     return false;
   }
-} 
+}

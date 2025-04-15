@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NodeData } from '../types';
 
@@ -39,9 +38,7 @@ export const LLMNodeProperties: React.FC<LLMNodePropertiesProps> = ({ data, titl
           onChange={(e) => onChange('temperature', parseFloat(e.target.value))}
           className="w-full"
         />
-        <div className="text-xs text-neutral-400 text-right">
-          {data.temperature || 0.7}
-        </div>
+        <div className="text-xs text-neutral-400 text-right">{data.temperature || 0.7}</div>
       </div>
       <div>
         <label className="block text-xs text-neutral-400 mb-1">Title</label>

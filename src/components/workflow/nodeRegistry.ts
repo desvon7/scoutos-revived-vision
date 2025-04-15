@@ -8,7 +8,8 @@ export const nodeTypes = {
     category: 'input',
     icon: 'text',
     color: '#4CAF50',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_INPUT)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_INPUT)
+      ?.defaultData,
   },
   [NodeType.FILE_INPUT]: {
     name: 'File Input',
@@ -16,7 +17,8 @@ export const nodeTypes = {
     category: 'input',
     icon: 'file',
     color: '#2196F3',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.FILE_INPUT)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.FILE_INPUT)
+      ?.defaultData,
   },
   [NodeType.TEXT_PROCESSING]: {
     name: 'Text Processing',
@@ -24,7 +26,8 @@ export const nodeTypes = {
     category: 'processing',
     icon: 'text-processing',
     color: '#9C27B0',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_PROCESSING)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_PROCESSING)
+      ?.defaultData,
   },
   [NodeType.CONDITIONAL]: {
     name: 'Conditional',
@@ -32,7 +35,8 @@ export const nodeTypes = {
     category: 'processing',
     icon: 'conditional',
     color: '#FF9800',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.CONDITIONAL)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.CONDITIONAL)
+      ?.defaultData,
   },
   [NodeType.GPT_4]: {
     name: 'GPT-4',
@@ -56,7 +60,8 @@ export const nodeTypes = {
     category: 'output',
     icon: 'text-output',
     color: '#607D8B',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_OUTPUT)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TEXT_OUTPUT)
+      ?.defaultData,
   },
   [NodeType.API]: {
     name: 'HTTP Request',
@@ -80,7 +85,8 @@ export const nodeTypes = {
     category: 'custom',
     icon: 'code',
     color: '#FFC107',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.JAVASCRIPT)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.JAVASCRIPT)
+      ?.defaultData,
   },
   [NodeType.CONDITION]: {
     name: 'Condition',
@@ -88,7 +94,8 @@ export const nodeTypes = {
     category: 'processing',
     icon: 'condition',
     color: '#FF5722',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.CONDITION)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.CONDITION)
+      ?.defaultData,
   },
   [NodeType.TRANSFORM]: {
     name: 'Transform',
@@ -96,7 +103,8 @@ export const nodeTypes = {
     category: 'processing',
     icon: 'transform',
     color: '#673AB7',
-    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TRANSFORM)?.defaultData,
+    defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.TRANSFORM)
+      ?.defaultData,
   },
   [NodeType.OUTPUT]: {
     name: 'Output',
@@ -122,4 +130,4 @@ export const nodeTypes = {
     color: '#795548',
     defaultData: NODE_TEMPLATES.find((t: NodeTemplate) => t.type === NodeType.DATA)?.defaultData,
   },
-}; 
+};

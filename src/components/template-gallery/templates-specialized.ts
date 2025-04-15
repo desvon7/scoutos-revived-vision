@@ -1,4 +1,3 @@
-
 import { Template } from './templates-ai-assistants';
 
 export const specializedToolsTemplates: Template[] = [
@@ -8,7 +7,7 @@ export const specializedToolsTemplates: Template[] = [
     title: 'Blog to Press Release',
     description: 'Convert a blog article into a press release with an About section',
     category: 'specialized-tools',
-    backgroundColor: '#4f46e5'
+    backgroundColor: '#4f46e5',
   },
   {
     id: 'perplexity',
@@ -16,7 +15,7 @@ export const specializedToolsTemplates: Template[] = [
     title: 'Perplexity Clone',
     description: 'Searches the web and uses an LLM to format responses',
     category: 'specialized-tools',
-    backgroundColor: '#4f46e5'
+    backgroundColor: '#4f46e5',
   },
   {
     id: 'prompt-comparison',
@@ -24,7 +23,7 @@ export const specializedToolsTemplates: Template[] = [
     title: 'Prompt Comparison',
     description: 'Compare cost, latency, and output quality of different AI prompts',
     category: 'specialized-tools',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     id: 'resume-reviewer',
@@ -32,7 +31,7 @@ export const specializedToolsTemplates: Template[] = [
     title: 'Resume Reviewer with AI Insights',
     description: 'Enhance job applications with AI-powered resume analysis',
     category: 'specialized-tools',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     id: 'review-responder',
@@ -40,6 +39,6 @@ export const specializedToolsTemplates: Template[] = [
     title: 'Review Responder',
     description: 'Automatically generate personalized responses to reviews',
     category: 'specialized-tools',
-    backgroundColor: '#10b981'
-  }
+    backgroundColor: '#10b981',
+  },
 ];

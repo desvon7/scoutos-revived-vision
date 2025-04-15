@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import TemplateFilterBar from './TemplateFilterBar';
 import TemplateResults from './TemplateResults';
@@ -13,15 +12,13 @@ const TemplatesTab = ({ onUseTemplate }: TemplatesTabProps) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Filter templates based on search and category
-  const filteredTemplates = templatesData.filter(template => {
-    const matchesSearch = 
-      template.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredTemplates = templatesData.filter((template) => {
+    const matchesSearch =
+      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = 
-      selectedCategory === 'all' || 
-      template.category === selectedCategory;
-    
+
+    const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
 
@@ -31,7 +28,7 @@ const TemplatesTab = ({ onUseTemplate }: TemplatesTabProps) => {
 
   return (
     <div>
-      <TemplateFilterBar 
+      <TemplateFilterBar
         categories={templateCategories}
         selectedCategory={selectedCategory}
         searchQuery={searchQuery}
@@ -40,10 +37,7 @@ const TemplatesTab = ({ onUseTemplate }: TemplatesTabProps) => {
         handleClearSearch={handleClearSearch}
       />
 
-      <TemplateResults 
-        filteredTemplates={filteredTemplates}
-        onUseTemplate={onUseTemplate}
-      />
+      <TemplateResults filteredTemplates={filteredTemplates} onUseTemplate={onUseTemplate} />
     </div>
   );
 };

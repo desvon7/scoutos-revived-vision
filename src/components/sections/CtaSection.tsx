@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,9 +6,7 @@ const CtaSection = () => {
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-secondary/20 to-background">
       <div className="container-custom text-center max-w-2xl mx-auto">
-        <h2 className="gradient-text mb-6 font-semibold">
-          Ready to get started?
-        </h2>
+        <h2 className="gradient-text mb-6 font-semibold">Ready to get started?</h2>
         <p className="text-lg mb-10 text-muted-foreground">
           Sign up for free or chat live with a Scout engineer.
         </p>

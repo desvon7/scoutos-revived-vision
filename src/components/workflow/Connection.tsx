@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DataType } from './types';
@@ -17,7 +16,7 @@ const dataTypeColors: Record<string, string> = {
   html: '#E91E63',
   markdown: '#3F51B5',
   vector: '#8BC34A',
-  any: '#9E9E9E'
+  any: '#9E9E9E',
 };
 
 const dataTypeThickness: Record<string, number> = {
@@ -33,7 +32,7 @@ const dataTypeThickness: Record<string, number> = {
   html: 2,
   markdown: 2,
   vector: 2,
-  any: 1
+  any: 1,
 };
 
 interface ConnectionProps {
@@ -69,12 +68,12 @@ export function Connection({
   to,
   fromPort,
   toPort,
-  style
+  style,
 }: ConnectionProps) {
   // Calculate control points for the bezier curve
   const dx = Math.abs(x2 - x1);
   const dy = Math.abs(y2 - y1);
-  
+
   const controlPoint1X = x1 + dx * 0.5;
   const controlPoint1Y = y1;
   const controlPoint2X = x2 - dx * 0.5;
@@ -82,7 +81,7 @@ export function Connection({
 
   const path = `M ${x1} ${y1} C ${controlPoint1X} ${controlPoint1Y}, ${controlPoint2X} ${controlPoint2Y}, ${x2} ${y2}`;
 
-  const safeType = typeof type === 'string' ? type as DataType : 'any';
+  const safeType = typeof type === 'string' ? (type as DataType) : 'any';
   const strokeColor = dataTypeColors[safeType] || dataTypeColors.any;
   const strokeWidth = dataTypeThickness[safeType] || dataTypeThickness.any;
 

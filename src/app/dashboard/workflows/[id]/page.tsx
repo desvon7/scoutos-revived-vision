@@ -1,16 +1,16 @@
-import { Metadata } from "next"
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
-import WorkflowEditor from "@/components/workflow/workflow-editor"
+import { Metadata } from 'next';
+import { DashboardLayout } from '@/components/layout/dashboard-layout';
+import WorkflowEditor from '@/components/workflow/workflow-editor';
 
 export const metadata: Metadata = {
-  title: "Workflow Editor",
-  description: "Edit your workflow",
-}
+  title: 'Workflow Editor',
+  description: 'Edit your workflow',
+};
 
 interface WorkflowEditorPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function WorkflowEditorPage({ params }: WorkflowEditorPageProps) {
@@ -21,5 +21,5 @@ export default function WorkflowEditorPage({ params }: WorkflowEditorPageProps) 
         <WorkflowEditor workflowId={params.id} />
       </div>
     </DashboardLayout>
-  )
-} 
+  );
+}

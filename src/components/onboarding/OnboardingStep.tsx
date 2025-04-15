@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export interface OnboardingStepProps {
@@ -14,10 +13,8 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ title, subtitle, conten
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">{title}</h1>
         <p className="text-muted-foreground">{subtitle}</p>
       </div>
-      
-      <div className="mb-10">
-        {content}
-      </div>
+
+      <div className="mb-10">{content}</div>
     </div>
   );
 };

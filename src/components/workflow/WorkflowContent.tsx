@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NodePanel } from './NodePanel';
 import { NodePropertiesPanel } from './NodePropertiesPanel';
@@ -62,23 +61,21 @@ export const WorkflowContent: React.FC<WorkflowContentProps> = ({
   onSave,
   onRun,
   onZoomIn,
-  onZoomOut
+  onZoomOut,
 }) => {
   // Get the selected node object
-  const selectedNode = selectedNodeId 
-    ? nodes.find(node => node.id === selectedNodeId) 
-    : null;
-  
+  const selectedNode = selectedNodeId ? nodes.find((node) => node.id === selectedNodeId) : null;
+
   return (
     <div className="rounded-xl bg-neutral-900 p-4 border border-neutral-700 shadow-xl overflow-hidden">
-      <WorkflowHeader 
+      <WorkflowHeader
         workflowName={workflowName}
         onWorkflowNameChange={setWorkflowName}
         onSave={onSave}
         onRun={onRun}
       />
-      
-      <WorkflowCanvas 
+
+      <WorkflowCanvas
         nodes={nodes}
         connections={connections}
         zoom={zoom}
@@ -88,8 +85,8 @@ export const WorkflowContent: React.FC<WorkflowContentProps> = ({
         onDragMove={onDragMove}
         onDragEnd={onDragEnd}
       />
-      
-      <WorkflowToolbar 
+
+      <WorkflowToolbar
         currentWorkflowName={currentWorkflowName}
         onAddNode={onAddNode}
         onZoomIn={onZoomIn}
@@ -98,19 +95,19 @@ export const WorkflowContent: React.FC<WorkflowContentProps> = ({
         onLoadWorkflow={() => onCloseSavedPanel()}
         onRun={onRun}
       />
-      
+
       {/* Node selection panel (appears when plus button is clicked) */}
       {showNodePanel && (
-        <NodePanel 
+        <NodePanel
           templates={nodeTemplates}
           onClose={onCloseNodePanel}
           onSelectNode={onSelectNode}
         />
       )}
-      
+
       {/* Node properties panel (appears when a node is selected) */}
       {selectedNode && (
-        <NodePropertiesPanel 
+        <NodePropertiesPanel
           node={selectedNode}
           onClose={() => onNodeClick(selectedNode.id)}
           onPropertyChange={onPropertyChange}
@@ -120,7 +117,7 @@ export const WorkflowContent: React.FC<WorkflowContentProps> = ({
 
       {/* Saved Workflows Panel */}
       {showSavedPanel && (
-        <SavedWorkflowsPanel 
+        <SavedWorkflowsPanel
           savedWorkflows={savedWorkflows}
           onClose={onCloseSavedPanel}
           onLoadWorkflow={onLoadWorkflow}

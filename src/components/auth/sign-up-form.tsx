@@ -1,69 +1,69 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/hooks/use-toast"
-import { signIn } from "next-auth/react"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
+import { signIn } from 'next-auth/react';
 
 export function SignUpForm() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setLoading(true)
-    setError("")
+    event.preventDefault();
+    setLoading(true);
+    setError('');
 
-    const formData = new FormData(event.currentTarget)
-    const name = formData.get("name") as string
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
-    const confirmPassword = formData.get("confirmPassword") as string
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      setLoading(false)
-      return
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
     }
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name,
           email,
           password,
         }),
-      })
+      });
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || "Something went wrong")
+        const data = await response.json();
+        throw new Error(data.message || 'Something went wrong');
       }
 
       toast({
-        title: "Success",
-        description: "Account created successfully"
-      })
-      router.push("/sign-in")
+        title: 'Success',
+        description: 'Account created successfully',
+      });
+      router.push('/sign-in');
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message)
+        setError(error.message);
       } else {
         toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Something went wrong. Please try again."
-        })
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -119,13 +119,9 @@ export function SignUpForm() {
               required
             />
           </div>
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
           <Button disabled={loading}>
-            {loading && (
-              <span className="mr-2">Loading...</span>
-            )}
+            {loading && <span className="mr-2">Loading...</span>}
             Sign Up
           </Button>
         </div>
@@ -135,27 +131,25 @@ export function SignUpForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
+          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Button
           variant="outline"
-          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
           disabled={loading}
         >
           GitHub
         </Button>
         <Button
           variant="outline"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
           disabled={loading}
         >
           Google
         </Button>
       </div>
     </div>
-  )
-} 
+  );
+}

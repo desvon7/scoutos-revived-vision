@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
 
@@ -10,7 +9,9 @@ const CollectionNode = ({ data, isConnectable }: NodeProps) => {
       </div>
       <div className="p-3">
         <div className="text-sm font-medium">{data.label}</div>
-        <div className="text-xs text-neutral-500 mt-1">{data.collection || 'Select a collection'}</div>
+        <div className="text-xs text-neutral-500 mt-1">
+          {data.collection || 'Select a collection'}
+        </div>
       </div>
       <Handle
         type="target"

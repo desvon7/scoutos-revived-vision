@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search } from 'lucide-react';
 import TemplateCard from './TemplateCard';
@@ -33,7 +32,7 @@ const TemplateResults = ({ filteredTemplates, onUseTemplate }: TemplateResultsPr
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredTemplates.map((template) => (
-        <TemplateCard 
+        <TemplateCard
           key={template.id}
           emoji={template.emoji}
           title={template.title}

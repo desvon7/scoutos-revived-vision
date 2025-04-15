@@ -1,4 +1,3 @@
-
 import { Template } from './templates-ai-assistants';
 
 export const seoTemplates: Template[] = [
@@ -8,7 +7,7 @@ export const seoTemplates: Template[] = [
     title: 'Boost SEO with Smart Metadata',
     description: 'Automatically generate SEO-optimized metadata page titles',
     category: 'seo',
-    backgroundColor: '#10b981'
+    backgroundColor: '#10b981',
   },
   {
     id: 'metadata-description',
@@ -16,7 +15,7 @@ export const seoTemplates: Template[] = [
     title: 'Improve Metadata Description',
     description: 'Generates metadata descriptions based on a URL',
     category: 'seo',
-    backgroundColor: '#0284c7'
+    backgroundColor: '#0284c7',
   },
   {
     id: 'webpage-metadata',
@@ -24,7 +23,7 @@ export const seoTemplates: Template[] = [
     title: 'Improve Webpage Metadata',
     description: 'Generates metadata page titles and descriptions based on a URL',
     category: 'seo',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     id: 'multi-language-seo',
@@ -32,7 +31,7 @@ export const seoTemplates: Template[] = [
     title: 'Multi-Language SEO Keyword',
     description: 'Reviews keywords and adapts them to multiple languages',
     category: 'seo',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     id: 'seo-keyword-enhancer',
@@ -40,7 +39,7 @@ export const seoTemplates: Template[] = [
     title: 'SEO Keyword Enhancer',
     description: 'Reviews and enriches blog articles with desired keywords',
     category: 'seo',
-    backgroundColor: '#059669'
+    backgroundColor: '#059669',
   },
   {
     id: 'single-page-crawl',
@@ -48,6 +47,6 @@ export const seoTemplates: Template[] = [
     title: 'Single Page Crawl',
     description: 'Crawls and returns content for a single web page',
     category: 'seo',
-    backgroundColor: '#6366f1'
-  }
+    backgroundColor: '#6366f1',
+  },
 ];

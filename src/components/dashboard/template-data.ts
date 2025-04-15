@@ -1,4 +1,3 @@
-
 // Template categories
 export const templateCategories = [
   { id: 'all', name: 'All Templates' },
@@ -20,7 +19,7 @@ export const templatesData = [
     title: 'AI-Powered SEO Blog Generator',
     description: 'Automate the creation of SEO-optimized blog posts using AI and NLP',
     category: 'marketing',
-    backgroundColor: '#10b981'
+    backgroundColor: '#10b981',
   },
   {
     id: 'perplexity',
@@ -28,7 +27,7 @@ export const templatesData = [
     title: 'Perplexity Clone',
     description: 'This workflow searches the web and uses an LLM to format a response',
     category: 'ai',
-    backgroundColor: '#4f46e5'
+    backgroundColor: '#4f46e5',
   },
   {
     id: 'basic-llm',
@@ -36,7 +35,7 @@ export const templatesData = [
     title: 'Basic LLM Workflow',
     description: 'Enhance your productivity with the Basic LLM Workflow',
     category: 'ai',
-    backgroundColor: '#b91c1c'
+    backgroundColor: '#b91c1c',
   },
   {
     id: 'slack-rag',
@@ -44,7 +43,7 @@ export const templatesData = [
     title: 'AI Slack RAG Bot (Simple)',
     description: 'This workflow is the second part of a two-part system',
     category: 'customer-support',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     id: 'rag',
@@ -52,7 +51,7 @@ export const templatesData = [
     title: 'Basic RAG Workflow',
     description: "A basic RAG workflow template using Scout's powerful workflow builder",
     category: 'ai',
-    backgroundColor: '#db2777'
+    backgroundColor: '#db2777',
   },
   {
     id: 'model-comparison',
@@ -60,7 +59,7 @@ export const templatesData = [
     title: 'LLM Model Comparison Tool',
     description: 'Compare the performance, cost, and output of multiple AI language models',
     category: 'ai',
-    backgroundColor: '#059669'
+    backgroundColor: '#059669',
   },
   {
     id: 'email-generator',
@@ -68,7 +67,7 @@ export const templatesData = [
     title: 'AI Email Generator',
     description: 'Generate professional emails with customizable templates and tone',
     category: 'marketing',
-    backgroundColor: '#d97706'
+    backgroundColor: '#d97706',
   },
   {
     id: 'data-analysis',
@@ -76,7 +75,7 @@ export const templatesData = [
     title: 'Data Analysis Pipeline',
     description: 'Process and analyze data from multiple sources',
     category: 'data',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     id: 'customer-service',
@@ -84,6 +83,6 @@ export const templatesData = [
     title: 'Customer Service Agent',
     description: 'AI-powered customer service agent workflow',
     category: 'customer-support',
-    backgroundColor: '#8b5cf6'
-  }
+    backgroundColor: '#8b5cf6',
+  },
 ];

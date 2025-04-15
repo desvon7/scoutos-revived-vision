@@ -1,4 +1,3 @@
-
 import { Template } from './templates-ai-assistants';
 
 export const socialMediaTemplates: Template[] = [
@@ -8,7 +7,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Blog to Facebook Post',
     description: 'Generate Facebook Posts with customizable tones',
     category: 'social-media',
-    backgroundColor: '#1877f2'
+    backgroundColor: '#1877f2',
   },
   {
     id: 'blog-to-linkedin',
@@ -16,7 +15,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Blog to LinkedIn Post',
     description: 'Generate LinkedIn Posts with customizable tones',
     category: 'social-media',
-    backgroundColor: '#0a66c2'
+    backgroundColor: '#0a66c2',
   },
   {
     id: 'blog-to-social',
@@ -24,7 +23,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Blog to Social Posts',
     description: 'Convert blog articles into social media posts',
     category: 'social-media',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     id: 'blog-to-tweet',
@@ -32,7 +31,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Blog to Tweet',
     description: 'Generate Tweets (X Posts) with customizable tones',
     category: 'social-media',
-    backgroundColor: '#1da1f2'
+    backgroundColor: '#1da1f2',
   },
   {
     id: 'search-results-crawler',
@@ -40,7 +39,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Search Results Crawler',
     description: 'Crawls top search results and returns content',
     category: 'social-media',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     id: 'simple-api-endpoint',
@@ -48,7 +47,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Simple API Endpoint',
     description: 'A simple workflow that takes an input and inspects the payload',
     category: 'social-media',
-    backgroundColor: '#6366f1'
+    backgroundColor: '#6366f1',
   },
   {
     id: 'webpage-to-facebook',
@@ -56,7 +55,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Webpage to Facebook Post',
     description: 'Generate Facebook posts from webpage content',
     category: 'social-media',
-    backgroundColor: '#1877f2'
+    backgroundColor: '#1877f2',
   },
   {
     id: 'webpage-to-linkedin',
@@ -64,7 +63,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Webpage to LinkedIn Post',
     description: 'Generate LinkedIn posts from webpage content',
     category: 'social-media',
-    backgroundColor: '#0a66c2'
+    backgroundColor: '#0a66c2',
   },
   {
     id: 'webpage-to-tweet',
@@ -72,7 +71,7 @@ export const socialMediaTemplates: Template[] = [
     title: 'Webpage to Tweet',
     description: 'Generate Tweets (X Posts) from webpage content',
     category: 'social-media',
-    backgroundColor: '#1da1f2'
+    backgroundColor: '#1da1f2',
   },
   {
     id: 'weather-report',
@@ -80,6 +79,6 @@ export const socialMediaTemplates: Template[] = [
     title: 'Weather Report',
     description: 'Provides comprehensive weather reports',
     category: 'social-media',
-    backgroundColor: '#0891b2'
-  }
+    backgroundColor: '#0891b2',
+  },
 ];

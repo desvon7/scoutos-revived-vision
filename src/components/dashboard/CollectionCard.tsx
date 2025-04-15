@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,16 +12,16 @@ interface CollectionCardProps {
   chunks: number;
 }
 
-const CollectionCard = ({ 
-  title, 
-  description, 
-  icon, 
-  count, 
-  createdDate, 
-  chunks 
+const CollectionCard = ({
+  title,
+  description,
+  icon,
+  count,
+  createdDate,
+  chunks,
 }: CollectionCardProps) => {
   const Icon = icon === 'box' ? Box : Bookmark;
-  
+
   return (
     <Card className="border hover:shadow-md transition-shadow">
       <CardContent className="p-6">
@@ -35,9 +34,7 @@ const CollectionCard = ({
           </div>
         </div>
         <h3 className="text-lg font-medium mb-1">{title}</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          {description}
-        </p>
+        <p className="text-sm text-muted-foreground mb-4">{description}</p>
         <div className="flex items-center text-xs text-muted-foreground">
           <span className="mr-4">Created {createdDate}</span>
           <span>{chunks} chunks</span>

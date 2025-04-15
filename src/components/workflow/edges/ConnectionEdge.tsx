@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { EdgeProps, getBezierPath } from 'reactflow';
 import { DataType } from '../types';
@@ -10,7 +9,7 @@ const typeColors: Record<string, string> = {
   boolean: '#ff9800',
   object: '#e91e63',
   array: '#9c27b0',
-  any: '#607d8b'
+  any: '#607d8b',
 };
 
 const ConnectionEdge: React.FC<EdgeProps> = ({
@@ -25,7 +24,7 @@ const ConnectionEdge: React.FC<EdgeProps> = ({
   targetPosition,
   data,
   style = {},
-  markerEnd
+  markerEnd,
 }) => {
   // Get path for the edge
   const [edgePath] = getBezierPath({
@@ -34,7 +33,7 @@ const ConnectionEdge: React.FC<EdgeProps> = ({
     sourcePosition,
     targetX,
     targetY,
-    targetPosition
+    targetPosition,
   });
 
   // Determine the color based on data type

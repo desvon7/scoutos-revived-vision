@@ -16,8 +16,8 @@ const WorkflowBuilderPage: React.FC = () => {
   const handleSave = () => {
     saveWorkflow();
     toast({
-      title: "Success",
-      description: "Workflow saved successfully"
+      title: 'Success',
+      description: 'Workflow saved successfully',
     });
   };
 
@@ -38,14 +38,14 @@ const WorkflowBuilderPage: React.FC = () => {
       setShowImportModal(false);
       setImportData('');
       toast({
-        title: "Success",
-        description: "Workflow imported successfully"
+        title: 'Success',
+        description: 'Workflow imported successfully',
       });
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: `Error importing workflow: ${error.message}`
+        variant: 'destructive',
+        title: 'Error',
+        description: `Error importing workflow: ${error.message}`,
       });
     }
   };
@@ -143,8 +143,8 @@ const WorkflowBuilderPage: React.FC = () => {
                 onClick={() => {
                   navigator.clipboard.writeText(exportWorkflow());
                   toast({
-                    title: "Success",
-                    description: "Workflow JSON copied to clipboard"
+                    title: 'Success',
+                    description: 'Workflow JSON copied to clipboard',
                   });
                 }}
               >

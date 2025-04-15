@@ -22,7 +22,7 @@ export class NodeValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -143,44 +143,42 @@ export class NodeValidator {
 
   private static validateGPT4(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.model === 'string' &&
-           typeof config.temperature === 'number' &&
-           config.temperature >= 0 && 
-           config.temperature <= 2;
+    return (
+      config &&
+      typeof config.model === 'string' &&
+      typeof config.temperature === 'number' &&
+      config.temperature >= 0 &&
+      config.temperature <= 2
+    );
   }
 
   private static validateAPI(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.url === 'string' &&
-           typeof config.method === 'string' &&
-           ['GET', 'POST', 'PUT', 'DELETE'].includes(config.method);
+    return (
+      config &&
+      typeof config.url === 'string' &&
+      typeof config.method === 'string' &&
+      ['GET', 'POST', 'PUT', 'DELETE'].includes(config.method)
+    );
   }
 
   private static validateCondition(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.condition === 'string' &&
-           node.data.outputs.length === 2; // True and False outputs
+    return config && typeof config.condition === 'string' && node.data.outputs.length === 2; // True and False outputs
   }
 
   private static validateLoop(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.iterations === 'number' &&
-           config.iterations > 0;
+    return config && typeof config.iterations === 'number' && config.iterations > 0;
   }
 
   private static validateTransform(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.transform === 'string';
+    return config && typeof config.transform === 'string';
   }
 
   private static validateData(node: Node): boolean {
     const config = node.data.config;
-    return config && 
-           typeof config.data !== 'undefined';
+    return config && typeof config.data !== 'undefined';
   }
-} 
+}

@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { 
-  NodeType, NodeCategory, DataType, 
-  Node, Port, NodeData 
-} from '../types/nodes';
+import { NodeType, NodeCategory, DataType, Node, Port, NodeData } from '../types/nodes';
 
 // Node metadata interface to store configuration for each node type
 export interface NodeTypeMetadata {
@@ -56,7 +53,7 @@ class NodeRegistry {
   // Create a new node of a specific type
   public createNode(type: NodeType, position: { x: number; y: number }): Node {
     const metadata = this.getNodeTypeMetadata(type);
-    
+
     if (!metadata) {
       throw new Error(`Node type not registered: ${type}`);
     }
@@ -68,7 +65,7 @@ class NodeRegistry {
       dataType: input.dataType,
       description: input.description,
       required: input.required,
-      default: input.default
+      default: input.default,
     }));
 
     // Create output ports
@@ -76,7 +73,7 @@ class NodeRegistry {
       id: `output-${index}`,
       name: output.name,
       dataType: output.dataType,
-      description: output.description
+      description: output.description,
     }));
 
     // Create node data
@@ -89,7 +86,7 @@ class NodeRegistry {
       category: metadata.category,
       type: metadata.type,
       icon: metadata.icon,
-      color: metadata.color
+      color: metadata.color,
     };
 
     // Create and return the node
@@ -99,7 +96,7 @@ class NodeRegistry {
       position,
       data: nodeData,
       selected: false,
-      dragging: false
+      dragging: false,
     };
   }
 
@@ -116,16 +113,16 @@ class NodeRegistry {
       defaultConfig: {
         placeholder: 'Enter text...',
         multiline: false,
-        maxLength: 1000
+        maxLength: 1000,
       },
       inputs: [],
       outputs: [
         {
           name: 'text',
           dataType: DataType.STRING,
-          description: 'The text input value'
-        }
-      ]
+          description: 'The text input value',
+        },
+      ],
     });
 
     // Register LLM nodes
@@ -140,34 +137,34 @@ class NodeRegistry {
         model: 'gpt-4',
         temperature: 0.7,
         maxTokens: 1000,
-        systemPrompt: 'You are a helpful assistant.'
+        systemPrompt: 'You are a helpful assistant.',
       },
       inputs: [
         {
           name: 'prompt',
           dataType: DataType.STRING,
           description: 'The prompt to send to the model',
-          required: true
+          required: true,
         },
         {
           name: 'context',
           dataType: DataType.ARRAY,
           description: 'Additional context for the model',
-          required: false
-        }
+          required: false,
+        },
       ],
       outputs: [
         {
           name: 'response',
           dataType: DataType.STRING,
-          description: 'The generated response'
+          description: 'The generated response',
         },
         {
           name: 'usage',
           dataType: DataType.OBJECT,
-          description: 'Token usage information'
-        }
-      ]
+          description: 'Token usage information',
+        },
+      ],
     });
 
     // Add more node type registrations here...
@@ -178,4 +175,4 @@ class NodeRegistry {
 const nodeRegistry = new NodeRegistry();
 nodeRegistry.initialize();
 
-export default nodeRegistry; 
+export default nodeRegistry;

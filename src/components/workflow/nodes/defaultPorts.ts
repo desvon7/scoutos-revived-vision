@@ -1,4 +1,3 @@
-
 import { NodeType, Port } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,9 +10,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'text',
         dataType: 'string',
         label: 'Text',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.URL_INPUT]: {
     inputs: [],
@@ -23,9 +22,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'url',
         dataType: 'string',
         label: 'URL',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.JSON_INPUT]: {
     inputs: [],
@@ -35,9 +34,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'data',
         dataType: 'json',
         label: 'JSON Data',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.FILE_UPLOAD]: {
     inputs: [],
@@ -47,9 +46,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'file',
         dataType: 'file',
         label: 'File',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.GPT_4]: {
     inputs: [
@@ -58,15 +57,15 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'prompt',
         dataType: 'string',
         label: 'Prompt',
-        required: true
+        required: true,
       },
       {
         id: uuidv4(),
         name: 'config',
         dataType: 'object',
         label: 'Configuration',
-        required: false
-      }
+        required: false,
+      },
     ],
     outputs: [
       {
@@ -74,9 +73,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'string',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.GPT_35_TURBO]: {
     inputs: [
@@ -85,15 +84,15 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'prompt',
         dataType: 'string',
         label: 'Prompt',
-        required: true
+        required: true,
       },
       {
         id: uuidv4(),
         name: 'config',
         dataType: 'object',
         label: 'Configuration',
-        required: false
-      }
+        required: false,
+      },
     ],
     outputs: [
       {
@@ -101,9 +100,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'string',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.CLAUDE_3_OPUS]: {
     inputs: [
@@ -112,15 +111,15 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'prompt',
         dataType: 'string',
         label: 'Prompt',
-        required: true
+        required: true,
       },
       {
         id: uuidv4(),
         name: 'config',
         dataType: 'object',
         label: 'Configuration',
-        required: false
-      }
+        required: false,
+      },
     ],
     outputs: [
       {
@@ -128,9 +127,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'string',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.CLAUDE_3_SONNET]: {
     inputs: [
@@ -139,15 +138,15 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'prompt',
         dataType: 'string',
         label: 'Prompt',
-        required: true
+        required: true,
       },
       {
         id: uuidv4(),
         name: 'config',
         dataType: 'object',
         label: 'Configuration',
-        required: false
-      }
+        required: false,
+      },
     ],
     outputs: [
       {
@@ -155,9 +154,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'string',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.OUTPUT]: {
     inputs: [
@@ -166,10 +165,10 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'input',
         dataType: 'any',
         label: 'Input',
-        required: true
-      }
+        required: true,
+      },
     ],
-    outputs: []
+    outputs: [],
   },
   [NodeType.STREAM_OUTPUT]: {
     inputs: [
@@ -178,10 +177,10 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'input',
         dataType: 'string',
         label: 'Input',
-        required: true
-      }
+        required: true,
+      },
     ],
-    outputs: []
+    outputs: [],
   },
   [NodeType.CONDITION]: {
     inputs: [
@@ -190,8 +189,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'condition',
         dataType: 'boolean',
         label: 'Condition',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -199,16 +198,16 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'true',
         dataType: 'any',
         label: 'True',
-        required: true
+        required: true,
       },
       {
         id: uuidv4(),
         name: 'false',
         dataType: 'any',
         label: 'False',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.LOOP]: {
     inputs: [
@@ -217,8 +216,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'items',
         dataType: 'array',
         label: 'Items',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -226,9 +225,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'item',
         dataType: 'any',
         label: 'Item',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.API]: {
     inputs: [
@@ -237,8 +236,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'request',
         dataType: 'object',
         label: 'Request',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -246,9 +245,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'object',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.WEBHOOK]: {
     inputs: [
@@ -257,8 +256,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'request',
         dataType: 'object',
         label: 'Request',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -266,9 +265,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'response',
         dataType: 'object',
         label: 'Response',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.COLLECTION]: {
     inputs: [
@@ -277,8 +276,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'query',
         dataType: 'string',
         label: 'Query',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -286,9 +285,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'results',
         dataType: 'array',
         label: 'Results',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.VECTOR_DB]: {
     inputs: [
@@ -297,8 +296,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'embedding',
         dataType: 'vector',
         label: 'Embedding',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -306,9 +305,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'results',
         dataType: 'array',
         label: 'Results',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.JAVASCRIPT]: {
     inputs: [
@@ -317,8 +316,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'input',
         dataType: 'any',
         label: 'Input',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -326,9 +325,9 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'output',
         dataType: 'any',
         label: 'Output',
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   [NodeType.PYTHON]: {
     inputs: [
@@ -337,8 +336,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'input',
         dataType: 'any',
         label: 'Input',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
@@ -346,8 +345,8 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
         name: 'output',
         dataType: 'any',
         label: 'Output',
-        required: true
-      }
-    ]
-  }
+        required: true,
+      },
+    ],
+  },
 };

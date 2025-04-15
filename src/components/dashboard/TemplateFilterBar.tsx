@@ -39,7 +39,7 @@ const TemplateFilterBar = ({
   return (
     <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
       <h2 className="text-2xl font-semibold">Templates</h2>
-      
+
       <div className="flex gap-3 flex-col sm:flex-row">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -50,10 +50,7 @@ const TemplateFilterBar = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[200px]">
             {categories.map((category) => (
-              <DropdownMenuItem 
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
+              <DropdownMenuItem key={category.id} onClick={() => setSelectedCategory(category.id)}>
                 {category.name}
               </DropdownMenuItem>
             ))}

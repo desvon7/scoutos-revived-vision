@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NodeProps } from './types';
 import { cn } from '@/lib/utils';
@@ -17,7 +16,7 @@ export const Node: React.FC<NodeProps> = ({
   onDragMove,
   onDragEnd,
   onUpdate,
-  onDelete
+  onDelete,
 }) => {
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -53,7 +52,7 @@ export const Node: React.FC<NodeProps> = ({
         left: x,
         top: y,
         width: '200px',
-        cursor: 'move'
+        cursor: 'move',
       }}
       onClick={onClick}
       onMouseDown={handleMouseDown}
@@ -61,13 +60,11 @@ export const Node: React.FC<NodeProps> = ({
       <div className="flex items-center gap-2">
         <div className="text-sm font-medium text-neutral-200">{title}</div>
       </div>
-      <div className="mt-2 text-xs text-neutral-400">
-        {data.type}
-      </div>
-      
+      <div className="mt-2 text-xs text-neutral-400">{data.type}</div>
+
       <div className="flex justify-end mt-4">
-        <button 
-          className="text-xs text-red-400 hover:text-red-300" 
+        <button
+          className="text-xs text-red-400 hover:text-red-300"
           onClick={(e) => {
             e.stopPropagation();
             onDelete(id);

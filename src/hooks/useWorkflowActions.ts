@@ -20,20 +20,20 @@ export function useWorkflowActions(
   // State for showing panels
   const [showNodePanel, setShowNodePanel] = useState(false);
   const [showSavedPanel, setShowSavedPanel] = useState(false);
-  
+
   // Handle node selection
   const handleNodeClick = (id: string) => {
     setSelectedNodeId(id === selectedNodeId ? null : id);
   };
-  
+
   // Add a new node from a template
   const addNode = (template: NodeTemplate) => {
     const nodeType = template.type as NodeType;
     const newId = `${Date.now()}`;
-    
+
     // Initialize with default data based on node type
     let nodeData: NodeData = {};
-    
+
     if (nodeType === 'llm') {
       nodeData = { model: 'gpt-4o', temperature: 0.7 };
     } else if (nodeType === 'memory') {
@@ -47,16 +47,16 @@ export function useWorkflowActions(
     } else if (nodeType === 'collection') {
       nodeData = { collectionId: '' };
     }
-    
+
     const newNode: NodeObject = {
       id: newId,
       title: template.name,
       type: nodeType,
       x: 300,
       y: 300,
-      data: nodeData
+      data: nodeData,
     };
-    
+
     setNodes([...nodes, newNode]);
     setSelectedNodeId(newId);
     setShowNodePanel(false);
@@ -64,54 +64,54 @@ export function useWorkflowActions(
 
   // Handle property change for a node
   const handlePropertyChange = (id: string, data: Partial<NodeData>) => {
-    setNodes(nodes.map(node => {
-      if (node.id === id) {
-        return { 
-          ...node, 
-          title: data.title || node.title,  // Update title if it's in the data
-          data: { 
-            ...(node.data || {}),  // Keep existing data
-            ...data  // Add new data
-          } 
-        };
-      }
-      return node;
-    }));
+    setNodes(
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            title: data.title || node.title, // Update title if it's in the data
+            data: {
+              ...(node.data || {}), // Keep existing data
+              ...data, // Add new data
+            },
+          };
+        }
+        return node;
+      })
+    );
   };
 
   // Delete a node and its connections
   const handleDeleteNode = (id: string) => {
-    setNodes(nodes.filter(node => node.id !== id));
-    setConnections(connections.filter(
-      conn => conn.from !== id && conn.to !== id
-    ));
+    setNodes(nodes.filter((node) => node.id !== id));
+    setConnections(connections.filter((conn) => conn.from !== id && conn.to !== id));
     setSelectedNodeId(null);
   };
-  
+
   // Save the current workflow
   const saveWorkflow = () => {
-    const name = prompt("Enter a name for this workflow:", currentWorkflowName || workflowName);
-    
+    const name = prompt('Enter a name for this workflow:', currentWorkflowName || workflowName);
+
     if (!name) return; // User cancelled
-    
+
     const workflowData = {
       name,
       nodes,
       connections,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    
+
     // Save to localStorage
     setSavedWorkflows({
       ...savedWorkflows,
-      [name]: workflowData
+      [name]: workflowData,
     });
-    
+
     setCurrentWorkflowName(name);
     setWorkflowName(name);
     toast({
-      title: "Success",
-      description: `Workflow "${name}" saved successfully`
+      title: 'Success',
+      description: `Workflow "${name}" saved successfully`,
     });
   };
 
@@ -120,36 +120,36 @@ export function useWorkflowActions(
     const workflow = savedWorkflows[name];
     if (!workflow) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Workflow not found"
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Workflow not found',
       });
       return;
     }
-    
+
     setNodes(workflow.nodes);
     setConnections(workflow.connections);
     setCurrentWorkflowName(name);
     setWorkflowName(name);
     setShowSavedPanel(false);
     toast({
-      title: "Success",
-      description: `Workflow "${name}" loaded successfully`
+      title: 'Success',
+      description: `Workflow "${name}" loaded successfully`,
     });
   };
 
   // Run the workflow (simulation)
   const runWorkflow = () => {
     toast({
-      title: "Success",
-      description: "Workflow execution started"
+      title: 'Success',
+      description: 'Workflow execution started',
     });
-    
+
     // For demo purposes, show a toast after a short delay
     setTimeout(() => {
       toast({
-        title: "Success",
-        description: "Workflow execution completed successfully"
+        title: 'Success',
+        description: 'Workflow execution completed successfully',
       });
     }, 2000);
   };
@@ -165,6 +165,6 @@ export function useWorkflowActions(
     handleDeleteNode,
     saveWorkflow,
     loadWorkflow,
-    runWorkflow
+    runWorkflow,
   };
 }

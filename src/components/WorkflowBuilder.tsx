@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useWorkflow } from '@/hooks/useWorkflow';
 import { useDragNode } from '@/hooks/useDragNode';
@@ -9,28 +8,29 @@ import { WorkflowContent } from './workflow/WorkflowContent';
 const WorkflowBuilder: React.FC = () => {
   // Get workflow state from custom hooks
   const {
-    workflowName, 
+    workflowName,
     setWorkflowName,
-    nodes, 
+    nodes,
     setNodes,
-    connections, 
+    connections,
     setConnections,
-    savedWorkflows, 
+    savedWorkflows,
     setSavedWorkflows,
-    selectedNodeId, 
+    selectedNodeId,
     setSelectedNodeId,
-    currentWorkflowName, 
-    setCurrentWorkflowName
+    currentWorkflowName,
+    setCurrentWorkflowName,
   } = useWorkflow();
-  
+
   const { zoom, zoomIn, zoomOut } = useZoom();
-  
-  const { 
-    handleDragStart, 
-    handleDragMove, 
-    handleDragEnd 
-  } = useDragNode(nodes, setNodes, connections, setConnections);
-  
+
+  const { handleDragStart, handleDragMove, handleDragEnd } = useDragNode(
+    nodes,
+    setNodes,
+    connections,
+    setConnections
+  );
+
   const {
     showNodePanel,
     setShowNodePanel,
@@ -42,7 +42,7 @@ const WorkflowBuilder: React.FC = () => {
     handleDeleteNode,
     saveWorkflow,
     loadWorkflow,
-    runWorkflow
+    runWorkflow,
   } = useWorkflowActions(
     nodes,
     setNodes,
@@ -58,12 +58,12 @@ const WorkflowBuilder: React.FC = () => {
     currentWorkflowName,
     setCurrentWorkflowName
   );
-  
+
   // Handle drag move with current zoom level
   const handleNodeDragMove = (event: React.MouseEvent) => {
     handleDragMove(event, zoom);
   };
-  
+
   return (
     <WorkflowContent
       workflowName={workflowName}

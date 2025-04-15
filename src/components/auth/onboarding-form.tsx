@@ -93,9 +93,7 @@ export function OnboardingForm() {
         {steps.map((_, index) => (
           <div
             key={index}
-            className={`h-2 w-full rounded ${
-              index <= currentStep ? 'bg-primary' : 'bg-muted'
-            }`}
+            className={`h-2 w-full rounded ${index <= currentStep ? 'bg-primary' : 'bg-muted'}`}
           />
         ))}
       </div>

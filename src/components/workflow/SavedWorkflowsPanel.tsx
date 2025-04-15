@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
@@ -12,7 +11,7 @@ interface SavedWorkflowsPanelProps {
 export const SavedWorkflowsPanel: React.FC<SavedWorkflowsPanelProps> = ({
   savedWorkflows,
   onClose,
-  onLoadWorkflow
+  onLoadWorkflow,
 }) => {
   return (
     <div className="absolute right-4 top-4 w-80 bg-white rounded-lg shadow-lg border border-gray-200 max-h-[80vh] flex flex-col">
@@ -24,12 +23,10 @@ export const SavedWorkflowsPanel: React.FC<SavedWorkflowsPanelProps> = ({
           </Button>
         </div>
       </div>
-      
+
       <div className="overflow-y-auto p-3 flex-1">
         {Object.keys(savedWorkflows).length === 0 ? (
-          <div className="text-center py-6 text-gray-500">
-            No saved workflows
-          </div>
+          <div className="text-center py-6 text-gray-500">No saved workflows</div>
         ) : (
           <div className="space-y-2">
             {Object.entries(savedWorkflows).map(([name, workflow]) => (
@@ -40,12 +37,13 @@ export const SavedWorkflowsPanel: React.FC<SavedWorkflowsPanelProps> = ({
               >
                 <div className="font-medium">{name}</div>
                 <div className="text-sm text-gray-500">
-                  {workflow.timestamp ? 
-                    new Date(workflow.timestamp).toLocaleString() : 
-                    "No timestamp"}
+                  {workflow.timestamp
+                    ? new Date(workflow.timestamp).toLocaleString()
+                    : 'No timestamp'}
                 </div>
                 <div className="text-xs text-gray-400">
-                  {workflow.nodes?.length || 0} nodes, {workflow.connections?.length || 0} connections
+                  {workflow.nodes?.length || 0} nodes, {workflow.connections?.length || 0}{' '}
+                  connections
                 </div>
               </button>
             ))}

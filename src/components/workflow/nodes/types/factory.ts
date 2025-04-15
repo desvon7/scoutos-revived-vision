@@ -1,4 +1,3 @@
-
 import { NodeType, NodeData, NodeObject, Port } from '../../types';
 
 export interface NodeFactoryConfig {

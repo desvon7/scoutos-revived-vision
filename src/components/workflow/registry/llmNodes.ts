@@ -1,4 +1,3 @@
-
 import { NodeType, NodeCategory } from '../types';
 import { NodeTypeMetadata } from './types';
 
@@ -13,23 +12,23 @@ export const llmNodes: NodeTypeMetadata[] = [
     defaultConfig: {
       temperature: 0.7,
       maxTokens: 1000,
-      topP: 1
+      topP: 1,
     },
     inputs: [
       {
         name: 'prompt',
         dataType: 'string',
         description: 'Input prompt',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
         name: 'response',
         dataType: 'string',
-        description: 'Model response'
-      }
-    ]
+        description: 'Model response',
+      },
+    ],
   },
   {
     type: NodeType.GPT_35_TURBO,
@@ -41,22 +40,22 @@ export const llmNodes: NodeTypeMetadata[] = [
     defaultConfig: {
       temperature: 0.7,
       maxTokens: 1000,
-      topP: 1
+      topP: 1,
     },
     inputs: [
       {
         name: 'prompt',
         dataType: 'string',
         description: 'Input prompt',
-        required: true
-      }
+        required: true,
+      },
     ],
     outputs: [
       {
         name: 'response',
         dataType: 'string',
-        description: 'Model response'
-      }
-    ]
-  }
+        description: 'Model response',
+      },
+    ],
+  },
 ];

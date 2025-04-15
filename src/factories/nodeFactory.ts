@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Node, NodeType, Port, DataType } from '../types/nodes';
 
 class NodeFactory {
-  createNode(type: NodeType, position: { x: number, y: number }): Node {
+  createNode(type: NodeType, position: { x: number; y: number }): Node {
     const id = uuidv4();
     const inputs: Port[] = [];
     const outputs: Port[] = [];
@@ -14,7 +14,7 @@ class NodeFactory {
         outputs.push({
           id: uuidv4(),
           name: 'text',
-          dataType: DataType.STRING
+          dataType: DataType.STRING,
         });
         config.text = '';
         break;
@@ -23,12 +23,12 @@ class NodeFactory {
         inputs.push({
           id: uuidv4(),
           name: 'prompt',
-          dataType: DataType.STRING
+          dataType: DataType.STRING,
         });
         outputs.push({
           id: uuidv4(),
           name: 'response',
-          dataType: DataType.STRING
+          dataType: DataType.STRING,
         });
         config.model = 'gpt-4';
         config.temperature = 0.7;
@@ -38,12 +38,12 @@ class NodeFactory {
         inputs.push({
           id: uuidv4(),
           name: 'input',
-          dataType: DataType.ANY
+          dataType: DataType.ANY,
         });
         outputs.push({
           id: uuidv4(),
           name: 'response',
-          dataType: DataType.ANY
+          dataType: DataType.ANY,
         });
         config.url = '';
         config.method = 'GET';
@@ -53,18 +53,18 @@ class NodeFactory {
         inputs.push({
           id: uuidv4(),
           name: 'condition',
-          dataType: DataType.BOOLEAN
+          dataType: DataType.BOOLEAN,
         });
         outputs.push(
           {
             id: uuidv4(),
             name: 'true',
-            dataType: DataType.ANY
+            dataType: DataType.ANY,
           },
           {
             id: uuidv4(),
             name: 'false',
-            dataType: DataType.ANY
+            dataType: DataType.ANY,
           }
         );
         break;
@@ -73,12 +73,12 @@ class NodeFactory {
         inputs.push({
           id: uuidv4(),
           name: 'input',
-          dataType: DataType.ANY
+          dataType: DataType.ANY,
         });
         outputs.push({
           id: uuidv4(),
           name: 'output',
-          dataType: DataType.ANY
+          dataType: DataType.ANY,
         });
         config.transform = '';
         break;
@@ -87,7 +87,7 @@ class NodeFactory {
         inputs.push({
           id: uuidv4(),
           name: 'input',
-          dataType: DataType.ANY
+          dataType: DataType.ANY,
         });
         break;
     }
@@ -99,11 +99,11 @@ class NodeFactory {
       data: {
         inputs,
         outputs,
-        config
-      }
+        config,
+      },
     };
   }
 }
 
 const nodeFactory = new NodeFactory();
-export default nodeFactory; 
+export default nodeFactory;

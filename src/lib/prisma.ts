@@ -1,9 +1,8 @@
-
 // We need to install @prisma/client for this to work
 // For now, we'll mock the PrismaClient to avoid build errors
 class PrismaClient {
   constructor(options?: any) {}
-  
+
   // Mock the user model
   user = {
     findUnique: async () => null,
@@ -11,17 +10,17 @@ class PrismaClient {
     create: async () => null,
     update: async () => null,
     delete: async () => null,
-  }
+  };
 }
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
+  prisma: PrismaClient | undefined;
+};
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    log: ["query"],
-  })
+    log: ['query'],
+  });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma 
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

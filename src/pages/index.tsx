@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -17,7 +16,7 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-background">
       <AnnouncementBar />
       <Navbar />
-      
+
       <HeroSection />
       <TrustedBySection />
       <BuildSection />
@@ -26,7 +25,7 @@ const Index = () => {
       <TestimonialsSection />
       <SolutionsSection />
       <CtaSection />
-      
+
       <Footer />
     </div>
   );

@@ -2,8 +2,8 @@ import { Connection, Node, DataType } from '../types/nodes';
 
 export class ConnectionValidator {
   static validateConnection(sourceNode: Node, targetNode: Node, connection: Connection): boolean {
-    const sourcePort = sourceNode.data.outputs.find(p => p.id === connection.sourceHandle);
-    const targetPort = targetNode.data.inputs.find(p => p.id === connection.targetHandle);
+    const sourcePort = sourceNode.data.outputs.find((p) => p.id === connection.sourceHandle);
+    const targetPort = targetNode.data.inputs.find((p) => p.id === connection.targetHandle);
 
     if (!sourcePort || !targetPort) {
       return false;
@@ -39,12 +39,12 @@ export class ConnectionValidator {
   }
 
   static validateWorkflowConnections(nodes: Node[], connections: Connection[]): boolean {
-    const nodeMap = new Map(nodes.map(node => [node.id, node]));
-    
-    return connections.every(connection => {
+    const nodeMap = new Map(nodes.map((node) => [node.id, node]));
+
+    return connections.every((connection) => {
       const sourceNode = nodeMap.get(connection.source);
       const targetNode = nodeMap.get(connection.target);
-      
+
       if (!sourceNode || !targetNode) {
         return false;
       }
@@ -52,4 +52,4 @@ export class ConnectionValidator {
       return this.validateConnection(sourceNode, targetNode, connection);
     });
   }
-} 
+}

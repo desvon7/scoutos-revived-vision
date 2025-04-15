@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React, { useState, useCallback } from 'react';
 import { WorkflowCanvas } from './WorkflowCanvas';
@@ -8,7 +8,7 @@ import { NodeType, NodeObject } from './types';
 export function WorkflowEditor() {
   const [nodes, setNodes] = useState<NodeObject[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  
+
   const handleNodeSelect = (id: string) => {
     setSelectedNodeId(id === selectedNodeId ? null : id);
   };
@@ -22,7 +22,7 @@ export function WorkflowEditor() {
       y: 100,
       data: {
         type,
-      }
+      },
     };
     setNodes([...nodes, newNode]);
   };
@@ -32,13 +32,9 @@ export function WorkflowEditor() {
       <div className="w-64 bg-background border-r">
         <NodePalette onDragStart={(type) => handleNodeDrop(type)} />
       </div>
-      
+
       <div className="flex-1 relative">
-        <WorkflowCanvas
-          nodes={nodes}
-          connections={[]}
-          onNodeClick={handleNodeSelect}
-        />
+        <WorkflowCanvas nodes={nodes} connections={[]} onNodeClick={handleNodeSelect} />
       </div>
     </div>
   );

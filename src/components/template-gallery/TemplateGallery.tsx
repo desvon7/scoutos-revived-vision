@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, X, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -20,17 +19,15 @@ interface TemplateGalleryProps {
 const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
+
   // Filter templates based on search and category
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = 
-      template.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredTemplates = templates.filter((template) => {
+    const matchesSearch =
+      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = 
-      selectedCategory === 'all' || 
-      template.category === selectedCategory;
-    
+
+    const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
 
@@ -39,21 +36,21 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
   };
 
   const getCategoryName = () => {
-    const category = categories.find(cat => cat.id === selectedCategory);
+    const category = categories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'All Templates';
   };
-  
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       {/* Category Sidebar - visible on medium and larger screens */}
       <div className="hidden md:block w-64 flex-shrink-0">
-        <CategorySidebar 
+        <CategorySidebar
           categories={categories}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
       </div>
-      
+
       {/* Main Content */}
       <div className="flex-1">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -68,7 +65,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
                 {categories.map((category) => (
-                  <DropdownMenuItem 
+                  <DropdownMenuItem
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
                   >
@@ -78,7 +75,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          
+
           {/* Search input */}
           <div className="relative w-full sm:w-auto">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -90,9 +87,9 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
               className="pl-9 pr-9 w-full sm:w-[250px]"
             />
             {searchQuery && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="absolute right-1 top-1 h-7 w-7 text-muted-foreground hover:text-foreground"
                 onClick={handleClearSearch}
               >
@@ -101,7 +98,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
             )}
           </div>
         </div>
-        
+
         {filteredTemplates.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground bg-muted/50 rounded-lg">
             <div className="mb-3">
@@ -113,7 +110,7 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectTemplate }) =
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTemplates.map((template) => (
-              <TemplateCard 
+              <TemplateCard
                 key={template.id}
                 emoji={template.emoji}
                 title={template.title}

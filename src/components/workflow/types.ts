@@ -1,4 +1,9 @@
-import { DataType, NodeCategory, ExecutionState, NodeType as CoreNodeType } from '../../types/nodes';
+import {
+  DataType,
+  NodeCategory,
+  ExecutionState,
+  NodeType as CoreNodeType,
+} from '../../types/nodes';
 
 export interface Port {
   id: string;

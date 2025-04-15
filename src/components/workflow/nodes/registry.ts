@@ -1,4 +1,3 @@
-
 import { NodeType, Port } from '../types';
 import { defaultPorts } from './defaultPorts';
 import { defaultConfigs } from './defaultConfigs';

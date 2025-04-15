@@ -1,10 +1,9 @@
-
-import { 
-  Brain, 
-  MessageSquare, 
-  Database, 
-  Cpu, 
-  Code, 
+import {
+  Brain,
+  MessageSquare,
+  Database,
+  Cpu,
+  Code,
   FileText,
   FileOutput,
   BarChart,
@@ -26,7 +25,7 @@ import {
   BarChartHorizontal,
   Share2,
   CloudRain,
-  FileSpreadsheet
+  FileSpreadsheet,
 } from 'lucide-react';
 import React from 'react';
 

@@ -1,12 +1,12 @@
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Settings, GanttChart, Database } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Settings, GanttChart, Database } from 'lucide-react';
 
 interface WorkflowCardProps {
   title: string;
   description: string;
-  icon: "ganttChart" | "database";
+  icon: 'ganttChart' | 'database';
   status: string;
   createdDate: string;
   executions: number;
@@ -22,12 +22,12 @@ const WorkflowCard = ({
   executions,
   className,
 }: WorkflowCardProps) => {
-  const Icon = icon === "ganttChart" ? GanttChart : Database;
+  const Icon = icon === 'ganttChart' ? GanttChart : Database;
 
   return (
     <Card
       className={cn(
-        "border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200",
+        'border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200',
         className
       )}
     >

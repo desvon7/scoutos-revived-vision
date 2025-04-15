@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ProgressIndicatorProps {
@@ -13,14 +12,14 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentStep, tota
         <span className="text-sm font-medium">
           Step {currentStep} of {totalSteps}
         </span>
-        
+
         <div className="text-sm text-muted-foreground">
           {Math.round((currentStep / totalSteps) * 100)}% Complete
         </div>
       </div>
-      
+
       <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-        <div 
+        <div
           className="h-full bg-primary transition-all duration-300 ease-in-out"
           style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         />

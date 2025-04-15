@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import TemplateFilters from './TemplateFilters';
 import TemplateList from './TemplateList';
@@ -26,7 +25,7 @@ const templates = [
     description: 'Automate the creation of SEO-optimized blog posts using AI and NLP',
     icon: '📝',
     category: 'marketing',
-    backgroundColor: '#10b981'
+    backgroundColor: '#10b981',
   },
   {
     id: 'perplexity',
@@ -34,7 +33,7 @@ const templates = [
     description: 'This workflow searches the web and uses an LLM to format a response',
     icon: '🌐',
     category: 'ai',
-    backgroundColor: '#4f46e5'
+    backgroundColor: '#4f46e5',
   },
   {
     id: 'basic',
@@ -42,7 +41,7 @@ const templates = [
     description: 'Enhance your productivity with the Basic LLM Workflow',
     icon: '🚀',
     category: 'ai',
-    backgroundColor: '#b91c1c'
+    backgroundColor: '#b91c1c',
   },
   {
     id: 'slack',
@@ -50,7 +49,7 @@ const templates = [
     description: 'This workflow is the second part of a two-part system',
     icon: '💬',
     category: 'customer-support',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     id: 'rag',
@@ -58,7 +57,7 @@ const templates = [
     description: "A basic RAG workflow template using Scout's powerful workflow builder",
     icon: '📊',
     category: 'ai',
-    backgroundColor: '#db2777'
+    backgroundColor: '#db2777',
   },
   {
     id: 'comparison',
@@ -66,31 +65,29 @@ const templates = [
     description: 'Compare the performance, cost, and output of multiple AI language models',
     icon: '⚖️',
     category: 'ai',
-    backgroundColor: '#059669'
-  }
+    backgroundColor: '#059669',
+  },
 ];
 
 const TemplateSelection = ({ navigate }: TemplateSelectionProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
+
   // Filter templates based on search and category
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = 
-      template.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredTemplates = templates.filter((template) => {
+    const matchesSearch =
+      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = 
-      selectedCategory === 'all' || 
-      template.category === selectedCategory;
-    
+
+    const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
-  
+
   const handleUseTemplate = () => {
     navigate('/template-builder');
   };
-  
+
   const handleStartFromScratch = () => {
     navigate('/template-builder');
   };
@@ -98,10 +95,10 @@ const TemplateSelection = ({ navigate }: TemplateSelectionProps) => {
   const handleClearSearch = () => {
     setSearchQuery('');
   };
-  
+
   return (
     <div>
-      <TemplateFilters 
+      <TemplateFilters
         categories={templateCategories}
         selectedCategory={selectedCategory}
         searchQuery={searchQuery}
@@ -109,19 +106,19 @@ const TemplateSelection = ({ navigate }: TemplateSelectionProps) => {
         setSearchQuery={setSearchQuery}
         handleClearSearch={handleClearSearch}
       />
-      
-      <TemplateList 
+
+      <TemplateList
         templates={templates}
         filteredTemplates={filteredTemplates}
         searchQuery={searchQuery}
         handleUseTemplate={handleUseTemplate}
       />
-      
-      <TemplateActions 
+
+      <TemplateActions
         onUseTemplate={handleUseTemplate}
         onStartFromScratch={handleStartFromScratch}
       />
-      
+
       <div className="mt-12">
         <h3 className="text-xl font-medium mb-6">Workflow Builder Preview</h3>
         <WorkflowBuilder />

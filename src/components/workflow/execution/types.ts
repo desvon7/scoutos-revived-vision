@@ -1,4 +1,3 @@
-
 import { NodeObject } from '../types';
 
 export interface NodeExecution {

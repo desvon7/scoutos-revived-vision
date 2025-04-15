@@ -1,4 +1,3 @@
-
 import React, { useState, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
@@ -51,23 +50,17 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({
               <div className="flex items-center gap-2">
                 <div
                   className={cn(
-                    "rounded-full w-6 h-6 flex items-center justify-center text-xs",
+                    'rounded-full w-6 h-6 flex items-center justify-center text-xs',
                     index <= currentStep
-                      ? "bg-primary text-white"
-                      : "bg-muted text-muted-foreground"
+                      ? 'bg-primary text-white'
+                      : 'bg-muted text-muted-foreground'
                   )}
                 >
-                  {index < currentStep ? (
-                    <Check className="h-3 w-3" />
-                  ) : (
-                    index + 1
-                  )}
+                  {index < currentStep ? <Check className="h-3 w-3" /> : index + 1}
                 </div>
                 <span className="text-xs font-medium">{step.title}</span>
               </div>
-              {index < steps.length - 1 && (
-                <div className="w-16 h-px bg-border self-center"></div>
-              )}
+              {index < steps.length - 1 && <div className="w-16 h-px bg-border self-center"></div>}
             </React.Fragment>
           ))}
         </div>
@@ -81,11 +74,8 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({
             Back
           </Button>
         )}
-        <Button
-          className={currentStep === 0 ? "w-full" : "flex-1"}
-          onClick={handleNext}
-        >
-          {currentStep === steps.length - 1 ? submitButtonText : "Continue"}
+        <Button className={currentStep === 0 ? 'w-full' : 'flex-1'} onClick={handleNext}>
+          {currentStep === steps.length - 1 ? submitButtonText : 'Continue'}
         </Button>
       </div>
     </div>

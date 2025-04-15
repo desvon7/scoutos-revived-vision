@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { NodeTemplate, nodeTemplates, nodeCategories } from './NodeTemplates';
 import { Button } from '@/components/ui/button';
@@ -20,13 +19,15 @@ interface NodePanelProps {
 export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
+
   // Filter templates based on search query and selected category
   const filteredTemplates = templates.filter((template) => {
-    const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || 
-                           template.category.toLowerCase() === selectedCategory.toLowerCase();
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === 'all' ||
+      template.category.toLowerCase() === selectedCategory.toLowerCase();
     return matchesSearch && matchesCategory;
   });
 
@@ -39,7 +40,7 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
   };
 
   const getCategoryName = () => {
-    const category = nodeCategories.find(cat => cat.id === selectedCategory);
+    const category = nodeCategories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'All Templates';
   };
 
@@ -52,7 +53,7 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
             <X className="h-4 w-4" />
           </Button>
         </div>
-        
+
         <div className="flex flex-col gap-3">
           {/* Category dropdown */}
           <DropdownMenu>
@@ -64,10 +65,10 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px]">
               {nodeCategories.map((category) => (
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   key={category.id}
                   onClick={() => handleCategorySelect(category.id)}
-                  className={selectedCategory === category.id ? "bg-accent" : ""}
+                  className={selectedCategory === category.id ? 'bg-accent' : ''}
                 >
                   {category.name}
                 </DropdownMenuItem>
@@ -86,9 +87,9 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
               className="pl-9 pr-9"
             />
             {searchQuery && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="absolute right-1 top-1 h-7 w-7 text-gray-400 hover:text-gray-600"
                 onClick={handleClearSearch}
               >
@@ -98,12 +99,10 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
           </div>
         </div>
       </div>
-      
+
       <div className="overflow-y-auto p-3 flex-1">
         {filteredTemplates.length === 0 ? (
-          <div className="text-center py-6 text-gray-500">
-            No templates match your search
-          </div>
+          <div className="text-center py-6 text-gray-500">No templates match your search</div>
         ) : (
           <div className="space-y-2">
             {filteredTemplates.map((template) => (
@@ -114,7 +113,7 @@ export function NodePanel({ templates, onClose, onSelectNode }: NodePanelProps) 
               >
                 <div className="p-3">
                   <div className="flex items-center gap-3 mb-2">
-                    <div 
+                    <div
                       className="p-2 rounded-md text-white flex items-center justify-center"
                       style={{ backgroundColor: template.backgroundColor || '#4f46e5' }}
                     >

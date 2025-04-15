@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Search, X, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -30,17 +29,17 @@ const TemplateFilters = ({
   searchQuery,
   setSelectedCategory,
   setSearchQuery,
-  handleClearSearch
+  handleClearSearch,
 }: TemplateFiltersProps) => {
   const getCategoryName = () => {
-    const category = categories.find(cat => cat.id === selectedCategory);
+    const category = categories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'All Templates';
   };
 
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
       <h2 className="text-2xl font-semibold">Choose a Template</h2>
-      
+
       <div className="flex gap-3 flex-col sm:flex-row w-full sm:w-auto">
         {/* Category dropdown */}
         <DropdownMenu>
@@ -52,10 +51,7 @@ const TemplateFilters = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[200px]">
             {categories.map((category) => (
-              <DropdownMenuItem 
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
+              <DropdownMenuItem key={category.id} onClick={() => setSelectedCategory(category.id)}>
                 {category.name}
               </DropdownMenuItem>
             ))}
@@ -73,9 +69,9 @@ const TemplateFilters = ({
             className="pl-9 pr-9 w-full sm:w-[200px]"
           />
           {searchQuery && (
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="absolute right-1 top-1 h-7 w-7 text-gray-400 hover:text-gray-600"
               onClick={handleClearSearch}
             >

@@ -1,10 +1,9 @@
-
 import React from 'react';
-import { 
-  MessageSquare, 
-  Database, 
-  Cpu, 
-  ArrowRight, 
+import {
+  MessageSquare,
+  Database,
+  Cpu,
+  ArrowRight,
   Brain,
   FileText,
   FileOutput,
@@ -14,7 +13,7 @@ import {
   Mail,
   Globe,
   Search,
-  Zap
+  Zap,
 } from 'lucide-react';
 import { NodeType } from './types';
 
@@ -36,7 +35,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Input Node',
     description: 'Start your workflow with user input',
     category: 'Basic',
-    backgroundColor: '#4f46e5'
+    backgroundColor: '#4f46e5',
   },
   {
     type: 'collection',
@@ -45,7 +44,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Collection Node',
     description: 'Connect to a data collection',
     category: 'Data',
-    backgroundColor: '#7c3aed'
+    backgroundColor: '#7c3aed',
   },
   {
     type: 'llm',
@@ -54,7 +53,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'LLM Node',
     description: 'Process with language model',
     category: 'AI',
-    backgroundColor: '#b91c1c'
+    backgroundColor: '#b91c1c',
   },
   {
     type: 'output',
@@ -63,7 +62,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Output Node',
     description: 'End your workflow with output',
     category: 'Basic',
-    backgroundColor: '#10b981'
+    backgroundColor: '#10b981',
   },
   {
     type: 'analysis',
@@ -72,7 +71,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Analysis Node',
     description: 'Analyze and process data',
     category: 'Data',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     type: 'code',
@@ -81,7 +80,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Code Node',
     description: 'Run custom code snippets',
     category: 'Engineering',
-    backgroundColor: '#6366f1'
+    backgroundColor: '#6366f1',
   },
   {
     type: 'knowledge',
@@ -90,7 +89,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Knowledge Base',
     description: 'Connect to your knowledge base',
     category: 'AI',
-    backgroundColor: '#059669'
+    backgroundColor: '#059669',
   },
   {
     type: 'email',
@@ -99,7 +98,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Email Node',
     description: 'Send automated emails',
     category: 'Marketing',
-    backgroundColor: '#d97706'
+    backgroundColor: '#d97706',
   },
   {
     type: 'web',
@@ -108,7 +107,7 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Web Scraper',
     description: 'Extract data from websites',
     category: 'Data',
-    backgroundColor: '#0891b2'
+    backgroundColor: '#0891b2',
   },
   {
     type: 'search',
@@ -117,8 +116,8 @@ export const nodeTemplates: NodeTemplate[] = [
     name: 'Search Node',
     description: 'Search across data sources',
     category: 'Data',
-    backgroundColor: '#db2777'
-  }
+    backgroundColor: '#db2777',
+  },
 ];
 
 // Template categories
@@ -128,5 +127,5 @@ export const nodeCategories = [
   { id: 'ai', name: 'AI' },
   { id: 'data', name: 'Data' },
   { id: 'engineering', name: 'Engineering' },
-  { id: 'marketing', name: 'Marketing' }
+  { id: 'marketing', name: 'Marketing' },
 ];

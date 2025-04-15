@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { NodeProps, NodeData, Port, NodeCategory } from '../types';
 import { cn } from '@/lib/utils';
@@ -75,9 +74,9 @@ export const BaseNode: React.FC<NodeProps> = ({
       'data-transformation': 'bg-pink-500',
       code: 'bg-orange-500',
       search: 'bg-teal-500',
-      data: 'bg-gray-500'
+      data: 'bg-gray-500',
     };
-    
+
     return colors[category] || 'bg-gray-500';
   };
 

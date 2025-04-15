@@ -14,7 +14,7 @@ export enum DataType {
   FILE = 'file',
   STREAM = 'stream',
   FUNCTION = 'function',
-  PROMISE = 'promise'
+  PROMISE = 'promise',
 }
 
 export interface TypeDefinition {
@@ -31,18 +31,18 @@ export interface TypeDefinition {
 export class TypeRegistry {
   private static instance: TypeRegistry;
   private types: Map<string, TypeDefinition> = new Map();
-  
+
   private constructor() {
     this.registerDefaultTypes();
   }
-  
+
   public static getInstance(): TypeRegistry {
     if (!TypeRegistry.instance) {
       TypeRegistry.instance = new TypeRegistry();
     }
     return TypeRegistry.instance;
   }
-  
+
   private registerDefaultTypes(): void {
     // Register primitive types
     this.registerType({
@@ -51,52 +51,52 @@ export class TypeRegistry {
       dataType: DataType.STRING,
       description: 'A text string',
       validator: (value) => typeof value === 'string',
-      color: '#4CAF50'
+      color: '#4CAF50',
     });
-    
+
     this.registerType({
       id: DataType.NUMBER,
       name: 'Number',
       dataType: DataType.NUMBER,
       description: 'A numeric value',
       validator: (value) => typeof value === 'number' && !isNaN(value),
-      color: '#2196F3'
+      color: '#2196F3',
     });
-    
+
     this.registerType({
       id: DataType.BOOLEAN,
       name: 'Boolean',
       dataType: DataType.BOOLEAN,
       description: 'A true/false value',
       validator: (value) => typeof value === 'boolean',
-      color: '#FF9800'
+      color: '#FF9800',
     });
-    
+
     this.registerType({
       id: DataType.OBJECT,
       name: 'Object',
       dataType: DataType.OBJECT,
       description: 'A JSON object',
       validator: (value) => typeof value === 'object' && value !== null && !Array.isArray(value),
-      color: '#9C27B0'
+      color: '#9C27B0',
     });
-    
+
     this.registerType({
       id: DataType.ARRAY,
       name: 'Array',
       dataType: DataType.ARRAY,
       description: 'A list of values',
       validator: (value) => Array.isArray(value),
-      color: '#E91E63'
+      color: '#E91E63',
     });
-    
+
     this.registerType({
       id: DataType.ANY,
       name: 'Any',
       dataType: DataType.ANY,
       description: 'Any type of value',
       validator: () => true,
-      color: '#607D8B'
+      color: '#607D8B',
     });
 
     // More specialized types
@@ -107,9 +107,9 @@ export class TypeRegistry {
       description: 'A date and time value',
       validator: (value) => value instanceof Date && !isNaN(value.getTime()),
       formatter: (value) => new Date(value),
-      color: '#795548'
+      color: '#795548',
     });
-    
+
     this.registerType({
       id: DataType.JSON,
       name: 'JSON',
@@ -134,40 +134,40 @@ export class TypeRegistry {
         }
         return JSON.stringify(value);
       },
-      color: '#FF5722'
+      color: '#FF5722',
     });
-    
+
     // Add more default types here
   }
-  
+
   public registerType(type: TypeDefinition): void {
     this.types.set(type.id, type);
   }
-  
+
   public getType(id: string): TypeDefinition | undefined {
     return this.types.get(id);
   }
-  
+
   public getAllTypes(): TypeDefinition[] {
     return Array.from(this.types.values());
   }
-  
+
   public validateValue(typeId: string, value: any): boolean {
     const type = this.getType(typeId);
     if (!type || !type.validator) return true;
     return type.validator(value);
   }
-  
+
   public formatValue(typeId: string, value: any): any {
     const type = this.getType(typeId);
     if (!type || !type.formatter) return value;
     return type.formatter(value);
   }
-  
+
   public getTypeColor(typeId: string): string {
     const type = this.getType(typeId);
     return type?.color || '#607D8B'; // Default color
   }
 }
 
-export default TypeRegistry.getInstance(); 
+export default TypeRegistry.getInstance();

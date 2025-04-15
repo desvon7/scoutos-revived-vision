@@ -14,7 +14,7 @@ interface WorkflowState {
     category: string;
     icon?: string;
   }>;
-  
+
   addNode: (node: NodeObject) => void;
   removeNode: (id: string) => void;
   selectNode: (id: string | null) => void;
@@ -29,36 +29,38 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   selectedNodeId: null,
   executionState: ExecutionState.IDLE,
   executionLogs: [],
-  nodeTemplates: Object.values(NodeType).map(type => ({
+  nodeTemplates: Object.values(NodeType).map((type) => ({
     type,
     name: type.toLowerCase().replace(/_/g, ' '),
     description: `${type.toLowerCase().replace(/_/g, ' ')} node`,
     category: getNodeCategory(type),
-    icon: 'default'
+    icon: 'default',
   })),
-  
-  addNode: (node) => set(state => ({ 
-    nodes: [...state.nodes, node] 
-  })),
-  
-  removeNode: (id) => set(state => ({ 
-    nodes: state.nodes.filter(node => node.id !== id),
-    selectedNodeId: state.selectedNodeId === id ? null : state.selectedNodeId
-  })),
-  
+
+  addNode: (node) =>
+    set((state) => ({
+      nodes: [...state.nodes, node],
+    })),
+
+  removeNode: (id) =>
+    set((state) => ({
+      nodes: state.nodes.filter((node) => node.id !== id),
+      selectedNodeId: state.selectedNodeId === id ? null : state.selectedNodeId,
+    })),
+
   selectNode: (id) => set({ selectedNodeId: id }),
-  
-  updateNode: (id, data) => set(state => ({
-    nodes: state.nodes.map(node => 
-      node.id === id ? { ...node, ...data } : node
-    )
-  })),
-  
-  addLogEntry: (log) => set(state => ({
-    executionLogs: [...state.executionLogs, log]
-  })),
-  
-  clearLogs: () => set({ executionLogs: [] })
+
+  updateNode: (id, data) =>
+    set((state) => ({
+      nodes: state.nodes.map((node) => (node.id === id ? { ...node, ...data } : node)),
+    })),
+
+  addLogEntry: (log) =>
+    set((state) => ({
+      executionLogs: [...state.executionLogs, log],
+    })),
+
+  clearLogs: () => set({ executionLogs: [] }),
 }));
 
 function getNodeCategory(type: NodeType): string {

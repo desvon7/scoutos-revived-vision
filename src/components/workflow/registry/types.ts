@@ -1,4 +1,3 @@
-
 import { NodeType, NodeCategory, DataType } from '../types';
 
 export interface NodePort {

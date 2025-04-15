@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { useCallback, useState } from "react"
+import { useCallback, useState } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -13,66 +13,66 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
   NodeTypes,
-} from "reactflow"
-import "reactflow/dist/style.css"
-import { NodeTemplate, nodeTemplates } from "./NodeTemplates"
-import { NodePanel } from "./NodePanel"
-import InputNode from "./nodes/InputNode"
-import CollectionNode from "./nodes/CollectionNode"
-import LLMNode from "./nodes/LLMNode"
-import OutputNode from "./nodes/OutputNode"
+} from 'reactflow';
+import 'reactflow/dist/style.css';
+import { NodeTemplate, nodeTemplates } from './NodeTemplates';
+import { NodePanel } from './NodePanel';
+import InputNode from './nodes/InputNode';
+import CollectionNode from './nodes/CollectionNode';
+import LLMNode from './nodes/LLMNode';
+import OutputNode from './nodes/OutputNode';
 
 const nodeTypes: NodeTypes = {
   input: InputNode,
   collection: CollectionNode,
   llm: LLMNode,
   output: OutputNode,
-}
+};
 
 interface WorkflowEditorProps {
-  workflowId: string
+  workflowId: string;
 }
 
 const WorkflowEditor: React.FC<WorkflowEditorProps> = ({ workflowId }) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const { project } = useReactFlow()
-  const [showNodePanel, setShowNodePanel] = useState(false)
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { project } = useReactFlow();
+  const [showNodePanel, setShowNodePanel] = useState(false);
 
   const onConnect = useCallback(
     (params: Connection | Edge) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
-  )
+  );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = "move"
-  }, [])
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
-      event.preventDefault()
+      event.preventDefault();
 
-      const type = event.dataTransfer.getData("application/reactflow")
-      const template = nodeTemplates.find((t: NodeTemplate) => t.type === type)
-      if (!template) return
+      const type = event.dataTransfer.getData('application/reactflow');
+      const template = nodeTemplates.find((t: NodeTemplate) => t.type === type);
+      if (!template) return;
 
       const position = {
         x: event.clientX - event.currentTarget.getBoundingClientRect().left,
         y: event.clientY - event.currentTarget.getBoundingClientRect().top,
-      }
+      };
 
       const newNode: Node = {
         id: `${type}-${nodes.length + 1}`,
         type,
         position,
         data: { label: template.name },
-      }
+      };
 
-      setNodes((nds) => nds.concat(newNode))
+      setNodes((nds) => nds.concat(newNode));
     },
     [nodes, setNodes]
-  )
+  );
 
   const handleSelectNode = (template: NodeTemplate) => {
     const newNode: Node = {
@@ -80,11 +80,11 @@ const WorkflowEditor: React.FC<WorkflowEditorProps> = ({ workflowId }) => {
       type: template.type,
       position: { x: 100, y: 100 },
       data: { label: template.name },
-    }
+    };
 
-    setNodes((nds) => nds.concat(newNode))
-    setShowNodePanel(false)
-  }
+    setNodes((nds) => nds.concat(newNode));
+    setShowNodePanel(false);
+  };
 
   return (
     <div className="h-full w-full">
@@ -119,7 +119,7 @@ const WorkflowEditor: React.FC<WorkflowEditorProps> = ({ workflowId }) => {
         <MiniMap />
       </ReactFlow>
     </div>
-  )
-}
+  );
+};
 
-export default WorkflowEditor
+export default WorkflowEditor;

@@ -1,4 +1,3 @@
-
 import { NodeType, NodeCategory, Node } from '../types';
 import { NodeTypeMetadata, NodeRegistryInterface } from './types';
 import { inputNodes } from './inputNodes';
@@ -46,15 +45,15 @@ class NodeRegistry implements NodeRegistryInterface {
         outputs: metadata.outputs,
         config: { ...metadata.defaultConfig },
         category: metadata.category,
-        type: metadata.type
+        type: metadata.type,
       },
-      id: uuidv4()
+      id: uuidv4(),
     };
   }
 
   private initialize(): void {
-    inputNodes.forEach(node => this.registerNodeType(node));
-    llmNodes.forEach(node => this.registerNodeType(node));
+    inputNodes.forEach((node) => this.registerNodeType(node));
+    llmNodes.forEach((node) => this.registerNodeType(node));
   }
 }
 

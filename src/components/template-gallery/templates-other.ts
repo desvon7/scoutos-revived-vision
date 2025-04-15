@@ -1,4 +1,3 @@
-
 import { Template } from './templates-ai-assistants';
 
 export const otherTemplates: Template[] = [
@@ -8,7 +7,7 @@ export const otherTemplates: Template[] = [
     title: 'Customer Service Agent',
     description: 'AI-powered customer service agent workflow',
     category: 'customer-support',
-    backgroundColor: '#8b5cf6'
+    backgroundColor: '#8b5cf6',
   },
   {
     id: 'newsletter',
@@ -16,7 +15,7 @@ export const otherTemplates: Template[] = [
     title: 'Newsletter Generator',
     description: 'Create engaging newsletters with AI assistance',
     category: 'marketing',
-    backgroundColor: '#ec4899'
+    backgroundColor: '#ec4899',
   },
   {
     id: 'code-review',
@@ -24,7 +23,7 @@ export const otherTemplates: Template[] = [
     title: 'AI Code Reviewer',
     description: 'Automated code reviews using AI',
     category: 'engineering',
-    backgroundColor: '#6366f1'
+    backgroundColor: '#6366f1',
   },
   {
     id: 'knowledge-base',
@@ -32,7 +31,7 @@ export const otherTemplates: Template[] = [
     title: 'Knowledge Base Builder',
     description: 'Build and organize your knowledge base efficiently',
     category: 'data',
-    backgroundColor: '#0f766e'
+    backgroundColor: '#0f766e',
   },
   {
     id: 'data-analysis',
@@ -40,7 +39,7 @@ export const otherTemplates: Template[] = [
     title: 'Data Analysis Pipeline',
     description: 'Process and analyze data from multiple sources',
     category: 'data',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#0ea5e9',
   },
   {
     id: 'email-generator',
@@ -48,6 +47,6 @@ export const otherTemplates: Template[] = [
     title: 'AI Email Generator',
     description: 'Generate professional emails with customizable templates and tone',
     category: 'marketing',
-    backgroundColor: '#d97706'
-  }
+    backgroundColor: '#d97706',
+  },
 ];

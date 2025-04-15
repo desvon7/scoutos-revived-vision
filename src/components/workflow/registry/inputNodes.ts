@@ -1,4 +1,3 @@
-
 import { NodeType, NodeCategory } from '../types';
 import { NodeTypeMetadata } from './types';
 
@@ -12,16 +11,16 @@ export const inputNodes: NodeTypeMetadata[] = [
     color: '#4CAF50',
     defaultConfig: {
       placeholder: 'Enter text...',
-      multiline: false
+      multiline: false,
     },
     inputs: [],
     outputs: [
       {
         name: 'text',
         dataType: 'string',
-        description: 'Text output'
-      }
-    ]
+        description: 'Text output',
+      },
+    ],
   },
   {
     type: NodeType.URL_INPUT,
@@ -32,15 +31,15 @@ export const inputNodes: NodeTypeMetadata[] = [
     color: '#2196F3',
     defaultConfig: {
       placeholder: 'Enter URL...',
-      validateUrl: true
+      validateUrl: true,
     },
     inputs: [],
     outputs: [
       {
         name: 'url',
         dataType: 'string',
-        description: 'URL output'
-      }
-    ]
-  }
+        description: 'URL output',
+      },
+    ],
+  },
 ];

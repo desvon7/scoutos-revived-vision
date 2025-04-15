@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NodeData } from '../types';
 
@@ -8,7 +7,11 @@ interface DefaultNodePropertiesProps {
   onChange: (name: string, value: any) => void;
 }
 
-export const DefaultNodeProperties: React.FC<DefaultNodePropertiesProps> = ({ data, title, onChange }) => {
+export const DefaultNodeProperties: React.FC<DefaultNodePropertiesProps> = ({
+  data,
+  title,
+  onChange,
+}) => {
   return (
     <div className="space-y-3">
       <div>

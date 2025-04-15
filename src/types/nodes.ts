@@ -13,7 +13,7 @@ export enum NodeType {
   TRANSFORM = 'transform',
   OUTPUT = 'output',
   LOOP = 'loop',
-  DATA = 'data'
+  DATA = 'data',
 }
 
 export enum NodeCategory {
@@ -23,7 +23,7 @@ export enum NodeCategory {
   PROCESSING = 'processing',
   DATA = 'data',
   API = 'api',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 export enum ExecutionState {
@@ -31,7 +31,7 @@ export enum ExecutionState {
   RUNNING = 'running',
   PAUSED = 'paused',
   COMPLETED = 'completed',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export interface Port {
@@ -132,10 +132,10 @@ export enum DataType {
   VECTOR = 'vector',
   NULL = 'null',
   FUNCTION = 'function',
-  PROMISE = 'promise'
+  PROMISE = 'promise',
 }
 
 export interface ValidationResult {
   isValid: boolean;
   errors: string[];
-} 
+}

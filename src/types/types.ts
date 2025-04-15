@@ -14,7 +14,7 @@ export enum TypeScope {
   PRIMITIVE = 'primitive',
   COMPLEX = 'complex',
   SPECIAL = 'special',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 export class TypeRegistry {
@@ -23,7 +23,7 @@ export class TypeRegistry {
 
   constructor() {
     // Initialize scopes
-    Object.values(TypeScope).forEach(scope => {
+    Object.values(TypeScope).forEach((scope) => {
       this.scopes.set(scope, new Set());
     });
   }
@@ -44,9 +44,9 @@ export class TypeRegistry {
   getTypesByScope(scope: TypeScope): TypeDefinition[] {
     const typeIds = this.scopes.get(scope);
     if (!typeIds) return [];
-    
+
     return Array.from(typeIds)
-      .map(id => this.types.get(id))
+      .map((id) => this.types.get(id))
       .filter((type): type is TypeDefinition => type !== undefined);
   }
 
@@ -122,65 +122,80 @@ export class TypeRegistry {
 export const typeRegistry = new TypeRegistry();
 
 // Register default types
-typeRegistry.registerType({
-  id: 'string',
-  name: 'String',
-  description: 'A text string',
-  schema: { type: 'string' },
-  baseType: DataType.STRING,
-  validator: (value) => typeof value === 'string',
-  formatter: (value) => String(value)
-}, TypeScope.PRIMITIVE);
-
-typeRegistry.registerType({
-  id: 'number',
-  name: 'Number',
-  description: 'A numeric value',
-  schema: { type: 'number' },
-  baseType: DataType.NUMBER,
-  validator: (value) => typeof value === 'number' && !isNaN(value),
-  formatter: (value) => Number(value)
-}, TypeScope.PRIMITIVE);
-
-typeRegistry.registerType({
-  id: 'boolean',
-  name: 'Boolean',
-  description: 'A true/false value',
-  schema: { type: 'boolean' },
-  baseType: DataType.BOOLEAN,
-  validator: (value) => typeof value === 'boolean',
-  formatter: (value) => Boolean(value)
-}, TypeScope.PRIMITIVE);
-
-typeRegistry.registerType({
-  id: 'json',
-  name: 'JSON',
-  description: 'A JSON object or array',
-  schema: { type: 'object' },
-  baseType: DataType.JSON,
-  validator: (value) => {
-    try {
-      JSON.parse(JSON.stringify(value));
-      return true;
-    } catch {
-      return false;
-    }
+typeRegistry.registerType(
+  {
+    id: 'string',
+    name: 'String',
+    description: 'A text string',
+    schema: { type: 'string' },
+    baseType: DataType.STRING,
+    validator: (value) => typeof value === 'string',
+    formatter: (value) => String(value),
   },
-  formatter: (value) => {
-    try {
-      return JSON.parse(JSON.stringify(value));
-    } catch {
-      return value;
-    }
-  }
-}, TypeScope.COMPLEX);
+  TypeScope.PRIMITIVE
+);
 
-typeRegistry.registerType({
-  id: 'date',
-  name: 'Date',
-  description: 'A date and time value',
-  schema: { type: 'string', format: 'date-time' },
-  baseType: DataType.DATE,
-  validator: (value) => value instanceof Date,
-  formatter: (value) => new Date(value)
-}, TypeScope.SPECIAL); 
+typeRegistry.registerType(
+  {
+    id: 'number',
+    name: 'Number',
+    description: 'A numeric value',
+    schema: { type: 'number' },
+    baseType: DataType.NUMBER,
+    validator: (value) => typeof value === 'number' && !isNaN(value),
+    formatter: (value) => Number(value),
+  },
+  TypeScope.PRIMITIVE
+);
+
+typeRegistry.registerType(
+  {
+    id: 'boolean',
+    name: 'Boolean',
+    description: 'A true/false value',
+    schema: { type: 'boolean' },
+    baseType: DataType.BOOLEAN,
+    validator: (value) => typeof value === 'boolean',
+    formatter: (value) => Boolean(value),
+  },
+  TypeScope.PRIMITIVE
+);
+
+typeRegistry.registerType(
+  {
+    id: 'json',
+    name: 'JSON',
+    description: 'A JSON object or array',
+    schema: { type: 'object' },
+    baseType: DataType.JSON,
+    validator: (value) => {
+      try {
+        JSON.parse(JSON.stringify(value));
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    formatter: (value) => {
+      try {
+        return JSON.parse(JSON.stringify(value));
+      } catch {
+        return value;
+      }
+    },
+  },
+  TypeScope.COMPLEX
+);
+
+typeRegistry.registerType(
+  {
+    id: 'date',
+    name: 'Date',
+    description: 'A date and time value',
+    schema: { type: 'string', format: 'date-time' },
+    baseType: DataType.DATE,
+    validator: (value) => value instanceof Date,
+    formatter: (value) => new Date(value),
+  },
+  TypeScope.SPECIAL
+);

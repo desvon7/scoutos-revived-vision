@@ -28,8 +28,8 @@ const WorkflowBuilderPage: React.FC = () => {
         category: NodeCategory.CUSTOM,
         type: nodeType,
         icon: 'default',
-        color: '#000000'
-      }
+        color: '#000000',
+      },
     });
   };
 
@@ -44,35 +44,24 @@ const WorkflowBuilderPage: React.FC = () => {
         <div className="w-64 border-r border-gray-700">
           <NodePalette onDragStart={handleNodeSelect} />
         </div>
-        
+
         {/* Main canvas area */}
         <div className="flex-1 flex flex-col">
           <div className="flex-1 relative">
-            <WorkflowCanvas 
-              nodes={[]} 
-              connections={[]} 
-              onNodeClick={() => {}} 
-            />
-            <NodeSearchOverlay 
-              onClose={() => {}} 
-              onSelectNode={handleSearchNodeSelect} 
-            />
+            <WorkflowCanvas nodes={[]} connections={[]} onNodeClick={() => {}} />
+            <NodeSearchOverlay onClose={() => {}} onSelectNode={handleSearchNodeSelect} />
           </div>
-          
+
           {/* Bottom console */}
           <WorkflowConsole />
-          
+
           {/* Status bar */}
           <WorkflowStatusBar />
         </div>
-        
+
         {/* Right sidebar - Properties Panel */}
         <div className="w-80 border-l border-gray-700">
-          <PropertiesPanel 
-            selectedNodeId={null}
-            onUpdate={() => {}}
-            onDelete={() => {}}
-          />
+          <PropertiesPanel selectedNodeId={null} onUpdate={() => {}} onDelete={() => {}} />
         </div>
       </div>
     </ReactFlowProvider>

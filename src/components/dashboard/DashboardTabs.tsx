@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface DashboardTabsProps {
@@ -13,8 +12,8 @@ const DashboardTabs = ({ selectedTab, onSelectTab }: DashboardTabsProps) => {
         <button
           onClick={() => onSelectTab('workflows')}
           className={`px-4 py-2 font-medium text-sm ${
-            selectedTab === 'workflows' 
-              ? 'text-primary border-b-2 border-primary' 
+            selectedTab === 'workflows'
+              ? 'text-primary border-b-2 border-primary'
               : 'text-muted-foreground'
           }`}
         >
@@ -23,8 +22,8 @@ const DashboardTabs = ({ selectedTab, onSelectTab }: DashboardTabsProps) => {
         <button
           onClick={() => onSelectTab('collections')}
           className={`px-4 py-2 font-medium text-sm ${
-            selectedTab === 'collections' 
-              ? 'text-primary border-b-2 border-primary' 
+            selectedTab === 'collections'
+              ? 'text-primary border-b-2 border-primary'
               : 'text-muted-foreground'
           }`}
         >
@@ -33,8 +32,8 @@ const DashboardTabs = ({ selectedTab, onSelectTab }: DashboardTabsProps) => {
         <button
           onClick={() => onSelectTab('templates')}
           className={`px-4 py-2 font-medium text-sm ${
-            selectedTab === 'templates' 
-              ? 'text-primary border-b-2 border-primary' 
+            selectedTab === 'templates'
+              ? 'text-primary border-b-2 border-primary'
               : 'text-muted-foreground'
           }`}
         >

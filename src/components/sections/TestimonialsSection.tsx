@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TestimonialCard from '@/components/TestimonialCard';
 
@@ -10,19 +9,19 @@ const TestimonialsSection = () => {
           Crafted for tomorrow's builders
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <TestimonialCard 
+          <TestimonialCard
             quote="The Scout GenAI system has helped transform how we can improve customer service for all our government customers."
             author="Bratton Riley"
             role="CEO"
             company="Citizen"
           />
-          <TestimonialCard 
+          <TestimonialCard
             quote="Scout allowed us to test, iterate, and refine. They worked with us to find alignment with our business."
             author="Charles Lane"
             role="CTO"
             company="Acme Inc"
           />
-          <TestimonialCard 
+          <TestimonialCard
             quote="A great experience, tailored to a unique brief and content, used to take days to minutes."
             author="Jane Smith"
             role="VP Product"

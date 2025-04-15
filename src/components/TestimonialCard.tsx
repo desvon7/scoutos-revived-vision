@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TestimonialCardProps {
@@ -23,7 +22,9 @@ const TestimonialCard = ({ quote, author, role, company, image }: TestimonialCar
         )}
         <div>
           <div className="font-medium text-white">{author}</div>
-          <div className="text-sm text-neutral-400">{role} of {company}</div>
+          <div className="text-sm text-neutral-400">
+            {role} of {company}
+          </div>
         </div>
       </div>
     </div>

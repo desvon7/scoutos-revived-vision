@@ -1,4 +1,3 @@
-
 import React from 'react';
 import WorkflowBuilder from '@/components/WorkflowBuilder';
 
@@ -16,7 +15,8 @@ const BuildSection = () => {
                 Create AI workflows and build AI ready data sets
               </h2>
               <p className="text-muted-foreground mb-10 max-w-lg">
-                Build powerful AI workflows that can handle complex tasks with ease. Connect to data sources, create custom logic, and deploy with confidence.
+                Build powerful AI workflows that can handle complex tasks with ease. Connect to data
+                sources, create custom logic, and deploy with confidence.
               </p>
               <WorkflowBuilder />
             </div>
@@ -25,21 +25,24 @@ const BuildSection = () => {
             <div>
               <h3 className="text-xl font-medium mb-4">Workflow Builder</h3>
               <p className="text-muted-foreground mb-6">
-                Create AI workflow automations using AI models, web scraping, data storage, API calls, customized logic and more.
+                Create AI workflow automations using AI models, web scraping, data storage, API
+                calls, customized logic and more.
               </p>
             </div>
-            
+
             <div>
               <h3 className="text-xl font-medium mb-4">Customizable Data Sources</h3>
               <p className="text-muted-foreground mb-6">
-                Set up automated content ingestion from your site, documentation, historical conversations, and more.
+                Set up automated content ingestion from your site, documentation, historical
+                conversations, and more.
               </p>
             </div>
-            
+
             <div>
               <h3 className="text-xl font-medium mb-4">LLM Chaining</h3>
               <p className="text-muted-foreground mb-6">
-                Connect multiple LLMs within a single workflow to find the perfect solution for your use case.
+                Connect multiple LLMs within a single workflow to find the perfect solution for your
+                use case.
               </p>
             </div>
           </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Category } from './template-data';
@@ -12,7 +11,7 @@ interface CategorySidebarProps {
 export const CategorySidebar: React.FC<CategorySidebarProps> = ({
   categories,
   selectedCategory,
-  onSelectCategory
+  onSelectCategory,
 }) => {
   return (
     <div className="bg-card rounded-lg border p-4">
@@ -22,15 +21,15 @@ export const CategorySidebar: React.FC<CategorySidebarProps> = ({
           <button
             key={category.id}
             className={cn(
-              "flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors",
-              selectedCategory === category.id ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground"
+              'flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors',
+              selectedCategory === category.id
+                ? 'bg-accent text-accent-foreground font-medium'
+                : 'text-muted-foreground'
             )}
             onClick={() => onSelectCategory(category.id)}
           >
             {category.icon && (
-              <span className="mr-2">
-                {React.createElement(category.icon, { size: 18 })}
-              </span>
+              <span className="mr-2">{React.createElement(category.icon, { size: 18 })}</span>
             )}
             <span>{category.name}</span>
           </button>

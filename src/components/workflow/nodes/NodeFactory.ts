@@ -1,10 +1,13 @@
-
 import { NodeType, NodeObject, NodeData } from '../types';
 import { createNode } from './utils/nodeCreator';
 import { NodeFactoryConfig, NodeTemplate } from './types/factory';
 
 export class NodeFactory {
-  static createNode(type: NodeType, position: { x: number; y: number }, data?: Partial<NodeData>): NodeObject {
+  static createNode(
+    type: NodeType,
+    position: { x: number; y: number },
+    data?: Partial<NodeData>
+  ): NodeObject {
     return createNode(type, position, data);
   }
 

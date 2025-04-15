@@ -1,4 +1,3 @@
-
 import { v4 as uuidv4 } from 'uuid';
 import { NodeType, NodeData, NodeObject } from '../../types';
 import { defaultPorts } from '../defaultPorts';
@@ -8,7 +7,7 @@ import { getNodeDefaultTitle } from './titles';
 export function createNodeData(type: NodeType, data?: Partial<NodeData>): NodeData {
   const defaultConfig = defaultConfigs[type] || {};
   const ports = defaultPorts[type] || { inputs: [], outputs: [] };
-  
+
   return {
     category: data?.category || 'llm',
     type,
@@ -24,8 +23,8 @@ export function createNodeData(type: NodeType, data?: Partial<NodeData>): NodeDa
 }
 
 export function createNode(
-  type: NodeType, 
-  position: { x: number; y: number }, 
+  type: NodeType,
+  position: { x: number; y: number },
   data?: Partial<NodeData>,
   width: number = 200,
   height: number = 100
