@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { toast } from "sonner";
+import { toast } from '@/hooks/use-toast';
 import { NodeTemplate } from '@/components/workflow/NodeTemplates';
 import { NodeData, NodeObject, NodeType } from '@/components/workflow/types';
 
@@ -110,14 +109,21 @@ export function useWorkflowActions(
     
     setCurrentWorkflowName(name);
     setWorkflowName(name);
-    toast.success(`Workflow "${name}" saved successfully`);
+    toast({
+      title: "Success",
+      description: `Workflow "${name}" saved successfully`
+    });
   };
 
   // Load a workflow
   const loadWorkflow = (name: string) => {
     const workflow = savedWorkflows[name];
     if (!workflow) {
-      toast.error("Workflow not found");
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Workflow not found"
+      });
       return;
     }
     
@@ -126,16 +132,25 @@ export function useWorkflowActions(
     setCurrentWorkflowName(name);
     setWorkflowName(name);
     setShowSavedPanel(false);
-    toast.success(`Workflow "${name}" loaded successfully`);
+    toast({
+      title: "Success",
+      description: `Workflow "${name}" loaded successfully`
+    });
   };
 
   // Run the workflow (simulation)
   const runWorkflow = () => {
-    toast.success("Workflow execution started");
+    toast({
+      title: "Success",
+      description: "Workflow execution started"
+    });
     
     // For demo purposes, show a toast after a short delay
     setTimeout(() => {
-      toast.success("Workflow execution completed successfully");
+      toast({
+        title: "Success",
+        description: "Workflow execution completed successfully"
+      });
     }, 2000);
   };
 

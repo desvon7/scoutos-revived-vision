@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
+import { toast } from "@/hooks/use-toast"
 import { signIn } from "next-auth/react"
 
 export function SignUpForm() {
@@ -47,13 +47,20 @@ export function SignUpForm() {
         throw new Error(data.message || "Something went wrong")
       }
 
-      toast.success("Account created successfully")
+      toast({
+        title: "Success",
+        description: "Account created successfully"
+      })
       router.push("/sign-in")
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message)
       } else {
-        toast.error("Something went wrong. Please try again.")
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Something went wrong. Please try again."
+        })
       }
     } finally {
       setLoading(false)

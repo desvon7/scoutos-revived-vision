@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from '@/hooks/use-toast';
 import WorkflowEditor from '@/components/workflow/workflow-editor';
 import NodePalette from '@/components/workflow/NodePalette';
 import PropertiesPanel from '@/components/workflow/PropertiesPanel';
@@ -16,7 +15,10 @@ const WorkflowBuilderPage: React.FC = () => {
   // Handle saving the workflow
   const handleSave = () => {
     saveWorkflow();
-    toast.success('Workflow saved successfully');
+    toast({
+      title: "Success",
+      description: "Workflow saved successfully"
+    });
   };
 
   // Handle exporting the workflow
@@ -35,9 +37,16 @@ const WorkflowBuilderPage: React.FC = () => {
       importWorkflow(importData);
       setShowImportModal(false);
       setImportData('');
-      toast.success('Workflow imported successfully');
+      toast({
+        title: "Success",
+        description: "Workflow imported successfully"
+      });
     } catch (error) {
-      toast.error(`Error importing workflow: ${error.message}`);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Error importing workflow: ${error.message}`
+      });
     }
   };
 
@@ -133,7 +142,10 @@ const WorkflowBuilderPage: React.FC = () => {
                 className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
                 onClick={() => {
                   navigator.clipboard.writeText(exportWorkflow());
-                  toast.success('Workflow JSON copied to clipboard');
+                  toast({
+                    title: "Success",
+                    description: "Workflow JSON copied to clipboard"
+                  });
                 }}
               >
                 Copy to Clipboard
@@ -175,8 +187,6 @@ const WorkflowBuilderPage: React.FC = () => {
           </div>
         </div>
       )}
-
-      <ToastContainer position="bottom-right" theme="dark" />
     </div>
   );
 };

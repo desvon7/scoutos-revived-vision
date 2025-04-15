@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
+import { toast } from "@/hooks/use-toast"
 
 export function SignInForm() {
   const router = useRouter()
@@ -36,7 +36,11 @@ export function SignInForm() {
       router.push("/dashboard")
       router.refresh()
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong. Please try again."
+      })
     } finally {
       setLoading(false)
     }

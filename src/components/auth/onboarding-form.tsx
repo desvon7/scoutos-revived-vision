@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
+import { toast } from "@/hooks/use-toast"
 
 const steps = [
   {
@@ -59,10 +59,17 @@ export function OnboardingForm() {
         throw new Error("Failed to save onboarding data")
       }
 
-      toast.success("Profile setup completed")
+      toast({
+        title: "Success",
+        description: "Profile setup completed"
+      })
       router.push("/dashboard")
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong. Please try again."
+      })
     } finally {
       setLoading(false)
     }
