@@ -1,3 +1,4 @@
+
 import { NodeType, Port } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -43,156 +44,310 @@ export const defaultPorts: Record<NodeType, { inputs: Port[]; outputs: Port[] }>
     outputs: [
       {
         id: uuidv4(),
-        type: 'file',
         name: 'file',
-        required: true,
+        dataType: 'file',
         label: 'File',
-      },
-    ],
+        required: true
+      }
+    ]
   },
   [NodeType.GPT_4]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'string',
         name: 'prompt',
-        required: true,
+        dataType: 'string',
         label: 'Prompt',
+        required: true
       },
       {
         id: uuidv4(),
-        type: 'object',
         name: 'config',
-        required: false,
+        dataType: 'object',
         label: 'Configuration',
-      },
+        required: false
+      }
     ],
     outputs: [
       {
         id: uuidv4(),
-        type: 'string',
         name: 'response',
-        required: true,
+        dataType: 'string',
         label: 'Response',
-      },
-    ],
+        required: true
+      }
+    ]
   },
   [NodeType.GPT_35_TURBO]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'string',
         name: 'prompt',
-        required: true,
+        dataType: 'string',
         label: 'Prompt',
+        required: true
       },
       {
         id: uuidv4(),
-        type: 'object',
         name: 'config',
-        required: false,
+        dataType: 'object',
         label: 'Configuration',
-      },
+        required: false
+      }
     ],
     outputs: [
       {
         id: uuidv4(),
-        type: 'string',
         name: 'response',
-        required: true,
+        dataType: 'string',
         label: 'Response',
+        required: true
+      }
+    ]
+  },
+  [NodeType.CLAUDE_3_OPUS]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'prompt',
+        dataType: 'string',
+        label: 'Prompt',
+        required: true
       },
+      {
+        id: uuidv4(),
+        name: 'config',
+        dataType: 'object',
+        label: 'Configuration',
+        required: false
+      }
     ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'response',
+        dataType: 'string',
+        label: 'Response',
+        required: true
+      }
+    ]
+  },
+  [NodeType.CLAUDE_3_SONNET]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'prompt',
+        dataType: 'string',
+        label: 'Prompt',
+        required: true
+      },
+      {
+        id: uuidv4(),
+        name: 'config',
+        dataType: 'object',
+        label: 'Configuration',
+        required: false
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'response',
+        dataType: 'string',
+        label: 'Response',
+        required: true
+      }
+    ]
   },
   [NodeType.OUTPUT]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'any',
         name: 'input',
-        required: true,
+        dataType: 'any',
         label: 'Input',
-      },
+        required: true
+      }
     ],
-    outputs: [],
+    outputs: []
   },
   [NodeType.STREAM_OUTPUT]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'string',
         name: 'input',
-        required: true,
+        dataType: 'string',
         label: 'Input',
-      },
+        required: true
+      }
     ],
-    outputs: [],
+    outputs: []
   },
   [NodeType.CONDITION]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'boolean',
         name: 'condition',
-        required: true,
+        dataType: 'boolean',
         label: 'Condition',
-      },
+        required: true
+      }
     ],
     outputs: [
       {
         id: uuidv4(),
-        type: 'any',
         name: 'true',
-        required: true,
+        dataType: 'any',
         label: 'True',
+        required: true
       },
       {
         id: uuidv4(),
-        type: 'any',
         name: 'false',
-        required: true,
+        dataType: 'any',
         label: 'False',
-      },
-    ],
+        required: true
+      }
+    ]
   },
   [NodeType.LOOP]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'array',
         name: 'items',
-        required: true,
+        dataType: 'array',
         label: 'Items',
-      },
+        required: true
+      }
     ],
     outputs: [
       {
         id: uuidv4(),
-        type: 'any',
         name: 'item',
-        required: true,
+        dataType: 'any',
         label: 'Item',
-      },
-    ],
+        required: true
+      }
+    ]
   },
   [NodeType.API]: {
     inputs: [
       {
         id: uuidv4(),
-        type: 'object',
         name: 'request',
-        required: true,
+        dataType: 'object',
         label: 'Request',
-      },
+        required: true
+      }
     ],
     outputs: [
       {
         id: uuidv4(),
-        type: 'object',
         name: 'response',
-        required: true,
+        dataType: 'object',
         label: 'Response',
-      },
-    ],
+        required: true
+      }
+    ]
   },
+  [NodeType.WEBHOOK]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'request',
+        dataType: 'object',
+        label: 'Request',
+        required: true
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'response',
+        dataType: 'object',
+        label: 'Response',
+        required: true
+      }
+    ]
+  },
+  [NodeType.COLLECTION]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'query',
+        dataType: 'string',
+        label: 'Query',
+        required: true
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'results',
+        dataType: 'array',
+        label: 'Results',
+        required: true
+      }
+    ]
+  },
+  [NodeType.VECTOR_DB]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'embedding',
+        dataType: 'vector',
+        label: 'Embedding',
+        required: true
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'results',
+        dataType: 'array',
+        label: 'Results',
+        required: true
+      }
+    ]
+  },
+  [NodeType.JAVASCRIPT]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'input',
+        dataType: 'any',
+        label: 'Input',
+        required: true
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'output',
+        dataType: 'any',
+        label: 'Output',
+        required: true
+      }
+    ]
+  },
+  [NodeType.PYTHON]: {
+    inputs: [
+      {
+        id: uuidv4(),
+        name: 'input',
+        dataType: 'any',
+        label: 'Input',
+        required: true
+      }
+    ],
+    outputs: [
+      {
+        id: uuidv4(),
+        name: 'output',
+        dataType: 'any',
+        label: 'Output',
+        required: true
+      }
+    ]
+  }
 };
