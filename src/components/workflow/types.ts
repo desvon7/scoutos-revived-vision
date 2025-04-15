@@ -30,147 +30,49 @@ export type NodeCategory =
   | 'search'
   | 'data';
 
-// Input Node Types
-export type InputNodeType = 
-  | 'text-input'
-  | 'url-input'
-  | 'json-input'
-  | 'file-upload'
-  | 'webhook-trigger'
-  | 'schedule-trigger'
-  | 'api-trigger';
+// Execution states
+export enum ExecutionState {
+  IDLE = 'idle',
+  RUNNING = 'running',
+  PAUSED = 'paused',
+  COMPLETED = 'completed',
+  ERROR = 'error'
+}
 
-// LLM Node Types
-export type LLMNodeType = 
-  | 'gpt-4'
-  | 'gpt-3.5-turbo'
-  | 'claude-3-opus'
-  | 'claude-3-sonnet'
-  | 'claude-3-haiku'
-  | 'anthropic'
-  | 'gemini-pro'
-  | 'gemini-ultra'
-  | 'mistral'
-  | 'llama-2'
-  | 'custom-llm'
-  | 'stream-output';
-
-// Collection Node Types
-export type CollectionNodeType = 
-  | 'collection-query'
-  | 'collection-save'
-  | 'collection-update'
-  | 'collection-delete'
-  | 'vector-query'
-  | 'vector-save';
-
-// Text Processing Node Types
-export type TextProcessingNodeType = 
-  | 'text-splitter'
-  | 'text-formatter'
-  | 'text-extractor'
-  | 'html-to-text'
-  | 'markdown-to-html';
-
-// Logic Node Types
-export type LogicNodeType = 
-  | 'conditional'
-  | 'switch'
-  | 'loop'
-  | 'merge'
-  | 'map'
-  | 'filter'
-  | 'delay';
-
-// Integration Node Types
-export type IntegrationNodeType = 
-  | 'http-request'
-  | 'api-connection'
-  | 'email-sender'
-  | 'slack-integration'
-  | 'discord-integration';
-
-// Data Transformation Node Types
-export type DataTransformationNodeType = 
-  | 'json-transform'
-  | 'csv-parser'
-  | 'data-mapping';
-
-// Code Node Types
-export type CodeNodeType = 
-  | 'javascript'
-  | 'python'
-  | 'shell';
-
-// Search Node Types
-export type SearchNodeType = 
-  | 'web-search'
-  | 'web-scraper'
-  | 'serp-results';
-
-// Combined Node Type
-export type NodeType = 
-  | 'input'
-  | 'output'
-  | 'llm'
-  | 'condition'
-  | 'loop'
-  | 'transform'
-  | 'api'
-  | 'data'
-  | 'collection'
-  | 'memory'
-  | 'process'
-  | 'gpt-4'
-  | 'text-input'
-  | 'url-input'
-  | 'json-input'
-  | 'file-upload'
-  | 'webhook-trigger'
-  | 'schedule-trigger'
-  | 'api-trigger'
-  | 'gpt-3.5-turbo'
-  | 'claude-3-opus'
-  | 'claude-3-sonnet'
-  | 'claude-3-haiku'
-  | 'anthropic'
-  | 'gemini-pro'
-  | 'gemini-ultra'
-  | 'mistral'
-  | 'llama-2'
-  | 'custom-llm'
-  | 'stream-output'
-  | 'collection-query'
-  | 'collection-save'
-  | 'collection-update'
-  | 'collection-delete'
-  | 'vector-query'
-  | 'vector-save'
-  | 'text-splitter'
-  | 'text-formatter'
-  | 'text-extractor'
-  | 'html-to-text'
-  | 'markdown-to-html'
-  | 'conditional'
-  | 'switch'
-  | 'merge'
-  | 'map'
-  | 'filter'
-  | 'delay'
-  | 'http-request'
-  | 'api-connection'
-  | 'email-sender'
-  | 'slack-integration'
-  | 'discord-integration'
-  | 'json-transform'
-  | 'csv-parser'
-  | 'data-mapping'
-  | 'javascript'
-  | 'python'
-  | 'shell'
-  | 'web-search'
-  | 'web-scraper'
-  | 'serp-results';
+// Node types
+export enum NodeType {
+  // Input types
+  TEXT_INPUT = 'text_input',
+  URL_INPUT = 'url_input',
+  JSON_INPUT = 'json_input',
+  FILE_UPLOAD = 'file_upload',
+  
+  // LLM types
+  GPT_4 = 'gpt_4',
+  GPT_35_TURBO = 'gpt_35_turbo',
+  CLAUDE_3_OPUS = 'claude_3_opus',
+  CLAUDE_3_SONNET = 'claude_3_sonnet',
+  
+  // Processing types
+  JAVASCRIPT = 'javascript',
+  PYTHON = 'python',
+  
+  // Logic types
+  CONDITION = 'condition',
+  LOOP = 'loop',
+  
+  // Output types
+  TEXT_OUTPUT = 'text_output',
+  JSON_OUTPUT = 'json_output',
+  
+  // Integration types
+  API = 'api',
+  WEBHOOK = 'webhook',
+  
+  // Data types
+  COLLECTION = 'collection',
+  VECTOR_DB = 'vector_db'
+}
 
 // Port Interface
 export interface Port {
@@ -178,7 +80,7 @@ export interface Port {
   type: DataType;
   name: string;
   description?: string;
-  required?: boolean; // Adding required property
+  required?: boolean;
   default?: any;
 }
 
@@ -220,32 +122,13 @@ export interface NodeObject {
   };
 }
 
-// Connection Object Interface
-export interface ConnectionObject {
-  id: string;
-  type: string;
-  from: string;
-  to: string;
-  fromPort: string;
-  toPort: string;
-  animated?: boolean;
-  style?: CSSProperties;
-}
-
-// Connection Props Interface
-export interface ConnectionProps {
-  id: string;
-  type: string;
-  from: string;
-  to: string;
-  fromPort: string;
-  toPort: string;
-  x1?: number;
-  y1?: number;
-  x2?: number;
-  y2?: number;
-  animated?: boolean;
-  style?: CSSProperties;
+// Log Entry Interface
+export interface LogEntry {
+  timestamp: string;
+  level: 'info' | 'warning' | 'error';
+  message: string;
+  nodeId?: string;
+  data?: any;
 }
 
 // Node Props Interface
@@ -268,76 +151,21 @@ export interface NodeProps {
   onDelete: (id: string) => void;
 }
 
-// Workflow Data Interface
-export interface WorkflowData {
-  id: string;
-  name: string;
-  version: string;
-  timestamp?: number;
+// Node Palette Props
+export interface NodePaletteProps {
+  onDragStart: (type: NodeType) => void;
+}
+
+// WorkflowCanvas Props
+export interface WorkflowCanvasProps {
   nodes: NodeObject[];
-  connections: ConnectionObject[];
+  connections: any[];
+  onNodeClick: (id: string) => void;
 }
 
-// Workflow Edge Interface
-export interface WorkflowEdge {
-  id: string;
-  source: string;
-  target: string;
-  sourceHandle?: string;
-  targetHandle?: string;
-  type: DataType;
-  animated?: boolean;
-}
-
-// Template Interface
-export interface WorkflowTemplate {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  tags: string[];
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  thumbnail?: string;
-  workflow: WorkflowData;
-  requiredBlocks: NodeType[];
-  documentation?: string;
-  version: string;
-  author?: string;
-  rating?: number;
-  downloads?: number;
-}
-
-export interface ValidationResult {
-  isValid: boolean;
-  errors: string[];
-}
-
-export enum ExecutionState {
-  IDLE = 'idle',
-  RUNNING = 'running',
-  PAUSED = 'paused',
-  COMPLETED = 'completed',
-  ERROR = 'error'
-}
-
-export interface ConsoleMessage {
-  id: string;
-  timestamp: Date;
-  level: 'info' | 'debug' | 'warn' | 'error';
-  message: string;
-  nodeId?: string;
-  data?: any;
-}
-
-export type BackgroundVariant = 'dots' | 'lines' | 'cross';
-
-export interface CustomComponents {
-  IconLeft?: React.ComponentType<React.ComponentProps<"svg">>;
-  IconRight?: React.ComponentType<React.ComponentProps<"svg">>;
-}
-
-export interface LogEntry {
-  timestamp: string;
-  level: 'info' | 'warning' | 'error';
-  message: string;
+// PropertiesPanel Props
+export interface PropertiesPanelProps {
+  selectedNodeId: string | null;
+  onUpdate: (id: string, data: Partial<NodeData>) => void;
+  onDelete: (id: string) => void;
 }

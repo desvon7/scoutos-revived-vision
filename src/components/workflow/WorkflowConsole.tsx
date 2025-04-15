@@ -1,10 +1,18 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { ExecutionState, ConsoleMessage, LogEntry } from './types';
+import React, { useRef, useEffect } from 'react';
+import { ExecutionState, LogEntry } from './types';
 import { useWorkflowStore } from './store';
 
 const WorkflowConsole: React.FC = () => {
-  const { executionLogs } = useWorkflowStore();
+  const { executionLogs, clearLogs } = useWorkflowStore();
+  const consoleEndRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to bottom when new logs appear
+  useEffect(() => {
+    if (consoleEndRef.current) {
+      consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [executionLogs]);
   
   const getLogColor = (level: LogEntry['level']) => {
     switch (level) {
@@ -20,30 +28,37 @@ const WorkflowConsole: React.FC = () => {
       <div className="px-4 py-2 border-b border-gray-700 flex items-center justify-between">
         <div className="text-gray-400 font-medium">Console</div>
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-white">
+          <button 
+            className="text-gray-400 hover:text-white"
+            onClick={clearLogs}
+          >
             Clear
-          </button>
-          <button className="text-gray-400 hover:text-white">
-            Auto-scroll
           </button>
         </div>
       </div>
       
       <div className="flex-1 overflow-y-auto font-mono text-sm">
-        {executionLogs.map((log, index) => (
-          <div 
-            key={index}
-            className={`px-4 py-1 ${getLogColor(log.level)}`}
-          >
-            <span className="text-gray-500 mr-2">
-              [{log.timestamp}]
-            </span>
-            <span className="font-medium mr-2">
-              {log.level.toUpperCase()}:
-            </span>
-            {log.message}
+        {executionLogs.length === 0 ? (
+          <div className="px-4 py-2 text-gray-500 italic">
+            No logs to display
           </div>
-        ))}
+        ) : (
+          executionLogs.map((log, index) => (
+            <div 
+              key={index}
+              className={`px-4 py-1 ${getLogColor(log.level)}`}
+            >
+              <span className="text-gray-500 mr-2">
+                [{log.timestamp}]
+              </span>
+              <span className="font-medium mr-2">
+                {log.level.toUpperCase()}:
+              </span>
+              {log.message}
+            </div>
+          ))
+        )}
+        <div ref={consoleEndRef} />
       </div>
     </div>
   );
