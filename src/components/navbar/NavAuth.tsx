@@ -1,21 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const NavAuth = () => {
   return (
     <div className="flex items-center gap-4">
-      <Link
-        to="/signin"
-        className="text-sm font-medium hover:text-primary/80 transition-colors hidden sm:inline-flex"
-      >
-        Log In
+      <Link href="/sign-in" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">
+        Sign In
       </Link>
-      <Link to="/signup">
-        <Button variant="default" size="sm" className="rounded-full">
-          Sign Up
-        </Button>
-      </Link>
+      <Button variant="default" asChild>
+        <Link href="/sign-up">
+          Get Started
+        </Link>
+      </Button>
     </div>
   );
 };

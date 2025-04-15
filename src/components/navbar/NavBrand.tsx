@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Asterisk } from 'lucide-react';
+'use client';
+
+import Link from 'next/link';
+import { ScoutLogo } from '@/components/icons/ScoutLogo';
 
 const NavBrand = () => {
   return (
-    <Link to="/" className="flex items-center gap-2">
-      <Asterisk className="h-5 w-5" />
-      <span className="font-medium">scout</span>
+    <Link href="/" className="flex items-center gap-2">
+      <ScoutLogo />
+      <span className="font-semibold">Scout OS</span>
     </Link>
   );
 };

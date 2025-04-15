@@ -1,17 +1,20 @@
+'use client';
+
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 const AnnouncementBar = () => {
   return (
-    <div className="w-full bg-black text-white py-1.5 text-center text-sm">
-      <div className="container-custom flex justify-center items-center">
-        <span>Announcing: The Scout CLI and AI Workflows as Code</span>
+    <div className="bg-primary/10 border-b border-primary/20">
+      <div className="container flex items-center justify-center gap-2 py-2 text-sm">
+        <span className="text-primary">🎉 New: Scout OS Studio is now in beta!</span>
         <Link
-          to="/learn-more"
-          className="ml-3 inline-flex items-center font-medium underline-offset-4 hover:underline"
+          href="/sign-up"
+          className="flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
         >
-          Learn More <ChevronRight className="h-3 w-3 ml-1" />
+          Try it now
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>

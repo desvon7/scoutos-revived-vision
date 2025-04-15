@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useState } from 'react';
 import { WorkflowCanvasProps } from './types';
 import { useWorkflowStore } from './store';

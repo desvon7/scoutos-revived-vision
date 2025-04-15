@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { NodeObject, ConnectionObject } from '@/components/workflow/types';
 

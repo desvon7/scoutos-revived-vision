@@ -1,24 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const NavLinks = () => {
+  const pathname = usePathname();
+  
   const links = [
-    { to: '/features', label: 'Features' },
-    { to: '/solutions', label: 'Solutions' },
-    { to: '/changelog', label: 'Changelog' },
-    { to: '/pricing', label: 'Pricing' },
-    { to: '/blog', label: 'Blog' },
-    { to: '/docs', label: 'Docs' },
-    { to: '/templates', label: 'Templates' },
+    { href: '/features', label: 'Features' },
+    { href: '/solutions', label: 'Solutions' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/docs', label: 'Docs' },
   ];
 
   return (
     <nav className="hidden md:flex items-center gap-6">
       {links.map((link) => (
         <Link
-          key={link.to}
-          to={link.to}
-          className="text-sm font-medium hover:text-primary/80 transition-colors"
+          key={link.href}
+          href={link.href}
+          className={cn(
+            "text-sm font-medium transition-colors hover:text-white",
+            pathname === link.href ? "text-white" : "text-neutral-400"
+          )}
         >
           {link.label}
         </Link>

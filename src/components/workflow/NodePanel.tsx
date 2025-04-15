@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { NodeTemplate, nodeTemplates, nodeCategories } from './NodeTemplates';
 import { Button } from '@/components/ui/button';
