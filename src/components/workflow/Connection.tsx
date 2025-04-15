@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { DataType } from './types';
 import { cn } from '@/lib/utils';
 
-const dataTypeColors: Record<DataType, string> = {
+const dataTypeColors: Record<string, string> = {
   string: '#4CAF50',
   number: '#2196F3',
   boolean: '#FFC107',
@@ -20,7 +20,7 @@ const dataTypeColors: Record<DataType, string> = {
   any: '#9E9E9E'
 };
 
-const dataTypeThickness: Record<DataType, number> = {
+const dataTypeThickness: Record<string, number> = {
   string: 2,
   number: 2,
   boolean: 2,
@@ -38,7 +38,7 @@ const dataTypeThickness: Record<DataType, number> = {
 
 interface ConnectionProps {
   id: string;
-  type: DataType;
+  type: DataType | string;
   x1: number;
   y1: number;
   x2: number;
@@ -82,8 +82,9 @@ export function Connection({
 
   const path = `M ${x1} ${y1} C ${controlPoint1X} ${controlPoint1Y}, ${controlPoint2X} ${controlPoint2Y}, ${x2} ${y2}`;
 
-  const strokeColor = type in dataTypeColors ? dataTypeColors[type] : dataTypeColors.any;
-  const strokeWidth = type in dataTypeThickness ? dataTypeThickness[type] : dataTypeThickness.any;
+  const safeType = typeof type === 'string' ? type as DataType : 'any';
+  const strokeColor = dataTypeColors[safeType] || dataTypeColors.any;
+  const strokeWidth = dataTypeThickness[safeType] || dataTypeThickness.any;
 
   return (
     <motion.path

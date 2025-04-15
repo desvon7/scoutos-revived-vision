@@ -1,12 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ExecutionState, ConsoleMessage } from './types';
-import { useWorkflowStore } from './store';
 
-interface LogEntry {
-  timestamp: string;
-  level: 'info' | 'warning' | 'error';
-  message: string;
-}
+import React, { useState, useRef, useEffect } from 'react';
+import { ExecutionState, ConsoleMessage, LogEntry } from './types';
+import { useWorkflowStore } from './store';
 
 const WorkflowConsole: React.FC = () => {
   const { executionLogs } = useWorkflowStore();
@@ -54,4 +49,4 @@ const WorkflowConsole: React.FC = () => {
   );
 };
 
-export default WorkflowConsole; 
+export default WorkflowConsole;

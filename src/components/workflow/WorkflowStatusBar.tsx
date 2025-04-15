@@ -1,18 +1,20 @@
+
 import React from 'react';
-import { useWorkflowStore } from '../../store/workflowStore';
+import { useWorkflowStore } from './store';
 
 const WorkflowStatusBar: React.FC = () => {
-  const { selectedNode, workflow } = useWorkflowStore();
+  const { nodes, edges, selectedNodeId } = useWorkflowStore();
+  const selectedNode = selectedNodeId ? nodes.find(node => node.id === selectedNodeId) : null;
   
   return (
     <div className="bg-gray-800 border-t border-gray-700 px-4 py-2 flex items-center justify-between text-sm">
       <div className="flex items-center space-x-4">
         <div className="text-gray-400">
-          {workflow.nodes.length} nodes, {workflow.edges.length} connections
+          {nodes.length} nodes, {edges.length} connections
         </div>
         {selectedNode && (
           <div className="text-gray-300">
-            Selected: {selectedNode.data.name}
+            Selected: {selectedNode.data.label || selectedNode.title}
           </div>
         )}
       </div>
@@ -29,4 +31,4 @@ const WorkflowStatusBar: React.FC = () => {
   );
 };
 
-export default WorkflowStatusBar; 
+export default WorkflowStatusBar;

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useWorkflowStore } from './store';
 import { NodeData } from './types';
@@ -24,7 +25,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
     const updatedData = {
       ...selectedNode.data,
       config: {
-        ...selectedNode.data.config,
+        ...(selectedNode.data.config || {}),
         [key]: value
       }
     };
@@ -40,7 +41,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               Input Type
               <select
                 className="w-full p-2 rounded-md bg-background"
-                value={selectedNode.data.config.inputType || 'text'}
+                value={selectedNode.data.config?.inputType || 'text'}
                 onChange={(e) => handleConfigChange('inputType', e.target.value)}
               >
                 <option value="text">Text</option>
@@ -53,7 +54,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               <input
                 type="text"
                 className="w-full p-2 rounded-md bg-background"
-                value={selectedNode.data.config.defaultValue || ''}
+                value={selectedNode.data.config?.defaultValue || ''}
                 onChange={(e) => handleConfigChange('defaultValue', e.target.value)}
               />
             </label>
@@ -67,7 +68,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               Model
               <select
                 className="w-full p-2 rounded-md bg-background"
-                value={selectedNode.data.config.model || 'gpt-4'}
+                value={selectedNode.data.config?.model || 'gpt-4'}
                 onChange={(e) => handleConfigChange('model', e.target.value)}
               >
                 <option value="gpt-4">GPT-4</option>
@@ -83,7 +84,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
                 max="1"
                 step="0.1"
                 className="w-full"
-                value={selectedNode.data.config.temperature || 0.7}
+                value={selectedNode.data.config?.temperature || 0.7}
                 onChange={(e) => handleConfigChange('temperature', parseFloat(e.target.value))}
               />
             </label>
@@ -98,7 +99,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               <input
                 type="text"
                 className="w-full p-2 rounded-md bg-background"
-                value={selectedNode.data.config.url || ''}
+                value={selectedNode.data.config?.url || ''}
                 onChange={(e) => handleConfigChange('url', e.target.value)}
               />
             </label>
@@ -106,7 +107,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               Method
               <select
                 className="w-full p-2 rounded-md bg-background"
-                value={selectedNode.data.config.method || 'GET'}
+                value={selectedNode.data.config?.method || 'GET'}
                 onChange={(e) => handleConfigChange('method', e.target.value)}
               >
                 <option value="GET">GET</option>
@@ -150,7 +151,7 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
               selectedNode.data.state === 'error' ? 'bg-red-500' :
               'bg-gray-500'
             }`} />
-            <span className="capitalize">{selectedNode.data.state}</span>
+            <span className="capitalize">{selectedNode.data.state || 'idle'}</span>
           </div>
           {selectedNode.data.error && (
             <p className="text-sm text-destructive mt-2">{selectedNode.data.error}</p>
@@ -159,4 +160,4 @@ export function PropertiesPanel({ selectedNodeId, onUpdate, onDelete }: Properti
       </div>
     </div>
   );
-} 
+}

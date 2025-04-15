@@ -1,3 +1,4 @@
+
 import { NodeObject, ConnectionObject, WorkflowData } from './types';
 import { ConnectionValidator } from './validation';
 
@@ -91,7 +92,9 @@ export class WorkflowEngine {
   private async processLLMNode(node: NodeObject, inputs: Record<string, any>): Promise<Record<string, any>> {
     // Placeholder for LLM processing logic
     // In a real implementation, this would call the appropriate LLM API
-    const { model, temperature, maxTokens } = node.data.config;
+    const model = node.data.config?.model || 'default-model';
+    const temperature = node.data.config?.temperature || 0.7;
+    const maxTokens = node.data.config?.maxTokens || 1000;
     const prompt = inputs.prompt || '';
 
     // Simulate LLM response
@@ -103,7 +106,7 @@ export class WorkflowEngine {
   private async processInputNode(node: NodeObject, inputs: Record<string, any>): Promise<Record<string, any>> {
     // Placeholder for input processing logic
     return {
-      value: node.data.config.defaultValue || '',
+      value: node.data.config?.defaultValue || '',
     };
   }
 
@@ -127,7 +130,10 @@ export class WorkflowEngine {
 
     // Build graph and calculate in-degree
     this.connections.forEach(conn => {
-      graph.get(conn.from)?.push(conn.to);
+      const fromNodeList = graph.get(conn.from);
+      if (fromNodeList) {
+        fromNodeList.push(conn.to);
+      }
       inDegree.set(conn.to, (inDegree.get(conn.to) || 0) + 1);
     });
 
@@ -160,4 +166,4 @@ export class WorkflowEngine {
 
     return order;
   }
-} 
+}

@@ -56,9 +56,8 @@ const Calendar = ({
         ...classNames,
       }}
       components={{
-        // Fix: Use the correct component names according to react-day-picker
-        IconLeft: (props) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: (props) => <ChevronRight className="h-4 w-4" />
+        IconLeft: ({ ...props }: React.ComponentProps<"svg">) => <ChevronLeft className="h-4 w-4" />,
+        IconRight: ({ ...props }: React.ComponentProps<"svg">) => <ChevronRight className="h-4 w-4" />
       }}
       {...props}
     />

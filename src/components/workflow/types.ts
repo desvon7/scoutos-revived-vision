@@ -178,6 +178,8 @@ export interface Port {
   type: DataType;
   name: string;
   description?: string;
+  required?: boolean; // Adding required property
+  default?: any;
 }
 
 // Node Data Interface
@@ -262,7 +264,7 @@ export interface NodeProps {
   onDragStart: (e: React.MouseEvent) => void;
   onDragMove: (e: React.MouseEvent) => void;
   onDragEnd: () => void;
-  onUpdate: (data: NodeData) => void;
+  onUpdate: (data: Partial<NodeData>) => void;
   onDelete: (id: string) => void;
 }
 
@@ -330,6 +332,12 @@ export interface ConsoleMessage {
 export type BackgroundVariant = 'dots' | 'lines' | 'cross';
 
 export interface CustomComponents {
-  IconLeft?: React.ComponentType<any>;
-  IconRight?: React.ComponentType<any>;
+  IconLeft?: React.ComponentType<React.ComponentProps<"svg">>;
+  IconRight?: React.ComponentType<React.ComponentProps<"svg">>;
+}
+
+export interface LogEntry {
+  timestamp: string;
+  level: 'info' | 'warning' | 'error';
+  message: string;
 }
