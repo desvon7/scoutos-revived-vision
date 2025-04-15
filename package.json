@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:dev": "next build",
+    "build:dev": "NODE_ENV=development next build",
+    "build:prod": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write ."
