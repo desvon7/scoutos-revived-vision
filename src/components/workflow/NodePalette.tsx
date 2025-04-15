@@ -1,47 +1,57 @@
+
 import React from 'react';
 import { NodeType } from './types';
 import { useWorkflowStore } from './store';
+import { Input, Output, Cpu, GitBranch, Repeat, FileCode, Globe, Database } from 'lucide-react';
 
-const NODE_TYPES: { type: NodeType; label: string; description: string }[] = [
+const NODE_TYPES: { type: NodeType; label: string; description: string; icon: React.ElementType }[] = [
   {
     type: 'input',
     label: 'Input',
     description: 'Input data source',
+    icon: Input,
   },
   {
     type: 'output',
     label: 'Output',
     description: 'Output destination',
+    icon: Output,
   },
   {
     type: 'llm',
     label: 'LLM',
     description: 'Large Language Model',
+    icon: Cpu,
   },
   {
     type: 'condition',
     label: 'Condition',
     description: 'Conditional logic',
+    icon: GitBranch,
   },
   {
     type: 'loop',
     label: 'Loop',
     description: 'Loop control',
+    icon: Repeat,
   },
   {
     type: 'transform',
     label: 'Transform',
     description: 'Data transformation',
+    icon: FileCode,
   },
   {
     type: 'api',
     label: 'API',
     description: 'API integration',
+    icon: Globe,
   },
   {
     type: 'data',
     label: 'Data',
     description: 'Data operation',
+    icon: Database,
   },
 ];
 
@@ -64,7 +74,10 @@ const NodePalette: React.FC = () => {
             draggable
             onDragStart={(e) => handleDragStart(e, node.type)}
           >
-            <h3 className="text-white font-medium">{node.label}</h3>
+            <div className="flex items-center gap-2 mb-1">
+              <node.icon className="h-4 w-4 text-white" />
+              <h3 className="text-white font-medium">{node.label}</h3>
+            </div>
             <p className="text-gray-400 text-sm">{node.description}</p>
           </div>
         ))}
@@ -73,4 +86,4 @@ const NodePalette: React.FC = () => {
   );
 };
 
-export default NodePalette; 
+export default NodePalette;
