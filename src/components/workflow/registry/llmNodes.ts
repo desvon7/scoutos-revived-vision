@@ -1,5 +1,5 @@
 
-import { NodeType, NodeCategory, DataType } from '../types';
+import { NodeType, NodeCategory } from '../types';
 import { NodeTypeMetadata } from './types';
 
 export const llmNodes: NodeTypeMetadata[] = [
@@ -18,7 +18,7 @@ export const llmNodes: NodeTypeMetadata[] = [
     inputs: [
       {
         name: 'prompt',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'Input prompt',
         required: true
       }
@@ -26,7 +26,7 @@ export const llmNodes: NodeTypeMetadata[] = [
     outputs: [
       {
         name: 'response',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'Model response'
       }
     ]
@@ -46,7 +46,7 @@ export const llmNodes: NodeTypeMetadata[] = [
     inputs: [
       {
         name: 'prompt',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'Input prompt',
         required: true
       }
@@ -54,7 +54,7 @@ export const llmNodes: NodeTypeMetadata[] = [
     outputs: [
       {
         name: 'response',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'Model response'
       }
     ]

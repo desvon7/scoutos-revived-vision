@@ -1,5 +1,5 @@
 
-import { NodeType, NodeCategory, DataType } from '../types';
+import { NodeType, NodeCategory } from '../types';
 import { NodeTypeMetadata } from './types';
 
 export const inputNodes: NodeTypeMetadata[] = [
@@ -18,7 +18,7 @@ export const inputNodes: NodeTypeMetadata[] = [
     outputs: [
       {
         name: 'text',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'Text output'
       }
     ]
@@ -38,7 +38,7 @@ export const inputNodes: NodeTypeMetadata[] = [
     outputs: [
       {
         name: 'url',
-        dataType: DataType.STRING,
+        dataType: 'string',
         description: 'URL output'
       }
     ]

@@ -1,5 +1,5 @@
 
-import { NodeType, NodeCategory } from '../types';
+import { NodeType, NodeCategory, Node } from '../types';
 import { NodeTypeMetadata, NodeRegistryInterface } from './types';
 import { inputNodes } from './inputNodes';
 import { llmNodes } from './llmNodes';
@@ -37,7 +37,6 @@ class NodeRegistry implements NodeRegistryInterface {
     }
 
     return {
-      id: uuidv4(),
       type,
       position,
       data: {
@@ -46,21 +45,18 @@ class NodeRegistry implements NodeRegistryInterface {
         inputs: metadata.inputs,
         outputs: metadata.outputs,
         config: { ...metadata.defaultConfig },
-        type: metadata.type,
-        category: metadata.category
-      }
+        category: metadata.category,
+        type: metadata.type
+      },
+      id: uuidv4()
     };
   }
 
   private initialize(): void {
-    // Register input nodes
     inputNodes.forEach(node => this.registerNodeType(node));
-    
-    // Register LLM nodes
     llmNodes.forEach(node => this.registerNodeType(node));
   }
 }
 
-// Create and export singleton instance
 const nodeRegistry = new NodeRegistry();
 export default nodeRegistry;
