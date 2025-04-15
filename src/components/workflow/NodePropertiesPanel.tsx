@@ -1,13 +1,9 @@
 
 import React from 'react';
-import { NodeObject, NodeType } from './types';
+import { NodeObject, NodeType } from '../types';
 import { PanelLayout } from './properties/PanelLayout';
 import { InputNodeProperties } from './properties/InputNodeProperties';
 import { LLMNodeProperties } from './properties/LLMNodeProperties';
-import { CollectionNodeProperties } from './properties/CollectionNodeProperties';
-import { MemoryNodeProperties } from './properties/MemoryNodeProperties';
-import { ProcessNodeProperties } from './properties/ProcessNodeProperties';
-import { OutputNodeProperties } from './properties/OutputNodeProperties';
 import { DefaultNodeProperties } from './properties/DefaultNodeProperties';
 
 interface NodePropertiesPanelProps {
@@ -23,79 +19,33 @@ export const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
   onPropertyChange, 
   onDeleteNode 
 }) => {
-  const handleChange = (name: string, value: any) => {
-    if (name === 'title') {
-      onPropertyChange(node.id, { title: value });
-    } else {
-      onPropertyChange(node.id, { [name]: value });
-    }
-  };
-  
   const renderPropertiesComponent = () => {
-    switch (node.type) {
-      case 'input':
-        return (
-          <InputNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      case 'llm':
-        return (
-          <LLMNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      case 'collection':
-        return (
-          <CollectionNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      case 'memory':
-        return (
-          <MemoryNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      case 'process':
-        return (
-          <ProcessNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      case 'output':
-        return (
-          <OutputNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
-        
-      default:
-        return (
-          <DefaultNodeProperties 
-            data={node.data} 
-            title={node.title} 
-            onChange={handleChange} 
-          />
-        );
+    const type = node.type;
+    
+    if ([NodeType.TEXT_INPUT, NodeType.URL_INPUT, NodeType.JSON_INPUT].includes(type)) {
+      return (
+        <InputNodeProperties 
+          data={node.data} 
+          onChange={(updates) => onPropertyChange(node.id, updates)} 
+        />
+      );
     }
+    
+    if ([NodeType.GPT_4, NodeType.GPT_35_TURBO, NodeType.CLAUDE_3].includes(type)) {
+      return (
+        <LLMNodeProperties 
+          data={node.data} 
+          onChange={(updates) => onPropertyChange(node.id, updates)} 
+        />
+      );
+    }
+    
+    return (
+      <DefaultNodeProperties 
+        data={node.data} 
+        onChange={(updates) => onPropertyChange(node.id, updates)} 
+      />
+    );
   };
   
   return (

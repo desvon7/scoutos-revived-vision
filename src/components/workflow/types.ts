@@ -1,4 +1,3 @@
-
 import React, { CSSProperties } from 'react';
 
 // Base Types
@@ -18,17 +17,17 @@ export type DataType =
   | 'any';
 
 // Node Categories
-export type NodeCategory = 
-  | 'input'
-  | 'llm'
-  | 'collection'
-  | 'text-processing'
-  | 'logic'
-  | 'integration'
-  | 'data-transformation'
-  | 'code'
-  | 'search'
-  | 'data';
+export enum NodeCategory {
+  INPUT = 'input',
+  LLM = 'llm',
+  COLLECTION = 'collection',
+  TEXT_PROCESSING = 'text_processing',
+  LOGIC = 'logic',
+  INTEGRATION = 'integration',
+  DATA = 'data',
+  CODE = 'code',
+  OUTPUT = 'output'
+}
 
 // Execution states
 export enum ExecutionState {
@@ -41,7 +40,6 @@ export enum ExecutionState {
 
 // Node types
 export enum NodeType {
-  // Input types
   TEXT_INPUT = 'text_input',
   URL_INPUT = 'url_input',
   JSON_INPUT = 'json_input',
@@ -50,8 +48,7 @@ export enum NodeType {
   // LLM types
   GPT_4 = 'gpt_4',
   GPT_35_TURBO = 'gpt_35_turbo',
-  CLAUDE_3_OPUS = 'claude_3_opus',
-  CLAUDE_3_SONNET = 'claude_3_sonnet',
+  CLAUDE_3 = 'claude_3',
   
   // Processing types
   JAVASCRIPT = 'javascript',
@@ -67,21 +64,19 @@ export enum NodeType {
   
   // Integration types
   API = 'api',
-  WEBHOOK = 'webhook',
-  
-  // Data types
-  COLLECTION = 'collection',
-  VECTOR_DB = 'vector_db'
+  WEBHOOK = 'webhook'
 }
 
 // Port Interface
 export interface Port {
   id: string;
-  type: DataType;
   name: string;
+  type: DataType;
+  label?: string;
   description?: string;
   required?: boolean;
   default?: any;
+  multiple?: boolean;
 }
 
 // Node Data Interface

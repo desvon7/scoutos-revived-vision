@@ -1,12 +1,14 @@
-import React from 'react';
-import { ReactFlowProvider } from 'reactflow';
-import { WorkflowCanvas } from './WorkflowCanvas';
+import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import WorkflowConsole from './WorkflowConsole';
+import WorkflowStatusBar from './WorkflowStatusBar';
+import NodeSearchOverlay from './NodeSearchOverlay';
 import { NodePalette } from './NodePalette';
 import { PropertiesPanel } from './PropertiesPanel';
-import { WorkflowConsole } from './WorkflowConsole';
-import { WorkflowStatusBar } from './WorkflowStatusBar';
-import { NodeSearchOverlay } from './NodeSearchOverlay';
+import { WorkflowCanvas } from './WorkflowCanvas';
 import { useWorkflowStore } from '../../store/workflowStore';
+import { NodeType, NodeData } from '../types';
 
 const WorkflowBuilderPage: React.FC = () => {
   const { addNode } = useWorkflowStore();
@@ -58,4 +60,4 @@ const WorkflowBuilderPage: React.FC = () => {
   );
 };
 
-export default WorkflowBuilderPage; 
+export default WorkflowBuilderPage;
